@@ -1,0 +1,723 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "BlomBiz BE 1.0",
+    "version": "1.0.0",
+    "description": "\nThis is an overview of the BloomBiz BE functionality. It prodives different endpoints for managing flower shop db.\n\nCurrent features:\n- Get goods.\n- Get in stock goods.\n- Create\\edit\\delete\\get orders.\n- Create\\edit\\delete\\get suppliers.\n- Create\\edit\\delete\\get expenses.\n- Create\\delete\\get decommissions."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "goods",
+      "description": "Everything related to goods and stock"
+    },
+    {
+      "name": "expenses",
+      "description": "Everything related to expenses"
+    },
+    {
+      "name": "orders",
+      "description": "Everything related to orders"
+    },
+    {
+      "name": "suppliers",
+      "description": "Everything related to suppliers"
+    }
+  ],
+  "paths": {
+    "/goods/get": {
+      "get": {
+        "summary": "Get all goods",
+        "description": "Provides json containing all categories with their goods.",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/get_instock": {
+      "get": {
+        "summary": "Get all instock goods",
+        "description": "Provides json containing all goods present in stock (expenses-orders-decommission=result).",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/get_decommissions": {
+      "get": {
+        "summary": "Get all decommissioned goods",
+        "description": "Provides json containing all goods that were decommissioned.",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/create_decommission": {
+      "post": {
+        "summary": "Create a new decommission",
+        "description": "Adds a new decommissioned product.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that category and product must be names of existing Categories and Goods instances.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-11-01"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "category"
+                  },
+                  "product": {
+                    "type": "string",
+                    "example": "product"
+                  }
+                },
+                "required": [
+                  "date",
+                  "quantity",
+                  "category",
+                  "product"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created new decommission successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          },
+          "424": {
+            "description": "Failed to fetch provided category"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/delete_decommission/{decommission_id}": {
+      "delete": {
+        "summary": "Delete an excisting decommission",
+        "description": "Deletes an existing decommissioned product.",
+        "parameters": [
+          {
+            "name": "decommission_id",
+            "in": "path",
+            "description": "ID of the decommission that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Decommission deleted successfully"
+          },
+          "406": {
+            "description": "Failed to fetch the decommission with given id"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/expenses/get": {
+      "get": {
+        "summary": "Get all expenses",
+        "description": "Provides json containing all expenses with their elements.",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/expenses/create": {
+      "post": {
+        "summary": "Create a new expense",
+        "description": "Adds a new expense and it's elementes.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that category, supplier and product must be names of Categories, Goods, Suppliers instances. Units is only required when creating expense with new category.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-11-01"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "supplier": {
+                    "type": "string",
+                    "example": "supplier"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "category"
+                  },
+                  "units": {
+                    "type": "string",
+                    "example": "units"
+                  },
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "product": {
+                          "type": "string",
+                          "example": "product_name"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "product": "product_name",
+                        "quantity": 2,
+                        "price": 3
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "date",
+                  "total",
+                  "supplier",
+                  "category",
+                  "elements"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created new expense successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/expenses/edit": {
+      "put": {
+        "summary": "Edit an exicting expense",
+        "description": "Edits an existing expense and it's elementes.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that category, supplier and product must be names of Goods, Suppliers instances. An id of existing expense is also needed.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expense_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-11-01"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "supplier": {
+                    "type": "string",
+                    "example": "supplier"
+                  },
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "product": {
+                          "type": "string",
+                          "example": "product_name"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "product": "product_name",
+                        "quantity": 2,
+                        "price": 3
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "expense_id",
+                  "date",
+                  "total",
+                  "supplier",
+                  "elements"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edited the expense successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/expenses/delete/{expense_id}": {
+      "delete": {
+        "summary": "Delete an excisting expense",
+        "description": "Deletes an expense.",
+        "parameters": [
+          {
+            "name": "expense_id",
+            "in": "path",
+            "description": "ID of the expense that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Expense deleted successfully"
+          },
+          "400": {
+            "description": "Failed to fetch the expense with given id"
+          }
+        },
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/orders/get": {
+      "get": {
+        "summary": "Get all orders",
+        "description": "Provides json containing all orders with their elements.",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "orders"
+        ]
+      }
+    },
+    "/orders/create": {
+      "post": {
+        "summary": "Create a new order",
+        "description": "Adds a new order and it's elementes.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that product, category must be names of Goods, Categories instances. ",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-11-01"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "Status"
+                  },
+                  "discount": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "elements": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "product": {
+                              "type": "string",
+                              "example": "product_name"
+                            },
+                            "quantity": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "price": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "category"
+                    ]
+                  }
+                },
+                "required": [
+                  "date",
+                  "price",
+                  "status",
+                  "discount",
+                  "elements"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created new order successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "orders"
+        ]
+      }
+    },
+    "/orders/edit": {
+      "put": {
+        "summary": "Edit an exicting order",
+        "description": "Edits an existing order and it's elementes.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that category, supplier and product must be names of Goods, Suppliers instances. An id of existing order is also needed.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "order_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-11-01"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "Status"
+                  },
+                  "discount": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "elements": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "product": {
+                              "type": "string",
+                              "example": "product_name"
+                            },
+                            "quantity": {
+                              "type": "number",
+                              "example": 3
+                            },
+                            "price": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "category"
+                    ]
+                  }
+                },
+                "required": [
+                  "order_id",
+                  "date",
+                  "price",
+                  "status",
+                  "discount",
+                  "elements"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edited the order successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "orders"
+        ]
+      }
+    },
+    "/orders/delete/{order_id}": {
+      "delete": {
+        "summary": "Delete an excisting order",
+        "description": "Deletes an order.",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "description": "ID of the order that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order deleted successfully"
+          },
+          "400": {
+            "description": "Failed to fetch the expense with given id"
+          }
+        },
+        "tags": [
+          "orders"
+        ]
+      }
+    },
+    "/suppliers/get": {
+      "get": {
+        "summary": "Get all suppliers",
+        "description": "Provides json containing all suppliers.",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "suppliers"
+        ]
+      }
+    },
+    "/suppliers/create": {
+      "post": {
+        "summary": "Create a new suppliers",
+        "description": "Adds a new suppliers.",
+        "requestBody": {
+          "description": "Json containing proper data is required.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Supplier"
+                  },
+                  "contactInfo": {
+                    "type": "string",
+                    "example": "phone number"
+                  },
+                  "additional": {
+                    "type": "string",
+                    "example": "comment"
+                  }
+                },
+                "required": [
+                  "name",
+                  "contactInfo",
+                  "additional"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created new supplier successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "suppliers"
+        ]
+      }
+    },
+    "/suppliers/edit": {
+      "put": {
+        "summary": "Edit an exicting supplier",
+        "description": "Edits an existing supplier.",
+        "requestBody": {
+          "description": "Json containing proper data is required.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Supplier1"
+                  },
+                  "contactInfo": {
+                    "type": "string",
+                    "example": "phone number1"
+                  },
+                  "additional": {
+                    "type": "string",
+                    "example": "comment1"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "contactInfo",
+                  "additional"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edited the supplier successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "suppliers"
+        ]
+      }
+    },
+    "/suppliers/delete/{supplier_id}": {
+      "delete": {
+        "summary": "Delete an excisting supplier",
+        "description": "Deletes a supplier.",
+        "parameters": [
+          {
+            "name": "supplier_id",
+            "in": "path",
+            "description": "ID of the supplier that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier deleted successfully"
+          },
+          "400": {
+            "description": "Failed to fetch the supplier with given id"
+          }
+        },
+        "tags": [
+          "suppliers"
+        ]
+      }
+    }
+  }
+}

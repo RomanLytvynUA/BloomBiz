@@ -26,3 +26,7 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Chache
+__pycache__
+.pytest_cache

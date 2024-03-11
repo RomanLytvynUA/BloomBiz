@@ -1,5 +1,6 @@
 from src import db
 from src.models.suppliers import Suppliers
+from testing_data import add_testing_suppliers, clear_db
 from src.utils.suppliers import util_create_supplier, util_edit_supplier
 
 
@@ -7,54 +8,95 @@ def test_suppliers_generate_dict(app_client):
     """
     GIVEN supplier instance
     WHEN calling generate_dict() method on supplier
-    THEN it returns dict with proper data
+    THEN dict with proper data is returned 
     """
-    supplier = Suppliers(name="Test supplier", contactInfo="-", additional='--')
-    db.session.add(supplier)
-    db.session.commit()
+    clear_db()
+    supplier_data = add_testing_suppliers()[0]
+    supplier_obj = Suppliers.query.filter_by(id=1).first()
 
-    assert supplier.generate_dict() == {'id': supplier.id,
-                                        'name': "Test supplier",
-                                        'contactInfo': "-",
-                                        'additional': "--",
-                                        }
+    assert supplier_obj.generate_dict() == supplier_data
 
 
 def test_util_create_supplier(app_client):
     """
-    GIVEN create_supplier func
-    WHEN calling create_supplier
+    GIVEN create supplier util
+    WHEN calling create supplier util with unique name
     THEN db contains proper instance of suppliers;
-         new instance isn't added provided that such name already exists;
-         function returns proper instances of suppliers;
+         proper instance of supplier is returned;
     """
-    supplier1 = util_create_supplier("Test supplier", "-", "--")['supplier']
-    supplier2 = util_create_supplier("Test supplier", "-", "--")['supplier']
+    clear_db()
+    supplier = util_create_supplier("Test supplier", "-", "--")['supplier']
 
-    suppliers = list(Suppliers.query.filter_by(name="Test supplier").all())
+    queried_supplier = Suppliers.query.filter_by(name="Test supplier").first()
 
-    assert suppliers[0].name == "Test supplier"
-    assert len(suppliers) == 1
-    assert suppliers[0] == supplier1
-    assert suppliers[0] == supplier2
+    assert queried_supplier.name == "Test supplier"
+    assert queried_supplier.contactInfo == "-"
+    assert queried_supplier.additional == "--"
+
+
+def test_util_create_supplier_clone(app_client):
+    """
+    GIVEN create_supplier func
+    WHEN calling create supplier util with existing name
+    THEN new supplier is not added to the db;
+         proper instance of supplier is returned;
+    """
+    clear_db()
+    supplier_data = add_testing_suppliers()[0]
+    supplier = util_create_supplier(supplier_data['name'])['supplier']
+
+    queried_suppliers = Suppliers.query.filter_by(name=supplier_data['name']).all()
+
+    assert len(queried_suppliers)
+    assert supplier == queried_suppliers[0]
+    assert queried_suppliers[0].name == supplier_data['name']
+    assert queried_suppliers[0].contactInfo == supplier_data['contactInfo']
+    assert queried_suppliers[0].additional == supplier_data['additional']
 
 
 def test_util_edit_supplier(app_client):
     """
     GIVEN supplier instance
-    WHEN calling edit_supplier
-    THEN supplier instance gets properly edited;
-         func returns None if id is invalid;
+    WHEN calling edit supplier util with an id of an exicting supplier
+    THEN supplier instance is properly edited;
+         edited supplier is returned.
     """
-    supplier = Suppliers(name="Test supplier", contactInfo="-", additional='--')
-    db.session.add(supplier)
-    db.session.commit()
+    clear_db()
+    supplier_id = add_testing_suppliers()[0]['id']
+    edited_supplier = util_edit_supplier(supplier_id, '1', '2', '3')['supplier']
+    queried_supplier = Suppliers.query.filter_by(id=supplier_id).first()
 
-    edited_supplier = util_edit_supplier(supplier.id, "Edited name", "Edited contact", "Edited additional")['supplier']
-    invalid_supplier = util_edit_supplier(55555, "", "", "")['supplier']
+    assert queried_supplier.name == "1"
+    assert queried_supplier.contactInfo == "2"
+    assert queried_supplier.additional == "3"
+    assert queried_supplier == edited_supplier
 
-    assert supplier.name == "Edited name"
-    assert supplier.contactInfo == "Edited contact"
-    assert supplier.additional == "Edited additional"
-    assert supplier == edited_supplier
-    assert invalid_supplier is None
+
+def test_util_edit_supplier(app_client):
+    """
+    GIVEN supplier instance
+    WHEN calling edit supplier util with an id of an exicting supplier
+    THEN supplier instance is properly edited;
+         edited supplier is returned.
+    """
+    clear_db()
+    supplier_id = add_testing_suppliers()[0]['id']
+    edited_supplier = util_edit_supplier(supplier_id, '1', '2', '3')['supplier']
+    queried_supplier = Suppliers.query.filter_by(id=supplier_id).first()
+
+    assert queried_supplier.name == "1"
+    assert queried_supplier.contactInfo == "2"
+    assert queried_supplier.additional == "3"
+    assert queried_supplier == edited_supplier
+
+
+def test_util_edit_supplier_invalid_id(app_client):
+    """
+    GIVEN supplier instance
+    WHEN calling edit supplier util with an invalid id
+    THEN None is returned.
+    """
+    clear_db()
+    edited_supplier = util_edit_supplier(1, '1', '2', '3')['supplier']
+
+    assert edited_supplier is None

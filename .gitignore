@@ -1,3 +1,28 @@
+# Editor directories and files
+.vscode
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea/
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Cache directories
+.pytest_cache/
+
+# Virtual environment
+venv/
+
+# Logs and other generated files
+*.log
+
 # Logs
 logs
 *.log
@@ -16,17 +41,3 @@ coverage
 
 /cypress/videos/
 /cypress/screenshots/
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Chache
-__pycache__
-.pytest_cache

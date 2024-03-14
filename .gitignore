@@ -13,6 +13,7 @@
 # Compiled Python files
 *.pyc
 __pycache__/
+__pycache__
 
 # Cache directories
 .pytest_cache/

@@ -86,7 +86,7 @@ def add_testing_expenses():
         category = Categories.query.filter_by(id=1).first()
 
         expenses_data = [
-            {'date': "2023-11-01", 'supplier': supplier, 'category': category, 'total': 0},
+            {'date': "2023-11-01", 'supplier': supplier, 'category': category, 'total': 0.0},
         ]
 
         db.session.query(Expenses).delete()
@@ -98,26 +98,42 @@ def add_testing_expenses():
             db.session.add(expense)
         db.session.commit()
 
+        return {
+            'id': 1,
+            'date': datetime.datetime.strptime(expenses_data[0]['date'], '%Y-%m-%d').date().strftime('%a, %d %b %Y %H:%M:%S GMT'),
+            'total': expenses_data[0]['total'],
+            'supplier': expenses_data[0]['supplier'].id,
+            'category': expenses_data[0]['category'].id,
+        }
 
-def add_testing_expenses_elements():
+
+def add_testing_expenses_elements(return_raw=False):
     with app.app_context():
         expense = Expenses.query.filter_by(id=1).first()
         product1 = Goods.query.filter_by(id=1).first()
         product2 = Goods.query.filter_by(id=2).first()
 
         expense_elements = [
-            {'expense': expense, 'product': product1, 'quantity': 2, 'price': 2},
-            {'expense': expense, 'product': product2, 'quantity': 1, 'price': 2},
+            {'expense': expense, 'product': product1, 'quantity': 2.0, 'price': 2.0},
+            {'expense': expense, 'product': product2, 'quantity': 1.0, 'price': 2.0},
         ]
 
         db.session.query(ExpensesElements).delete()
         db.session.execute(text("ALTER SEQUENCE expenses_elements_id_seq RESTART WITH 1"))
+        db.session.commit()
 
         for data in expense_elements:
             element = ExpensesElements(**data)
             db.session.add(element)
+            db.session.commit()
+            data['id'] = element.id
 
-        db.session.commit()
+        
+        if return_raw:
+            for element in expense_elements:
+                element['expense'] = expense.id
+                element['product'] = element['product'].id
+            return expense_elements
         return expense.generate_dict()
 
 

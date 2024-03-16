@@ -140,7 +140,7 @@ def add_testing_expenses_elements(return_raw=False):
 def add_testing_orders():
     with app.app_context():
         orders_data = [
-            {'date': '2023-11-01', 'status': 'Status', 'price': 1, 'discount': 2},
+            {'date': '2023-11-01', 'status': 'Status', 'price': 1.0, 'discount': 2.0},
         ]
 
         db.session.query(Orders).delete()
@@ -150,28 +150,38 @@ def add_testing_orders():
         for data in orders_data:
             order = Orders(**data)
             db.session.add(order)
-        db.session.commit()
+            db.session.commit()
+            data['id'] = order.id
+        orders_data[0]['date'] = datetime.datetime.strptime(orders_data[0]['date'], '%Y-%m-%d').date().strftime('%a, %d %b %Y %H:%M:%S GMT')
+        return orders_data
 
-
-def add_testing_orders_elements():
+def add_testing_orders_elements(return_raw=False):
     with app.app_context():
         order = Orders.query.filter_by(id=1).first()
         product1 = Goods.query.filter_by(id=1).first()
         product2 = Goods.query.filter_by(id=2).first()
 
         orders_elements = [
-            {'order': order, 'product': product1, 'quantity': 0, 'price': 2},
-            {'order': order, 'product': product2, 'quantity': 1, 'price': 2},
+            {'order': order, 'product': product1, 'quantity': 0.0, 'price': 2.0},
+            {'order': order, 'product': product2, 'quantity': 1.0, 'price': 2.0},
         ]
 
         db.session.query(OrdersElements).delete()
         db.session.execute(text("ALTER SEQUENCE orders_elements_id_seq RESTART WITH 1"))
+        db.session.commit()
 
         for data in orders_elements:
             element = OrdersElements(**data)
             db.session.add(element)
-
-        db.session.commit()
+            db.session.commit()
+            data['id'] = element.id
+        
+        if return_raw:
+            for element in orders_elements:
+                element['product'] = element['product'].id
+                element['order'] = element['order'].id
+            elements_dict = {product1.category.name: orders_elements}
+            return elements_dict
         return order.generate_dict()
 
 

@@ -4,83 +4,32 @@ from src.models.orders import Orders, OrdersElements
 from src.models.suppliers import Suppliers
 from src.models.goods import Categories, Goods
 from src.utils.orders import util_create_order
-
-
-def test_orders_elements_generate_dict(app_client):
-    """
-    GIVEN order & orders element instance
-    WHEN calling generate_dict() method on element
-    THEN it returns dict with proper data
-    """
-
-    category = Categories(name="Test category", units="Test units")
-    db.session.add(category)
-    db.session.commit()
-
-    product = Goods(name="Test product1", category=category)
-    db.session.add(product)
-    db.session.commit()
-
-    order = Orders(date="2023-11-01", price=1, status='status', discount=0)
-    db.session.add(order)
-    db.session.commit()
-
-    element = OrdersElements(quantity=2, price=3, order=order, product=product)
-    db.session.add(element)
-    db.session.commit()
-
-    assert element.generate_dict() == {'id': element.id,
-                                       'quantity': 2,
-                                       'price': 3,
-                                       'product': product.id,
-                                       'order': order.id,
-                                       }
+from testing_data import clear_db, add_testing_orders, add_testing_orders_elements, add_testing_categories, add_testing_goods
 
 
 def test_orders_generate_dict(app_client):
     """
-    GIVEN expense & expenses element instance
-    WHEN calling generate_dict() method on expense
-    THEN it returns dict with proper data
+    GIVEN order, orders elements instances
+    WHEN calling generate_dict() method on order
+    THEN dict with proper data is returned
     """
+    clear_db()
+    add_testing_categories()
+    add_testing_goods()
+    order_data = add_testing_orders()[0]
+    order_data['elements'] = add_testing_orders_elements(return_raw=True)
 
-    category = Categories(name="Test category", units="Test units")
-    db.session.add(category)
-    db.session.commit()
+    order_obj = Orders.query.filter_by(id=order_data['id']).first()
 
-    product = Goods(name="Test product1", category=category)
-    db.session.add(product)
-    db.session.commit()
-
-    order = Orders(date="2023-11-01", price=1, status='status', discount=0)
-    db.session.add(order)
-    db.session.commit()
-
-    element = OrdersElements(quantity=2, price=3, order=order, product=product)
-    db.session.add(element)
-    db.session.commit()
-
-    assert order.generate_dict() == {'id': order.id,
-                                     'date': datetime.date(2023, 11, 1).strftime('%a, %d %b %Y %H:%M:%S GMT'),
-                                     'price': 1.0,
-                                     'status': 'status',
-                                     'discount': 0.0,
-                                     'elements': {
-                                         "Test category": [{'id': element.id,
-                                                            'quantity': 2.0,
-                                                            'price': 3.0,
-                                                            'product': product.id,
-                                                            'order': order.id,
-                                                            }]
-                                     },
-                                     }
+    assert order_obj.generate_dict() == order_data
 
 
 def test_util_create_order(app_client):
     """
     GIVEN create order util
     WHEN calling util_create_order()
-    THEN it returns proper expense object
+    THEN proper order object is returned;
+         new order is added to the db.
     """
 
     order = util_create_order("2023-11-01", 1, 2, "Status")['order']
@@ -88,3 +37,4 @@ def test_util_create_order(app_client):
                                          discount=1, price=2, status="Status").all()
 
     assert len(found_order) == 1
+    assert found_order[0] == order

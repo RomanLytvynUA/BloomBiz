@@ -23,6 +23,35 @@ def test_get_goods(urls, app_client):
                                           "name": category['name'], "units": category['units']}]
 
 
+def test_edit_goods_price(urls, app_client):
+    """
+    GIVEN db with category and goods instances
+    WHEN calling edit goods price endpoint
+    THEN product price is edited
+         provided that required data is present
+    """
+    url = urls["edit_goods_price"]
+
+    clear_db()
+    add_testing_categories()
+    add_testing_goods()
+
+    data1 = {'product_id': 1, 'price': 55555}
+    data2 = {'product_id': 2, 'price': "RESET"}
+    positive_response1 = requests.post(url=url, json=data1, headers={"Content-Type": "application/json"})
+    positive_response2 = requests.post(url=url, json=data2, headers={"Content-Type": "application/json"})
+    negative_response = requests.post(url=url, json={}, headers={"Content-Type": "application/json"})
+
+    queried_price1 = Goods.query.filter_by(id=1).first().price
+    queried_price2 = Goods.query.filter_by(id=2).first().price
+
+    assert negative_response.status_code == 406
+    assert positive_response1.status_code == 200
+    assert positive_response2.status_code == 200
+    assert queried_price1 == 55555
+    assert queried_price2 is None
+
+
 def test_create_decommission(urls, app_client):
     """
     GIVEN db with category and goods instances

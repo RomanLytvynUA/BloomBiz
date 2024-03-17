@@ -24,6 +24,7 @@ def app_client():
 def urls():
     domain = "http://127.0.0.1:5000"
     return {'get_goods': domain+"/goods/get",
+            'edit_goods_price': domain+"/goods/edit_price",
             'create_decommission': domain+"/goods/create_decommission",
             'del_decommission': domain+"/goods/delete_decommission/",
             'get_decommissions': domain+"/goods/get_decommissions",

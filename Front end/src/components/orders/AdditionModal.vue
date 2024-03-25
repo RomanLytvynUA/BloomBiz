@@ -9,11 +9,13 @@
                 <div class="modal-body">
                     <form id="newOrderForm">
                         <InputField ref="dateInput" label="Дата:" type="date" name="date" :value="todaysDate" />
-                        <SelectField ref="statusInput" label="Статус:" name="status" :options="['Продано', 'Вітрина', 'Списано']" :preselectedValue="'Вітрина'" />
+                        <SelectField ref="statusInput" label="Статус:" name="status"
+                            :options="['Продано', 'Вітрина', 'Списано']" :preselectedValue="'Вітрина'" />
                     </form>
-                    
+
                     <form id="orderElementsForm">
-                        <ElementsList ref="elementsList" @elements-changed="(data) => elements = data" @total-price-changed="(total) => orderTotal = total" />
+                        <ElementsList ref="elementsList" @elements-changed="(data) => elements = data"
+                            @total-price-changed="(total) => orderTotal = total" />
                     </form>
                     <br>
                     <form id="orderGeneralForm">
@@ -21,7 +23,8 @@
                             <span class="input-group-text">Знижка:</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount">
                             <span class="input-group-text">Всього:</span>
-                            <input ref="orderTotalField" name="price" type="number" class="form-control" :value="orderTotal-orderTotal*(orderDiscount/100)">
+                            <input ref="orderTotalField" name="price" type="number" class="form-control"
+                                :value="orderTotal - orderTotal * (orderDiscount / 100)">
                         </div>
                     </form>
                 </div>
@@ -33,7 +36,7 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
 
@@ -47,7 +50,7 @@ const todaysDate = new Date().toISOString().split('T')[0];
 const elementsList = ref(null)
 watch(elementsList, () => {
     if (elementsList.value) {
-        elementsList.value.setNewData([], {'null': true})
+        elementsList.value.setNewData([], { 'null': true })
     }
 })
 
@@ -87,7 +90,7 @@ function validateExpense() {
         generalFormData.forEach((value, key) => {
             json[key] = value;
         });
-        
+
         $(modalElement).modal('hide');
 
         useOrdersStore().addOrder(json);

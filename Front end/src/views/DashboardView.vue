@@ -8,35 +8,40 @@
           <div class="card">
             <div class="card-body">
               <nav class="nav flex-column nav-pills nav-gap-y-1">
-                <a href="#statistic" class="nav-item nav-link has-icon nav-link-faded" :class="{ 'active': isActiveLink('statistic') }">
+                <a href="#statistic" class="nav-item nav-link has-icon nav-link-faded"
+                  :class="{ 'active': isActiveLink('statistic') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-chart`"></use>
                   </svg>
-                    Статистика
+                  Статистика
                 </a>
-                <a href="#assortment" class="nav-item nav-link has-icon nav-link-faded" :class="{ 'active': isActiveLink('assortment') }">
+                <a href="#assortment" class="nav-item nav-link has-icon nav-link-faded"
+                  :class="{ 'active': isActiveLink('assortment') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-shop`"></use>
                   </svg>
-                    Асортимент
+                  Асортимент
                 </a>
-                <a href="#crm" class="nav-item nav-link has-icon nav-link-faded" :class="{ 'active': isActiveLink('crm') }">
+                <a href="#crm" class="nav-item nav-link has-icon nav-link-faded"
+                  :class="{ 'active': isActiveLink('crm') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-person`"></use>
                   </svg>
-                    Клієнти
+                  Клієнти
                 </a>
-                <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded" :class="{ 'active': isActiveLink('calendar') }">
+                <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded"
+                  :class="{ 'active': isActiveLink('calendar') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-calendar`"></use>
                   </svg>
-                    Календар
+                  Календар
                 </a>
-                <a href="#settings" class="nav-item nav-link has-icon nav-link-faded" :class="{ 'active': isActiveLink('settings') }">
+                <a href="#settings" class="nav-item nav-link has-icon nav-link-faded"
+                  :class="{ 'active': isActiveLink('settings') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-gear`"></use>
                   </svg>
-                    Налаштування
+                  Налаштування
                 </a>
               </nav>
             </div>
@@ -45,10 +50,7 @@
         <div class="col-md-9">
           <div class="card">
             <div class="card-body">
-              <div>
-                <h6>ВАША СТАТИСТИКА</h6>
-                <hr>
-              </div>
+              <Statistics v-if="isActiveLink('statistic')" />
             </div>
           </div>
         </div>
@@ -63,11 +65,12 @@ import { useRouter } from 'vue-router';
 import icons from '@/icons.svg'
 
 import Headline from '../components/Headline.vue'
+import Statistics from '../components/dashboard/Statistics.vue'
 
 const router = useRouter();
 
 const isActiveLink = (linkId) => {
-  if (router.currentRoute.value.hash === "") {router.currentRoute.value.hash = "#statistic"}
+  if (router.currentRoute.value.hash === "") { router.currentRoute.value.hash = "#statistic" }
   let isActive = false;
   watchEffect(() => {
     isActive = router.currentRoute.value.hash === `#${linkId}`;
@@ -78,14 +81,14 @@ const isActiveLink = (linkId) => {
 
 <style scoped>
 .nav-item {
-    /* color: black; */
-    color: gray;
-    font-weight: 500;
-}
-.nav-item.active {
-    /* background-color: #206d4b; */
-    background-color: #f8f9fa;
-    color: black;
+  /* color: black; */
+  color: gray;
+  font-weight: 500;
 }
 
+.nav-item.active {
+  /* background-color: #206d4b; */
+  background-color: #f8f9fa;
+  color: black;
+}
 </style>

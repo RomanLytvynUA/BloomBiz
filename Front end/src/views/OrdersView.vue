@@ -5,18 +5,20 @@
   </div>
   <br>
 
-  <TableComponent ref="tableComponent" @filterChanged="filterOrders" :filters="tableFilters" :headers="tableHeaders" :rows="tableRows" />
+  <TableComponent ref="tableComponent" @filterChanged="filterOrders" :filters="tableFilters" :headers="tableHeaders"
+    :rows="tableRows" />
 
   <AdditionModal />
   <EditingModal />
   <DeletionModal />
-  
+
 </template>
 
 <script setup>
 import { ref, computed, markRaw, watch, onMounted } from 'vue'
 import { useOrdersStore } from '../stores/orders';
 import { useGoodsStore } from '../stores/goods';
+import { orderStatuses } from '../config';
 
 import Headline from '../components/Headline.vue'
 
@@ -37,13 +39,13 @@ const ordersData = computed(() => ordersStorage.ordersData)
 const filteredOrders = ref([])
 
 function filterOrders() {
-  if(tableComponent.value) {
+  if (tableComponent.value) {
     const dateFilterComponent = tableComponent.value.$refs.dateFilterComponent[0]
     const statusFilterComponent = tableComponent.value.$refs.statusFilterComponent[0]
 
     filteredOrders.value = ordersData.value.filter(order => {
       return dateFilterComponent.filterDate(order.date) &&
-      statusFilterComponent.filterData(order.status)
+        statusFilterComponent.filterData(order.status)
     })
   }
 }
@@ -54,7 +56,7 @@ const tableComponent = ref(null);
 
 const tableFilters = ref([
   { component: markRaw(DateFilter), reference: 'dateFilterComponent' },
-  { component: markRaw(SelectFilter), reference: 'statusFilterComponent', props: {options: ['Продано', 'Списано']} },
+  { component: markRaw(SelectFilter), reference: 'statusFilterComponent', props: { options: orderStatuses } },
 ])
 
 const tableHeaders = ref([
@@ -68,22 +70,22 @@ const tableHeaders = ref([
 const tableRows = computed(() => filteredOrders.value.map(order => [
   new Date(order.date).toLocaleDateString('en-GB').split('/').join('-'),
   order.status,
-  { 
-    component: Popover, 
-    props: { 
-      maxSize: 20, 
-      text: `${[].concat(...Object.values(order.elements)).map(element => useGoodsStore().minGoodsData.find(product => product.id == element.product).name).join(', ')}.`, 
+  {
+    component: Popover,
+    props: {
+      maxSize: 20,
+      text: `${[].concat(...Object.values(order.elements)).map(element => useGoodsStore().minGoodsData.find(product => product.id == element.product).name).join(', ')}.`,
       title: 'Склад замовлення:',
       id: order.id,
     },
   },
   order.price,
-  { 
-    component: ActionButtons, 
-    props: { 
-      delModalId: "#delOrderModal", 
-      delText: "Розібрати", 
-      editModalId: "#editOrderModal", 
+  {
+    component: ActionButtons,
+    props: {
+      delModalId: "#delOrderModal",
+      delText: "Розібрати",
+      editModalId: "#editOrderModal",
       'data-order-id': order.id,
     },
   }

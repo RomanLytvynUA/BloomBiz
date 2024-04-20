@@ -18,26 +18,93 @@
                     incomeChartObj.data.labels = getIncomeChartLabels(); incomeChartObj.update(); setIncomeChartData();
                 }" />
             </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasFilters">Фільтри</button>
+            </div>
         </div>
         <canvas ref="incomeChart"></canvas>
     </div>
-    <!-- <button @click="console.log(getIncomeChartLabels())">---</button> -->
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvasFilters">
+        <div class="offcanvas-header">
+            <h4 class="offcanvas-title">Фільтри</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <h5>Замовлення</h5>
+            <h6>Статус</h6>
+            <ul class="filter-ul">
+                <li v-for="status in orderStatuses" :key="status">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" :value="status" :checked="status === 'Продано'"
+                            @change=" filteredOrderStatuses.includes(status) ? filteredOrderStatuses.splice(filteredOrderStatuses.indexOf(status), 1) :
+                    filteredOrderStatuses.push(status); setIncomeChartData()">
+                        <label class="form-check-label">
+                            {{ status }}
+                        </label>
+                    </div>
+                </li>
+            </ul>
+            <h5>Витрити</h5>
+            <h6>Постачальники</h6>
+            <ul class="filter-ul">
+                <li v-for="supplier in suppliers" :key="supplier">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" :value="supplier" checked @change=" filteredExpenseSuppliers.includes(supplier) ? filteredExpenseSuppliers.splice(filteredExpenseSuppliers.indexOf(supplier), 1) :
+                    filteredExpenseSuppliers.push(supplier); setIncomeChartData()">
+                        <label class="form-check-label">
+                            {{ supplier }}
+                        </label>
+                    </div>
+                </li>
+            </ul>
+            <h6>Категорії</h6>
+            <ul class="filter-ul">
+                <li v-for="category in categories" :key="category">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" :value="category" checked @change=" filteredExpenseCategories.includes(category) ? filteredExpenseCategories.splice(filteredExpenseCategories.indexOf(category), 1) :
+                    filteredExpenseCategories.push(category); setIncomeChartData()">
+                        <label class="form-check-label">
+                            {{ category }}
+                        </label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- <button @click="console.log(filteredOrderStatuses)">---</button> -->
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
+import { orderStatuses } from '../../../config';
 import { useOrdersStore } from '../../../stores/orders';
 import { useExpensesStore } from '../../../stores/expenses';
+import { useGoodsStore } from '../../../stores/goods';
+import { useSuppliersStore } from '../../../stores/suppliers';
 import { eachWeekOfInterval, format, eachDayOfInterval, getMonth, getYear, addMonths, eachYearOfInterval, isEqual, endOfYear, startOfDay, isSameWeek, eachMonthOfInterval, isSameMonth, eachQuarterOfInterval, isSameQuarter, isSameYear } from 'date-fns';
 import DateFilter from '../../table_elements/filters/DateFilter.vue';
 import Chart from 'chart.js/auto';
 
 let incomeChartObj = null
 const incomeChart = ref(null);
+
 const ordersData = computed(() => useOrdersStore().ordersData)
 const expensesData = computed(() => useExpensesStore().expensesData)
+const categories = computed(() => useGoodsStore().categoriesNames)
+const categoriesData = computed(() => useGoodsStore().goodsData)
+const suppliersData = computed(() => useSuppliersStore().suppliersData)
+const suppliers = computed(() => useSuppliersStore().suppliersNames)
+
+const filteredOrderStatuses = ['Продано']
+const filteredExpenseCategories = [].concat(categories.value)
+const filteredExpenseSuppliers = [].concat(suppliers.value)
+
 const incomeChartDateSelect = ref(null);
 const incomeChartTypeSelect = ref("day")
+
 const getIncomeChartLabels = () => {
     const data = []
     const chartType = incomeChartTypeSelect.value
@@ -82,8 +149,15 @@ const getIncomeChartLabels = () => {
 const setIncomeChartData = () => {
     const chartType = incomeChartTypeSelect.value
     const dateFilter = incomeChartDateSelect.value.getDate()
-    const orders = ordersData.value.filter(order => incomeChartDateSelect.value.filterDate(order.date));
-    const expenses = expensesData.value.filter(expense => incomeChartDateSelect.value.filterDate(expense.date));
+
+    const orders = ordersData.value.filter(order => {
+        return filteredOrderStatuses.includes(order.status) && incomeChartDateSelect.value.filterDate(order.date)
+    });
+    const expenses = expensesData.value.filter(expense => {
+        const categoryName = categoriesData.value.find(category => category.id === expense.category).name
+        const supplierName = suppliersData.value.find(supplier => supplier.id === expense.supplier).name
+        return filteredExpenseCategories.includes(categoryName) && filteredExpenseSuppliers.includes(supplierName) && incomeChartDateSelect.value.filterDate(expense.date)
+    });
 
     let expensesPrices = []
     let ordersPrices = []
@@ -178,6 +252,7 @@ const setIncomeChartData = () => {
 watch([ordersData, expensesData], () => {
     setIncomeChartData()
 }, { deep: true })
+
 onMounted(() => {
     const ctx = incomeChart.value.getContext('2d');
     incomeChartObj = new Chart(ctx, {
@@ -211,3 +286,23 @@ onMounted(() => {
     setIncomeChartData();
 });
 </script>
+
+<style scoped>
+/* Custom CSS to change the color of Bootstrap's btn-outline-secondary */
+.btn-secondary {
+    /* Change text color */
+    color: black;
+    border-color: #DEE2E6;
+    background-color: #F8F9FA;
+}
+
+.filter-ul {
+    list-style-type: none;
+}
+
+.btn-secondary:active {
+    color: black;
+    background-color: #DEE2E6;
+    border-color: #DEE2E6;
+}
+</style>

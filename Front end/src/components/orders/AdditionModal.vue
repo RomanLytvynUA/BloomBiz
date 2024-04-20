@@ -9,8 +9,8 @@
                 <div class="modal-body">
                     <form id="newOrderForm">
                         <InputField ref="dateInput" label="Дата:" type="date" name="date" :value="todaysDate" />
-                        <SelectField ref="statusInput" label="Статус:" name="status"
-                            :options="['Продано', 'Вітрина', 'Списано']" :preselectedValue="'Вітрина'" />
+                        <SelectField ref="statusInput" label="Статус:" name="status" :options="orderStatuses"
+                            :preselectedValue="'Вітрина'" />
                     </form>
 
                     <form id="orderElementsForm">
@@ -39,6 +39,7 @@
 
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
+import { orderStatuses } from '../../config';
 
 import { useOrdersStore } from '@/stores/orders';
 

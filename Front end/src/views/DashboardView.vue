@@ -22,13 +22,13 @@
                   </svg>
                   Асортимент
                 </a>
-                <a href="#crm" class="nav-item nav-link has-icon nav-link-faded"
+                <!-- <a href="#crm" class="nav-item nav-link has-icon nav-link-faded"
                   :class="{ 'active': isActiveLink('crm') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-person`"></use>
                   </svg>
                   Клієнти
-                </a>
+                </a> -->
                 <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded"
                   :class="{ 'active': isActiveLink('calendar') }">
                   <svg class="bi" width="24" height="24" fill="currentColor">
@@ -51,6 +51,7 @@
           <div class="card">
             <div class="card-body">
               <Statistics v-if="isActiveLink('statistic')" />
+              <Assortment v-if="isActiveLink('assortment')" />
             </div>
           </div>
         </div>
@@ -66,6 +67,7 @@ import icons from '@/icons.svg'
 
 import Headline from '../components/Headline.vue'
 import Statistics from '../components/dashboard/Statistics.vue'
+import Assortment from '../components/dashboard/Assortment.vue'
 
 const router = useRouter();
 

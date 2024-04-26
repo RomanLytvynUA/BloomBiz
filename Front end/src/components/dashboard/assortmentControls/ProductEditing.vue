@@ -55,7 +55,7 @@ function validateProduct() {
     if (valid) {
         const data = new FormData(form)
         let json = {}
-        json.product = product.value
+        json.product_id = product.value
         data.forEach((value, key) => {
             json[key] = value;
         });

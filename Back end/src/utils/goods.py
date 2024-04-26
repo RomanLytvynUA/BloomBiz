@@ -24,7 +24,7 @@ def util_create_product(name, category):
         new_product = Goods(name=name, category=category)
         db.session.add(new_product)
         db.session.commit()
-
+        
         return {'product': new_product,
                 'message': 'Created new product successfully.'}
     else:

@@ -13,13 +13,54 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.getGoods)
             const data = await response.json()
             goodsData.value = data
-            
+
             fetchInStockGoods()
         } catch (error) {
             console.error('Error fetching goods:', error)
         }
     }
-    
+
+    async function createProduct(productData) {
+        try {
+            await fetch(urlList.addProduct, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            })
+            fetchGoods()
+        } catch (error) {
+            console.error('Error crearing product:', error)
+        }
+    }
+
+    async function editProduct(productData) {
+        try {
+            await fetch(urlList.editProduct, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            })
+            fetchGoods()
+        } catch (error) {
+            console.error('Error editing product:', error)
+        }
+    }
+
+    async function delProduct(productId) {
+        try {
+            await fetch(`${urlList.delProduct}/${productId}`, {
+                method: 'DELETE',
+            })
+            fetchGoods()
+        } catch (error) {
+            console.error('Error editing product:', error)
+        }
+    }
+
     async function fetchInStockGoods() {
         try {
             const response = await fetch(urlList.getInStockGoods)
@@ -29,7 +70,7 @@ export const useGoodsStore = defineStore('goods', () => {
             console.error('Error fetching in stock goods:', error)
         }
     }
-    
+
     async function submitDecommission(productData) {
         try {
             const response = await fetch(urlList.addDecommission, {
@@ -39,13 +80,13 @@ export const useGoodsStore = defineStore('goods', () => {
                 },
                 body: JSON.stringify(productData),
             })
-            
+
             fetchInStockGoods()
         } catch (error) {
             console.error('Error adding a decommission:', error)
         }
     }
-    
+
     async function setProductPrice(productData) {
         try {
             const response = await fetch(urlList.setProductPrice, {
@@ -55,11 +96,11 @@ export const useGoodsStore = defineStore('goods', () => {
                 },
                 body: JSON.stringify(productData),
             })
-            
+
             fetchInStockGoods()
         } catch (error) {
             console.error('Error editing product price:', error)
         }
     }
-    return { goodsData, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission, setProductPrice }
+    return { goodsData, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission, setProductPrice, createProduct, editProduct, delProduct }
 })

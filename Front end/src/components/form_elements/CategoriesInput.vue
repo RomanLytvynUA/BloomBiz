@@ -57,7 +57,7 @@ watch(categorySelect, () => {
         selectedCategoryUnits ? categoryUnits.value = selectedCategoryUnits.units : '';
 
         emit('categoryChanged', categorySelect.value)
-        emit('unitsChanged', selectedCategoryUnits.units)
+        emit('unitsChanged', selectedCategoryUnits ? selectedCategoryUnits.units : '')
     }
 })
 

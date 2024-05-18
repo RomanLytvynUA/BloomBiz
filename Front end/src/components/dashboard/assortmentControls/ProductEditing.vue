@@ -24,6 +24,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import InputField from '../../form_elements/InputField.vue'
+import { useGoodsStore } from '../../../stores/goods';
 // import { useSuppliersStore } from '@/stores/suppliers';
 
 const product = ref(null);
@@ -61,9 +62,8 @@ function validateProduct() {
         });
 
         $(document.getElementById('editProductModal')).modal('hide');
-        // suppliersStore.addSupplier(json);
+        useGoodsStore().editProduct(json);
         form.reset();
-        console.log(json)
     }
 }
 </script>

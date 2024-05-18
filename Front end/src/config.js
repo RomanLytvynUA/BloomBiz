@@ -9,6 +9,12 @@ export const urlList = {
     "editSupplier": BASE_URL + "suppliers/edit",
 
     "getGoods": BASE_URL + "goods/get",
+    "addProduct": BASE_URL + "goods/create_product",
+    "editProduct": BASE_URL + "goods/edit_product",
+    "delProduct": BASE_URL + "goods/delete_product",
+    "addCategory": BASE_URL + "goods/create_category",
+    "editCategory": BASE_URL + "goods/edit_category",
+    "delCategory": BASE_URL + "goods/delete_category",
     "setProductPrice": BASE_URL + "goods/edit_price",
     "getInStockGoods": BASE_URL + "goods/get_instock",
     "addDecommission": BASE_URL + "goods/create_decommission",

@@ -10,7 +10,7 @@
                     <form id="editCategoryForm">
                         <CategoriesInput ref="targetCategoryInput" :customOption="false"
                             @category-changed="(category) => editCategoryInput.customCategoryInput = category"
-                            @units-changed="(units) => editCategoryInput.categoryUnits = units" />
+                            @units-changed="(units) => editCategoryInput.units = units" />
                         <CategoriesInput ref="editCategoryInput" label="Змінена категорія: " :custom="true" />
                     </form>
                 </div>

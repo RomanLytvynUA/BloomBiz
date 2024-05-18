@@ -21,6 +21,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useGoodsStore } from '../../../stores/goods';
 // import { useSuppliersStore } from '@/stores/suppliers';
 
 const selectedProductId = ref(null);
@@ -34,7 +35,6 @@ onMounted(() => {
 });
 
 function deleteProduct() {
-    // suppliersStore.delSupplier(selectedSupplierId.value);
-    console.log(selectedProductId.value)
+    useGoodsStore().delProduct(selectedProductId.value);
 }
 </script>

@@ -31,8 +31,8 @@
 
 <script setup>
 import CategoriesInput from '../../form_elements/CategoriesInput.vue'
-import { ref, watch } from 'vue';
-// import { useSuppliersStore } from '@/stores/suppliers';
+import { ref } from 'vue';
+import { useGoodsStore } from '../../../stores/goods';
 
 const warningTextArea = ref(null)
 
@@ -52,14 +52,10 @@ function validateCategory() {
 
     if (valid) {
         const categoryData = new FormData(form)
-
-        let json = {}
-        categoryData.forEach((value, key) => {
-            json[key] = value;
-        });
+        const selectedId = useGoodsStore().goodsData.find(category => category.name === categoryData.get("category")).id
 
         $(document.getElementById('deleteCategoryModal')).modal('hide');
-        // suppliersStore.addSupplier(json);
+        useGoodsStore().delCategory(selectedId);
         form.reset();
         warningTextArea.value.value = "Я розумію що категорія і всі пов'язані з нею товари будуть видалені."
     }

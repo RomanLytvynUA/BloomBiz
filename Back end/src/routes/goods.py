@@ -65,10 +65,10 @@ def delete_product(product_id):
 def create_category():
     data = request.get_json()
 
-    required_data = {'units', "category"}
+    required_data = {'categoryUnits', "category"}
     if not len(required_data - set(data.keys())):
         category = data['category']
-        units = data['units']
+        units = data['categoryUnits']
 
         result = util_create_category(name=category, units=units)
         return result['message'], 201
@@ -79,14 +79,14 @@ def create_category():
 def edit_category():
     data = request.get_json()
 
-    required_data = {'targetCategory', "category", 'units'}
+    required_data = {'targetCategory', "category", 'categoryUnits'}
     if not len(required_data - set(data.keys())):
         category = Categories.query.filter_by(name=data['targetCategory']).all()
         if not len(category): return "Invalid category.", 406
         category = category[0]
 
         category.name = data['category']
-        category.units = data['units']
+        category.units = data['categoryUnits']
         db.session.add(category)
         db.session.commit()
 

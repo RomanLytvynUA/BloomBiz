@@ -301,7 +301,7 @@ onMounted(() => {
 }
 
 .btn-secondary:active {
-    color: black;
+    color: white;
     background-color: #DEE2E6;
     border-color: #DEE2E6;
 }

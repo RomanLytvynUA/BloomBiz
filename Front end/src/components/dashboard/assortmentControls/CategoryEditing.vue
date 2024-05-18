@@ -10,7 +10,7 @@
                     <form id="editCategoryForm">
                         <CategoriesInput ref="targetCategoryInput" :customOption="false"
                             @category-changed="(category) => editCategoryInput.customCategoryInput = category"
-                            @units-changed="(units) => editCategoryInput.units = units" />
+                            @units-changed="(units) => editCategoryInput.categoryUnits = units" />
                         <CategoriesInput ref="editCategoryInput" label="Змінена категорія: " :custom="true" />
                     </form>
                 </div>
@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import CategoriesInput from '../../form_elements/CategoriesInput.vue'
+import CategoriesInput from '../../form_elements/CategoriesInput.vue';
+import { useGoodsStore } from '../../../stores/goods';
 import { ref } from 'vue';
-// import { useSuppliersStore } from '@/stores/suppliers';
 
 const editCategoryInput = ref(null)
 const targetCategoryInput = ref(null)
@@ -55,9 +55,9 @@ function validateCategory() {
         });
 
         $(document.getElementById('editCategoryModal')).modal('hide');
-        // suppliersStore.addSupplier(json);
+        useGoodsStore().editCategory(json);
         form.reset();
-        console.log(json)
+        targetCategoryInput.value.reset();
     }
 }
 

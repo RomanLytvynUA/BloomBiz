@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { urlList } from '../config'
+import { useExpensesStore } from '@/stores/expenses'
+import { useOrdersStore } from '@/stores/orders'
 
 export const useGoodsStore = defineStore('goods', () => {
     const goodsData = ref([])
@@ -20,6 +22,51 @@ export const useGoodsStore = defineStore('goods', () => {
         }
     }
 
+    async function createCategory(categoryData) {
+        try {
+            await fetch(urlList.addCategory, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(categoryData),
+            })
+            fetchGoods()
+        } catch (error) {
+            console.error('Error creating category:', error)
+        }
+    }
+
+    async function editCategory(categoryData) {
+        try {
+            await fetch(urlList.editCategory, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(categoryData),
+            })
+            fetchGoods()
+            useOrdersStore().fetchOrders()
+            useExpensesStore().fetchExpenses()
+        } catch (error) {
+            console.error('Error editing category:', error)
+        }
+    }
+
+    async function delCategory(categoryId) {
+        try {
+            await fetch(`${urlList.delCategory}/${categoryId}`, {
+                method: 'DELETE',
+            })
+            fetchGoods()
+            useOrdersStore().fetchOrders()
+            useExpensesStore().fetchExpenses()
+        } catch (error) {
+            console.error('Error editing category:', error)
+        }
+    }
+
     async function createProduct(productData) {
         try {
             await fetch(urlList.addProduct, {
@@ -31,7 +78,7 @@ export const useGoodsStore = defineStore('goods', () => {
             })
             fetchGoods()
         } catch (error) {
-            console.error('Error crearing product:', error)
+            console.error('Error creating product:', error)
         }
     }
 
@@ -45,6 +92,8 @@ export const useGoodsStore = defineStore('goods', () => {
                 body: JSON.stringify(productData),
             })
             fetchGoods()
+            useOrdersStore().fetchOrders()
+            useExpensesStore().fetchExpenses()
         } catch (error) {
             console.error('Error editing product:', error)
         }
@@ -56,6 +105,8 @@ export const useGoodsStore = defineStore('goods', () => {
                 method: 'DELETE',
             })
             fetchGoods()
+            useOrdersStore().fetchOrders()
+            useExpensesStore().fetchExpenses()
         } catch (error) {
             console.error('Error editing product:', error)
         }
@@ -102,5 +153,8 @@ export const useGoodsStore = defineStore('goods', () => {
             console.error('Error editing product price:', error)
         }
     }
-    return { goodsData, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission, setProductPrice, createProduct, editProduct, delProduct }
+    return {
+        goodsData, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
+        setProductPrice, createProduct, editProduct, delProduct, createCategory, editCategory, delCategory,
+    }
 })

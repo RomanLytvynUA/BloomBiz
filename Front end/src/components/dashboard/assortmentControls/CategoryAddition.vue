@@ -22,8 +22,8 @@
 </template>
 
 <script setup>
-import CategoriesInput from '../../form_elements/CategoriesInput.vue'
-// import { useSuppliersStore } from '@/stores/suppliers';
+import CategoriesInput from '../../form_elements/CategoriesInput.vue';
+import { useGoodsStore } from '../../../stores/goods';
 
 function validateCategory() {
     let valid = true
@@ -48,9 +48,8 @@ function validateCategory() {
         });
 
         $(document.getElementById('addCategoryModal')).modal('hide');
-        // suppliersStore.addSupplier(json);
+        useGoodsStore().createCategory(json);
         form.reset();
-        console.log(json)
     }
 }
 

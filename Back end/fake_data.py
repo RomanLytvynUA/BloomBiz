@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import random
 from src import db, app
 from sqlalchemy import text
@@ -30,16 +31,14 @@ def add_goods():
     toys = Categories.query.filter_by(id=3).first()
 
     goods_data = [
-        # Id 1 - 50
+        # Id 1 - 20 (x20)
         {'category': flowers, 'name': 'Білі троянди'},
         {'category': flowers, 'name': 'Червоні троянди'},
         {'category': flowers, 'name': 'Рожеві троянди'},
         {'category': flowers, 'name': 'Фіолетові троянди'},
-        {'category': flowers, 'name': 'Великий кактус'},
         {'category': flowers, 'name': 'Кактус'},
         {'category': flowers, 'name': 'Гіпсофіла'},
         {'category': flowers, 'name': 'Бавовна'},
-        {'category': flowers, 'name': 'Пшениця'},
         {'category': flowers, 'name': 'Лілії'},
         {'category': flowers, 'name': 'Тюльпани'},
         {'category': flowers, 'name': 'Фіалки'},
@@ -47,74 +46,36 @@ def add_goods():
         {'category': flowers, 'name': 'Орхідеї'},
         {'category': flowers, 'name': 'Хризантеми'},
         {'category': flowers, 'name': 'Іриси'},
-        {'category': flowers, 'name': 'Соняшники'},
-        {'category': flowers, 'name': 'Гербери'},
         {'category': flowers, 'name': 'Півонії'},
         {'category': flowers, 'name': 'Маки'},
-        {'category': flowers, 'name': 'Волошки'},
         {'category': flowers, 'name': 'Ромашки'},
-        {'category': flowers, 'name': 'Магнолії'},
         {'category': flowers, 'name': 'Амаріліси'},
-        {'category': flowers, 'name': 'Гладіолуси'},
-        {'category': flowers, 'name': 'Камелії'},
-        {'category': flowers, 'name': 'Лілаки'},
         {'category': flowers, 'name': 'Нарциси'},
-        {'category': flowers, 'name': 'Астри'},
-        {'category': flowers, 'name': 'Клематиси'},
-        {'category': flowers, 'name': 'Флокси'},
         {'category': flowers, 'name': 'Гвоздики'},
-        {'category': flowers, 'name': 'Крокуси'},
-        {'category': flowers, 'name': 'Тюберози'},
-        {'category': flowers, 'name': 'Петунії'},
-        {'category': flowers, 'name': 'Шипшина'},
-        {'category': flowers, 'name': 'Шпориш'},
-        {'category': flowers, 'name': 'Конвалії'},
-        {'category': flowers, 'name': 'Папороть'},
-        {'category': flowers, 'name': 'Лютики'},
-        {'category': flowers, 'name': 'Мальви'},
-        {'category': flowers, 'name': 'Фламінго'},
-        {'category': flowers, 'name': 'Багатоцвіття'},
-        {'category': flowers, 'name': 'Ліловий лотос'},
-        {'category': flowers, 'name': 'Бамбуковий пагін'},
-        {'category': flowers, 'name': 'Азалії'},
-        {'category': flowers, 'name': 'Василеки'},
-        {'category': flowers, 'name': 'Листя акації'},
-        {'category': flowers, 'name': 'Черешневий цвіт'},
-        {'category': flowers, 'name': 'Кульбаби'},
 
-        # Id 51 - 65
-        {'category': packing, 'name': 'Фіолетова обгортка'},
-        {'category': packing, 'name': 'Синя смужка'},
-        {'category': packing, 'name': 'Червона смужка'},
+        # Id 21 - 31 (x10)
         {'category': packing, 'name': 'Біла обгортка'},
         {'category': packing, 'name': 'Прозора обгортка'},
         {'category': packing, 'name': 'Зелена обгортка'},
-        {'category': packing, 'name': 'Золотиста смужка'},
         {'category': packing, 'name': 'Срібна обгортка'},
-        {'category': packing, 'name': 'Рожева смужка'},
-        {'category': packing, 'name': 'Брунатна обгортка'},
-        {'category': packing, 'name': 'Жовта смужка'},
         {'category': packing, 'name': 'Чорна обгортка'},
+        {'category': packing, 'name': 'Рожева смужка'},
+        {'category': packing, 'name': 'Синя смужка'},
+        {'category': packing, 'name': 'Червона смужка'},
+        {'category': packing, 'name': 'Жовта смужка'},
         {'category': packing, 'name': 'Помаранчева смужка'},
-        {'category': packing, 'name': 'Світло-сіра обгортка'},
-        {'category': packing, 'name': 'Темно-сіра смужка'},
 
-        # Id 66 - 80
+        # Id 32 - 41 (х10)
         {'category': toys, 'name': 'Рожевий заєць'},
         {'category': toys, 'name': 'Маленький медвідь'},
         {'category': toys, 'name': 'Великий медвідь'},
-        {'category': toys, 'name': 'Медвідь з сердечком'},
         {'category': toys, 'name': 'Плюшовий кролик'},
         {'category': toys, 'name': 'Жираф-плюш'},
-        {'category': toys, 'name': 'М\'яч для гри'},
         {'category': toys, 'name': 'Дерев\'яна лялька'},
-        {'category': toys, 'name': 'Автомобіль-іграшка'},
-        {'category': toys, 'name': 'Пазли для дітей'},
+        {'category': toys, 'name': 'Машинка'},
         {'category': toys, 'name': 'М\'яка лисичка'},
         {'category': toys, 'name': 'Іграшковий вертоліт'},
-        {'category': toys, 'name': 'Кубики для будівництва'},
-        {'category': toys, 'name': 'Кольоровий коврик-гра'},
-        {'category': toys, 'name': 'М\'ячик для котика'},
+        {'category': toys, 'name': 'Кубики'},
     ]
 
     db.session.query(Goods).delete()
@@ -132,11 +93,9 @@ def add_suppliers():
         {'name': 'Антон', 'contactInfo': '+380 22 222 2222', 'additional': 'Не пунктуальний'},
         {'name': 'Іван', 'contactInfo': 'ivan@example.com', 'additional': 'Доставка по місту'},
         {'name': 'Марія', 'contactInfo': '+380 99 999 9999', 'additional': 'Розташовується на площі'},
-
         {'name': 'Василь', 'contactInfo': 'vasya@example.com', 'additional': 'Білий спрінтер'},
         {'name': 'Коля', 'contactInfo': 'kolya@example.com', 'additional': 'Грубіян'},
-
-        {'name': 'Олег', 'contactInfo': 'toysShop@example.com', 'additional': 'Велика, рожева фура'},
+        {'name': 'Олег', 'contactInfo': 'shop@example.com', 'additional': 'Велика, рожева фура'},
     ]
 
     db.session.query(Suppliers).delete()
@@ -150,50 +109,25 @@ def add_suppliers():
 
 
 def add_expenses():
-    supplier_1 = Suppliers.query.filter_by(id=1).first()
-    supplier_2 = Suppliers.query.filter_by(id=2).first()
-    supplier_3 = Suppliers.query.filter_by(id=3).first()
+    today = datetime.today()
+    # starting_date = (today.replace(day=1) - timedelta(days=1)).replace(day=1)
+    starting_date = today.replace(day=1, month=1)
 
-    supplier_4 = Suppliers.query.filter_by(id=4).first()
+    suppliers = Suppliers.query.all()
+    categories = Categories.query.all()
 
-    supplier_5 = Suppliers.query.filter_by(id=5).first()
+    expenses_data = []
 
-    flowers = Categories.query.filter_by(id=1).first()
-    packing = Categories.query.filter_by(id=2).first()
-    toys = Categories.query.filter_by(id=3).first()
-
-    expenses_data = [
-        {'date': "2024-04-01", 'supplier': supplier_1, 'category': flowers, 'total': 0},
-        {'date': "2024-04-01", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-04-02", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-04-03", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-04-03", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-04-03", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-04-06", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-04-08", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-04-10", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-04-12", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-04-16", 'supplier': supplier_1, 'category': flowers, 'total': 0},
-        {'date': "2024-04-17", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-04-18", 'supplier': supplier_3, 'category': flowers, 'total': 0},
-        {'date': "2024-04-19", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-04-19", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-04-20", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-04-24", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-04-24", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-04-25", 'supplier': supplier_3, 'category': flowers, 'total': 0},
-        {'date': "2024-04-27", 'supplier': supplier_1, 'category': flowers, 'total': 0},
-        {'date': "2024-04-28", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-04-29", 'supplier': supplier_1, 'category': flowers, 'total': 0},
-        {'date': "2024-05-01", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-05-02", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-05-03", 'supplier': supplier_4, 'category': packing, 'total': 0},
-        {'date': "2024-05-03", 'supplier': supplier_2, 'category': flowers, 'total': 0},
-        {'date': "2024-05-05", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-05-06", 'supplier': supplier_1, 'category': flowers, 'total': 0},
-        {'date': "2024-05-06", 'supplier': supplier_5, 'category': toys, 'total': 0},
-        {'date': "2024-05-07", 'supplier': supplier_4, 'category': packing, 'total': 0},
-    ]
+    current_day = starting_date
+    expense_probability = 60
+    while current_day <= today:
+        chance = random.randint(0, 100)
+        if chance <= expense_probability: 
+            expenses_data.append({
+                'date': current_day, 'supplier': random.choice(suppliers), 'category': random.choice(categories), 'total': 0
+            })
+        current_day += timedelta(days=1)
+    
 
     db.session.query(Expenses).delete()
     db.session.execute(text("ALTER SEQUENCE expenses_id_seq RESTART WITH 1"))
@@ -211,140 +145,31 @@ def add_expenses_elms():
     db.session.query(ExpensesElements).delete()
     db.session.execute(text("ALTER SEQUENCE expenses_elements_id_seq RESTART WITH 1"))
 
-    for expense in range(1, 11):
-        used_elements = []
-        expense_total = 0
+    for category in Categories.query.all():
+        available_goods = Goods.query.filter_by(category=category).all()
+        for expense in Expenses.query.filter_by(category=category).all():
+            used_elements = []
+            expense_total = 0
+            elements_quantity = range(1, 6)
 
-        for element in range(5, 15):
-            element_id = random.randint(1, 50)
-            if element_id not in used_elements:
-                quantity = random.randint(1, 15)
-                price = random.randint(10, 25)
-                expense_total += quantity * price
+            for element in elements_quantity:
+                element = random.randint(0, len(available_goods)-1)
+                if element not in used_elements:
+                    used_elements.append(element)
 
-                used_elements.append(element_id)
-                expenses_elms_data.append(
-                    {'expense': Expenses.query.filter_by(id=expense).first(),
-                     'product': Goods.query.filter_by(id=element_id).first(),
-                     'quantity': quantity,
-                     'price': price},
-                )
+                    quantity = random.randint(1, 13)
+                    price = random.randint(10, 25)
+                    expense_total += quantity * price
 
-        expense_object = Expenses.query.filter_by(id=expense).first()
-        expense_object.total = expense_total
-        db.session.add(expense_object)
-    for expense in range(21, 26):
-        used_elements = []
-        expense_total = 0
+                    expenses_elms_data.append(
+                        {'expense': expense,
+                        'product': available_goods[element],
+                        'quantity': quantity,
+                        'price': price},
+                    )
 
-        for element in range(5, 15):
-            element_id = random.randint(1, 50)
-            if element_id not in used_elements:
-                quantity = random.randint(1, 15)
-                price = random.randint(10, 25)
-                expense_total += quantity * price
-
-                used_elements.append(element_id)
-                expenses_elms_data.append(
-                    {'expense': Expenses.query.filter_by(id=expense).first(),
-                     'product': Goods.query.filter_by(id=element_id).first(),
-                     'quantity': quantity,
-                     'price': price},
-                )
-
-        expense_object = Expenses.query.filter_by(id=expense).first()
-        expense_object.total = expense_total
-        db.session.add(expense_object)
-
-    for expense in range(11, 16):
-        used_elements = []
-        expense_total = 0
-
-        for element in range(5, 8):
-            element_id = random.randint(51, 65)
-            if element_id not in used_elements:
-                quantity = random.randint(1, 7)
-                price = random.randint(10, 15)
-                expense_total += quantity * price
-
-                used_elements.append(element_id)
-                expenses_elms_data.append(
-                    {'expense': Expenses.query.filter_by(id=expense).first(),
-                     'product': Goods.query.filter_by(id=element_id).first(),
-                     'quantity': quantity,
-                     'price': price},
-                )
-
-        expense_object = Expenses.query.filter_by(id=expense).first()
-        expense_object.total = expense_total
-        db.session.add(expense_object)
-    for expense in range(26, 29):
-        used_elements = []
-        expense_total = 0
-
-        for element in range(5, 8):
-            element_id = random.randint(51, 65)
-            if element_id not in used_elements:
-                quantity = random.randint(1, 7)
-                price = random.randint(10, 15)
-                expense_total += quantity * price
-
-                used_elements.append(element_id)
-                expenses_elms_data.append(
-                    {'expense': Expenses.query.filter_by(id=expense).first(),
-                     'product': Goods.query.filter_by(id=element_id).first(),
-                     'quantity': quantity,
-                     'price': price},
-                )
-
-        expense_object = Expenses.query.filter_by(id=expense).first()
-        expense_object.total = expense_total
-        db.session.add(expense_object)
-
-    for expense in range(16, 21):
-        used_elements = []
-        expense_total = 0
-
-        for element in range(3, 6):
-            element_id = random.randint(66, 80)
-            if element_id not in used_elements:
-                quantity = random.randint(1, 8)
-                price = random.randint(10, 16)
-                expense_total += quantity * price
-
-                used_elements.append(element_id)
-                expenses_elms_data.append(
-                    {'expense': Expenses.query.filter_by(id=expense).first(),
-                     'product': Goods.query.filter_by(id=element_id).first(),
-                     'quantity': quantity,
-                     'price': price},
-                )
-
-        expense_object = Expenses.query.filter_by(id=expense).first()
-        expense_object.total = expense_total
-        db.session.add(expense_object)
-    for expense in range(29, 31):
-        used_elements = []
-        expense_total = 0
-
-        for element in range(3, 6):
-            element_id = random.randint(66, 80)
-            if element_id not in used_elements:
-                quantity = random.randint(1, 8)
-                price = random.randint(10, 16)
-                expense_total += quantity * price
-
-                used_elements.append(element_id)
-                expenses_elms_data.append(
-                    {'expense': Expenses.query.filter_by(id=expense).first(),
-                     'product': Goods.query.filter_by(id=element_id).first(),
-                     'quantity': quantity,
-                     'price': price},
-                )
-
-        expense_object = Expenses.query.filter_by(id=expense).first()
-        expense_object.total = expense_total
-        db.session.add(expense_object)
+            expense.total = expense_total
+            db.session.add(expense)
     db.session.commit()
 
     for data in expenses_elms_data:
@@ -355,21 +180,22 @@ def add_expenses_elms():
 
 
 def add_orders():
-    orders_data = [
-        # Id 1-10
-        {'date': '2024-04-01', 'status': 'Продано', 'price': 0, 'discount': 0},
-        {'date': '2024-04-03', 'status': 'Продано', 'price': 0, 'discount': 0},
-        {'date': '2024-04-06', 'status': 'Продано', 'price': 0, 'discount': 0},
+    today = datetime.today()
+    # starting_date = (today.replace(day=1) - timedelta(days=1)).replace(day=1)
+    starting_date = today.replace(day=1, month=1)
 
-        {'date': '2024-05-12', 'status': 'Списано', 'price': 0, 'discount': 0},
-        {'date': '2024-05-11', 'status': 'Продано', 'price': 0, 'discount': 0},
-        {'date': '2024-05-14', 'status': 'Списано', 'price': 0, 'discount': 0},
-        {'date': '2024-05-15', 'status': 'Списано', 'price': 0, 'discount': 0},
-        {'date': '2024-05-19', 'status': 'Продано', 'price': 0, 'discount': 0},
+    statuses = ["Продано", "Списано", "Вітрина"]
+    orders_data = []
 
-        {'date': '2024-05-20', 'status': 'Продано', 'price': 0, 'discount': 0},
-        {'date': '2024-05-21', 'status': 'Списано', 'price': 0, 'discount': 0},
-    ]
+    current_day = starting_date
+    order_probability = 60
+    while current_day <= today:
+        chance = random.randint(0, 100)
+        if chance <= order_probability: 
+            orders_data.append({
+                'date': current_day, 'status': random.choices(statuses, weights=(75, 20, 5), k=1)[0], 'price': 0, 'discount': 0
+            })
+        current_day += timedelta(days=1)
 
     db.session.query(Orders).delete()
     db.session.execute(text("ALTER SEQUENCE orders_id_seq RESTART WITH 1"))
@@ -388,39 +214,45 @@ def add_orders_elements():
     db.session.execute(text("ALTER SEQUENCE orders_elements_id_seq RESTART WITH 1"))
 
     for order in Orders.query.all():
-        total = 0
-        flowers = ExpensesElements.query.filter_by(expense=Expenses.query.filter_by(id=order.id).first()).all()
-        existing_flowers = []
-        for flower in flowers:
-            if flower.id not in existing_flowers:
-                new_order_element = OrdersElements(order=order, product=flower.product, quantity=flower.quantity,
-                                                   price=flower.price * 2.20)
-                db.session.add(new_order_element)
-                existing_flowers.append(flower.id)
-                total += flower.quantity * flower.price * 2.20
-        if order.id % 2 == 0:
-            packing_elements = ExpensesElements.query.filter_by(expense=Expenses.query.filter_by(id=10 + order.id // 2).first()).all()
-            existing_packing = []
-            for packing in packing_elements:
-                if packing.id not in existing_packing:
-                    new_order_element = OrdersElements(order=order, product=packing.product, quantity=packing.quantity,
-                                                       price=packing.price * 2.20)
-                    db.session.add(new_order_element)
-                    existing_packing.append(packing.id)
-                    total += packing.quantity * packing.price * 2.20
-        else:
-            toys = ExpensesElements.query.filter_by(expense=Expenses.query.filter_by(id=16 + order.id).first()).all()
-            existing_toys = []
-            for toy in toys:
-                if toy.id not in existing_toys:
-                    new_order_element = OrdersElements(order=order, product=toy.product, quantity=toy.quantity,
-                                                       price=toy.price * 2.20)
-                    db.session.add(new_order_element)
-                    existing_toys.append(toy.id)
-                    total += toy.quantity * toy.price * 2.20
+        categories = Categories.query.all()
+        order_categories = random.sample(categories, random.randint(1, len(categories)))
+        used_elements = []
+        elements_limit = 5 # Need to set max quantity of elements so that not all products are used for oldest orders
+        price = 0
+        
+        for category in order_categories:
+            available_goods = ExpensesElements.query.join(ExpensesElements.product).filter(Goods.category == category).all()
+            elements_quantity = range(3, 5)
 
-        order.price = round(total)
-        db.session.commit()
+            if len(used_elements) >= elements_limit: break
+            if len(available_goods) == 0: continue
+
+            for element in elements_quantity:
+                element = available_goods[random.randint(0, len(available_goods)-1)]
+                if element.product not in used_elements:
+                    instock_quantity = (
+                        sum(elem.quantity for elem in available_goods if elem.product == element.product) - 
+                        sum(elem['quantity'] for elem in order_elements if elem['product'] == element.product)
+                    )
+                    if instock_quantity == 0: continue
+                    used_elements.append(element.product)
+
+                    quantity = random.randint(1, min(instock_quantity, 10))
+                    element_price = random.randint(10, 25) * 2.20
+                    price += quantity * element_price 
+
+                    order_elements.append({
+                        'order': order,
+                        'product': element.product,
+                        'quantity': quantity,
+                        'price': element_price,
+                    })
+        if len(used_elements) == 0: 
+            db.session.delete(order)
+            db.session.commit()
+        else:
+            order.price = round(price)
+            db.session.add(order)
 
     for data in order_elements:
         order_element = OrdersElements(**data)

@@ -72,24 +72,6 @@ def test_util_edit_supplier(app_client):
     assert queried_supplier == edited_supplier
 
 
-def test_util_edit_supplier(app_client):
-    """
-    GIVEN supplier instance
-    WHEN calling edit supplier util with an id of an exicting supplier
-    THEN supplier instance is properly edited;
-         edited supplier is returned.
-    """
-    clear_db()
-    supplier_id = add_testing_suppliers()[0]['id']
-    edited_supplier = util_edit_supplier(supplier_id, '1', '2', '3')['supplier']
-    queried_supplier = Suppliers.query.filter_by(id=supplier_id).first()
-
-    assert queried_supplier.name == "1"
-    assert queried_supplier.contactInfo == "2"
-    assert queried_supplier.additional == "3"
-    assert queried_supplier == edited_supplier
-
-
 def test_util_edit_supplier_invalid_id(app_client):
     """
     GIVEN supplier instance

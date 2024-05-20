@@ -151,7 +151,7 @@ def create_decommission():
 
         if "decommission" in result.keys():
             return result['message'], 200
-        return result['message'], 424
+        return result['message'], 406
     return "Missing required data.", 406
 
 

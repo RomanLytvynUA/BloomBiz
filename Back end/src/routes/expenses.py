@@ -87,4 +87,4 @@ def delete_expense(expense_id):
         db.session.commit()
 
         return "Expense deleted successfully.", 200
-    return "Failed to fetch the expense with given id.", 400
+    return "Failed to fetch the expense with given id.", 406

@@ -3,7 +3,7 @@
   "info": {
     "title": "BlomBiz BE 1.0",
     "version": "1.0.0",
-    "description": "\nThis is an overview of the BloomBiz BE functionality. It prodives different endpoints for managing flower shop db.\n\nCurrent features:\n- Get goods.\n- Get in stock goods.\n- Create\\edit\\delete\\get orders.\n- Create\\edit\\delete\\get suppliers.\n- Create\\edit\\delete\\get expenses.\n- Create\\delete\\get decommissions."
+    "description": "\nThis is an overview of the BloomBiz BE functionality. It prodives different endpoints for managing flower shop db.\n\nCurrent features:\n- Create\\edit\\delete\\get goods.\n- Get in stock goods.\n- Create\\edit\\delete\\get orders.\n- Create\\edit\\delete\\get suppliers.\n- Create\\edit\\delete\\get expenses.\n- Create\\delete\\get decommissions."
   },
   "servers": [
     {
@@ -29,6 +29,20 @@
     }
   ],
   "paths": {
+    "/goods/get_instock": {
+      "get": {
+        "summary": "Get all instock goods",
+        "description": "Provides json containing all goods with their in-stock quantity (expenses-orders-decommission=result).",
+        "responses": {
+          "200": {
+            "description": "Collected and returned data successfully"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
     "/goods/get": {
       "get": {
         "summary": "Get all goods",
@@ -43,13 +57,246 @@
         ]
       }
     },
-    "/goods/get_instock": {
-      "get": {
-        "summary": "Get all instock goods",
-        "description": "Provides json containing all goods present in stock (expenses-orders-decommission=result).",
+    "/goods/create_category": {
+      "post": {
+        "summary": "Create a new category",
+        "description": "Adds a new category.",
+        "requestBody": {
+          "description": "Json containing proper data is required.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": "category"
+                  },
+                  "categoryUnits": {
+                    "type": "string",
+                    "example": "units"
+                  }
+                },
+                "required": [
+                  "category",
+                  "categoryUnits"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Collected and returned data successfully"
+            "description": "Created new category successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/edit_category": {
+      "put": {
+        "summary": "Edit an exicting category",
+        "description": "Edits an existing category.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that targetCategory must be a name of an existing category.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetCategory": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "Old Name"
+                  },
+                  "category": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "New Name"
+                  },
+                  "categoryUnits": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "New Units"
+                  }
+                },
+                "required": [
+                  "category",
+                  "targetCategory",
+                  "categoryUnits"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edited the category successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          },
+          "406 (2)": {
+            "description": "Invalid category"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/delete_category/{category_id}": {
+      "delete": {
+        "summary": "Delete an excisting category",
+        "description": "Deletes an existing category.",
+        "parameters": [
+          {
+            "name": "category_id",
+            "in": "path",
+            "description": "ID of the category that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted successfully"
+          },
+          "406": {
+            "description": "Failed to fetch the category with given id"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/create_product": {
+      "post": {
+        "summary": "Create a new product",
+        "description": "Adds a new product.",
+        "requestBody": {
+          "description": "Json containing proper data is required. Please note that category must be a name of existing Category instance.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": "category"
+                  },
+                  "product": {
+                    "type": "string",
+                    "example": "product"
+                  }
+                },
+                "required": [
+                  "category",
+                  "product"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created new product successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          },
+          "406 (2)": {
+            "description": "Failed to fetch provided category"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/edit_product": {
+      "put": {
+        "summary": "Edit an exicting product",
+        "description": "Edits an existing product.",
+        "requestBody": {
+          "description": "Json containing proper data is required. An id of existing product is needed.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "New Name"
+                  }
+                },
+                "required": [
+                  "expense_id",
+                  "date",
+                  "total",
+                  "supplier",
+                  "elements"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edited the product successfully"
+          },
+          "406": {
+            "description": "Missing required data"
+          },
+          "406 (2)": {
+            "description": "Failed to fetch product with given id"
+          }
+        },
+        "tags": [
+          "goods"
+        ]
+      }
+    },
+    "/goods/delete_product/{product_id}": {
+      "delete": {
+        "summary": "Delete an excisting product",
+        "description": "Deletes an existing product.",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "description": "ID of the product that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully"
+          },
+          "406": {
+            "description": "Failed to fetch the product with given id"
           }
         },
         "tags": [
@@ -118,7 +365,7 @@
           "406": {
             "description": "Missing required data"
           },
-          "424": {
+          "406 (2)": {
             "description": "Failed to fetch provided category"
           }
         },
@@ -260,7 +507,7 @@
         "summary": "Edit an exicting expense",
         "description": "Edits an existing expense and it's elementes.",
         "requestBody": {
-          "description": "Json containing proper data is required. Please note that category, supplier and product must be names of Goods, Suppliers instances. An id of existing expense is also needed.",
+          "description": "Json containing proper data is required. Please note that supplier and product must be names of Goods, Suppliers instances. An id of existing expense is also needed.",
           "required": true,
           "content": {
             "application/json": {
@@ -356,7 +603,7 @@
           "200": {
             "description": "Expense deleted successfully"
           },
-          "400": {
+          "406": {
             "description": "Failed to fetch the expense with given id"
           }
         },
@@ -466,7 +713,7 @@
         "summary": "Edit an exicting order",
         "description": "Edits an existing order and it's elementes.",
         "requestBody": {
-          "description": "Json containing proper data is required. Please note that category, supplier and product must be names of Goods, Suppliers instances. An id of existing order is also needed.",
+          "description": "Json containing proper data is required. Please note that supplier and product must be names of Goods, Suppliers instances. An id of existing order is also needed.",
           "required": true,
           "content": {
             "application/json": {
@@ -569,7 +816,7 @@
             "description": "Order deleted successfully"
           },
           "400": {
-            "description": "Failed to fetch the expense with given id"
+            "description": "Failed to fetch the order with given id"
           }
         },
         "tags": [

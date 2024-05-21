@@ -1,6 +1,4 @@
 import os
 
-user = os.getenv("FLASK_USER")
-password = os.getenv("FLASK_PASSWORD")
-SQLALCHEMY_DATABASE_URI = f'postgresql://{user}:{password}@localhost/BloomBiz DB'
+SQLALCHEMY_DATABASE_URI = os.getenv("BB_DB_URI")
 DEBUG = True

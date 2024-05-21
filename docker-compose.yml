@@ -1,0 +1,32 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: "BloomBiz"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./back end
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      BB_DB_URI: postgresql://myuser:mypassword@db:5432/BloomBiz
+
+  frontend:
+    build: ./front end
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

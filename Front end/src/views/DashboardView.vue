@@ -4,41 +4,40 @@
     <br>
     <div class="container">
       <div class="row">
-        <div class="col-md-3 d-none d-md-block">
-          <div class="card">
+        <div class="col-12 col-md-3 order-0 order-md-0">
+          <div class="card mb-3">
             <div class="card-body">
-              <nav class="nav flex-column nav-pills nav-gap-y-1">
-                <a href="#statistic" class="nav-item nav-link has-icon nav-link-faded"
+              <nav class="nav flex-column nav-pills nav-gap-y-1" style="max-width: 250px; overflow-y: auto;">
+                <a href="#statistic" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('statistic') }">
-                  <svg class="bi" width="24" height="24" fill="currentColor">
+                  <svg class="bi me-2" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-chart`"></use>
                   </svg>
                   Статистика
                 </a>
-                <a href="#assortment" class="nav-item nav-link has-icon nav-link-faded"
+                <a href="#assortment" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('assortment') }">
-                  <svg class="bi" width="24" height="24" fill="currentColor">
+                  <svg class="bi me-2" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-shop`"></use>
                   </svg>
                   Асортимент
                 </a>
-                <!-- <a href="#crm" class="nav-item nav-link has-icon nav-link-faded"
-                  :class="{ 'active': isActiveLink('crm') }">
-                  <svg class="bi" width="24" height="24" fill="currentColor">
-                    <use :xlink:href="`${icons}#icon-person`"></use>
-                  </svg>
-                  Клієнти
-                </a> -->
-                <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded"
+                <!-- <a href="#crm" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center" :class="{ 'active': isActiveLink('crm') }">
+          <svg class="bi me-2" width="24" height="24" fill="currentColor">
+            <use :xlink:href="`${icons}#icon-person`"></use>
+          </svg>
+          Клієнти
+        </a> -->
+                <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('calendar') }">
-                  <svg class="bi" width="24" height="24" fill="currentColor">
+                  <svg class="bi me-2" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-calendar`"></use>
                   </svg>
                   Календар
                 </a>
-                <a href="#settings" class="nav-item nav-link has-icon nav-link-faded"
+                <a href="#settings" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('settings') }">
-                  <svg class="bi" width="24" height="24" fill="currentColor">
+                  <svg class="bi me-2" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-gear`"></use>
                   </svg>
                   Налаштування
@@ -47,7 +46,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-9">
+
+        <!-- Main content: occupies full width on small screens and 75% on medium and larger screens -->
+        <div class="col-12 col-md-9 order-1 order-md-1">
           <div class="card">
             <div class="card-body">
               <Statistics v-if="isActiveLink('statistic')" />
@@ -57,6 +58,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 

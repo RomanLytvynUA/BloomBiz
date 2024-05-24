@@ -36,11 +36,16 @@
                                 </div>
                                 <ul class="list-group list-group-flush text-center">
                                     <li class="list-group-item">
-                                        <ActionButtons editModalId="#editProductModal" delModalId="#delProductModal"
-                                            :data-name="product.product" :data-product-id="product.id" />
+                                        <div style="overflow: auto;">
+                                            <ActionButtons editModalId="#editProductModal" delModalId="#delProductModal"
+                                                :data-name="product.product" :data-product-id="product.id"
+                                                style="display: flex; justify-content: center;" />
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
+
+
                         </div>
                     </div>
                 </div>

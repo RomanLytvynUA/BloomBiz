@@ -19,6 +19,7 @@ def edit_settings():
 
     return "Edited settings successfully.", 200
 
+
 @settings.route('/reset', methods=['POST'])
 def reset_settings():
     util_reset_settings()

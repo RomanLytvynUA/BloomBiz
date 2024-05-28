@@ -124,6 +124,14 @@ def edit_goods_price():
     return "Missing required data.", 406
 
 
+@goods.route('/reset_prices', methods=['GET'])
+def reset_goods_prices():
+    Goods.query.update({Goods.price: None})
+    db.session.commit()
+    
+    return "Reset prices successfuly.", 200
+
+
 @goods.route('/get_instock', methods=['GET'])
 def get_instock():
     data = util_calc_instock()

@@ -8,8 +8,8 @@ export const useGoodsStore = defineStore('goods', () => {
     const goodsData = ref([])
     const inStockGoodsData = ref([])
     const minGoodsData = computed(() => goodsData.value.flatMap(category => category.goods))
+    const goodsNames = computed(() => minGoodsData.value.flatMap(product => product.name))
     const categoriesNames = computed(() => goodsData.value.map(category => category.name));
-
     async function fetchGoods() {
         try {
             const response = await fetch(urlList.getGoods)
@@ -154,7 +154,7 @@ export const useGoodsStore = defineStore('goods', () => {
         }
     }
     return {
-        goodsData, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
+        goodsData, goodsNames, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
         setProductPrice, createProduct, editProduct, delProduct, createCategory, editCategory, delCategory,
     }
 })

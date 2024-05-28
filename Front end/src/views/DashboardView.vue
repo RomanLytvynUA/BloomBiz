@@ -22,19 +22,20 @@
                   </svg>
                   Асортимент
                 </a>
-                <!-- <a href="#crm" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center" :class="{ 'active': isActiveLink('crm') }">
-          <svg class="bi me-2" width="24" height="24" fill="currentColor">
-            <use :xlink:href="`${icons}#icon-person`"></use>
-          </svg>
-          Клієнти
-        </a> -->
-                <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
+                <!-- <a href="#crm" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
+                  :class="{ 'active': isActiveLink('crm') }">
+                  <svg class="bi me-2" width="24" height="24" fill="currentColor">
+                    <use :xlink:href="`${icons}#icon-person`"></use>
+                  </svg>
+                  Клієнти
+                </a> -->
+                <!-- <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('calendar') }">
                   <svg class="bi me-2" width="24" height="24" fill="currentColor">
                     <use :xlink:href="`${icons}#icon-calendar`"></use>
                   </svg>
                   Календар
-                </a>
+                </a> -->
                 <a href="#settings" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('settings') }">
                   <svg class="bi me-2" width="24" height="24" fill="currentColor">
@@ -53,12 +54,13 @@
             <div class="card-body">
               <Statistics v-if="isActiveLink('statistic')" />
               <Assortment v-if="isActiveLink('assortment')" />
+              <Settings v-if="isActiveLink('settings')" />
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    <br>
   </div>
 </template>
 
@@ -68,8 +70,10 @@ import { useRouter } from 'vue-router';
 import icons from '@/icons.svg'
 
 import Headline from '../components/Headline.vue'
+
 import Statistics from '../components/dashboard/Statistics.vue'
 import Assortment from '../components/dashboard/Assortment.vue'
+import Settings from '../components/dashboard/Settings.vue'
 
 const router = useRouter();
 

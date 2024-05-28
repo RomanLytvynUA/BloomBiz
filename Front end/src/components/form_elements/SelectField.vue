@@ -1,27 +1,30 @@
 <template>
     <label v-if="label" class="form-label">{{ label }}</label>
     <div :class="divClasses">
-        <select v-if="!customOption" :name="name" v-model="select" class="form-select">
-            <option v-if="preselectedValue && !options.includes(preselectedValue)" :value="preselectedValue">{{ preselectedValue }}</option>
-            <option v-if="customOptionValue" :value="customOptionValue" style="background-color: green;">{{ customOptionValue }}</option>
-            <option v-for="option in options" :value="option.value ? option.value : option">{{ option.name ? option.name : option }}</option>
+        <select ref="selectElement" v-if="!customOption" :name="name" v-model="select" class="form-select">
+            <option v-if="preselectedValue && !options.includes(preselectedValue)" :value="preselectedValue">{{
+        preselectedValue }}</option>
+            <option v-if="customOptionValue" :value="customOptionValue" style="background-color: green;">{{
+        customOptionValue }}</option>
+            <option v-for="option in options" :value="option.value ? option.value : option">{{ option.name ? option.name
+        : option }}</option>
         </select>
-        <input v-if="customOption" v-model="customInput" class="form-control" :name="name" >
+        <input v-if="customOption" v-model="customInput" class="form-control" :name="name">
     </div>
 </template>
 
 <script>
 export default {
     props: {
-        label: String,    
-        name: String,    
-        options: Array,    
+        label: String,
+        name: String,
+        options: Array,
         customOptionValue: String,
-        preselectedValue: {},   
+        preselectedValue: {},
         divClasses: {
             type: String,
             default: "mb-3"
-        },    
+        },
     },
     emits: ['valueSelected'],
     data() {
@@ -40,7 +43,7 @@ export default {
     },
     watch: {
         select() {
-            if(this.select === this.customOptionValue) {
+            if (this.select === this.customOptionValue) {
                 this.customOption = true
             } else {
                 this.$emit('valueSelected', this.select)

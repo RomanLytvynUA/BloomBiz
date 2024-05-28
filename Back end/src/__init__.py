@@ -11,10 +11,12 @@ from .routes.goods import goods
 from .routes.expenses import expenses
 from .routes.suppliers import suppliers
 from .routes.orders import orders
+from .routes.settings import settings
 from .routes.swagger import swaggerui_blueprint
 
 app.register_blueprint(goods, url_prefix="/goods")
 app.register_blueprint(expenses, url_prefix="/expenses")
 app.register_blueprint(suppliers, url_prefix="/suppliers")
 app.register_blueprint(orders, url_prefix="/orders")
+app.register_blueprint(settings, url_prefix="/settings")
 app.register_blueprint(swaggerui_blueprint)

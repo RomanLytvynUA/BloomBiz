@@ -124,7 +124,7 @@ def edit_goods_price():
     return "Missing required data.", 406
 
 
-@goods.route('/reset_prices', methods=['GET'])
+@goods.route('/reset_prices', methods=['POST'])
 def reset_goods_prices():
     Goods.query.update({Goods.price: None})
     db.session.commit()

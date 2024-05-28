@@ -52,8 +52,13 @@ def util_set_settings(name, value):
                 new_option = Settings(name=name, value=option)
                 db.session.add(new_option)
         else:
-            new_option = Settings(name=name, value=value)
-            db.session.add(new_option)
+            option = Settings.query.filter_by(name=name).all()
+            if not len(option):
+                new_option = Settings(name=name, value=value)
+                db.session.add(new_option)
+            else:    
+                option[0].value = value
+                db.session.add(option[0])
         db.session.commit()
 
         return {'message': 'Added setting successfuly.'}

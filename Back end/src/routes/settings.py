@@ -10,7 +10,7 @@ def get_settings():
     return jsonify(util_generate_settings_dict())
 
 
-@settings.route('/edit', methods=['POST'])
+@settings.route('/edit', methods=['PUT'])
 def edit_settings():
     data = request.get_json()
 

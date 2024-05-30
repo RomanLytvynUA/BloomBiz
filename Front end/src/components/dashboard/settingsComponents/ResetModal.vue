@@ -12,12 +12,9 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
                     <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
-                        @click.prevent="">Скинути</button>
+                        @click.prevent="$emit('reset')">Скинути</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<script setup>
-</script>

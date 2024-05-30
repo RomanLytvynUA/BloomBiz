@@ -12,7 +12,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" @click.prevent="">Скинути</button>
+                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
+                        @click.prevent="useGoodsStore().resetProductPrices()">Скинути</button>
                 </div>
             </div>
         </div>
@@ -20,4 +21,5 @@
 </template>
 
 <script setup>
+import { useGoodsStore } from '../../../stores/goods';
 </script>

@@ -153,8 +153,24 @@ export const useGoodsStore = defineStore('goods', () => {
             console.error('Error editing product price:', error)
         }
     }
+
+    async function resetProductPrices() {
+        try {
+            const response = await fetch(urlList.resetProductPrices, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+
+            fetchInStockGoods()
+        } catch (error) {
+            console.error('Error editing product price:', error)
+        }
+    }
+
     return {
         goodsData, goodsNames, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
-        setProductPrice, createProduct, editProduct, delProduct, createCategory, editCategory, delCategory,
+        setProductPrice, createProduct, editProduct, delProduct, createCategory, editCategory, delCategory, resetProductPrices,
     }
 })

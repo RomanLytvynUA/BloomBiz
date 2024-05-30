@@ -37,8 +37,8 @@ const props = defineProps({
 })
 const emit = defineEmits(['optionChanged'])
 
-const switchInput = ref(false);
-const intInput = ref(false);
+const switchInput = ref(props.value);
+const intInput = ref(props.value);
 
 watch(() => props.value, intInput.value = props.value)
 watch(switchInput, (newVal) => {
@@ -48,6 +48,7 @@ watch(switchInput, (newVal) => {
 watch(intInput, (newVal) => {
     emit('optionChanged', newVal);
 })
+defineExpose({ switchInput, intInput })
 </script>
 <style scoped>
 .form-check-input {

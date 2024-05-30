@@ -9,7 +9,7 @@
                 <div class="modal-body">
                     <form id="editOrderForm">
                         <InputField ref="dateInput" label="Дата:" type="date" name="date" :value="orderDate" />
-                        <SelectField ref="statusInput" label="Статус:" name="status" :options="orderStatuses"
+                        <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
                             :preselectedValue="orderData ? orderData.status : null" />
                     </form>
 
@@ -42,14 +42,13 @@
 
 <script setup>
 import { computed, ref, onMounted, watch, watchEffect } from 'vue';
-import { orderStatuses } from '../../config';
-
 import { useOrdersStore } from '@/stores/orders';
 
 import ElementsList from './ElementsList.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
 
+const props = defineProps(['statuses'])
 const orderId = ref(null)
 const orderData = computed(() => {
     const data = orderId ? useOrdersStore().ordersData.find((order) => order.id == orderId.value) : {}

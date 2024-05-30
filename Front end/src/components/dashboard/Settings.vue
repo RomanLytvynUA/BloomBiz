@@ -8,7 +8,7 @@
         @click="useSettingsStore().editSettings(changes); changes = {}">Зберегти</button>
       <button type="button" data-bs-toggle="modal" data-bs-target="#resetModal" class="btn btn-danger">Скинути</button>
     </div>
-    <h6>Загальне</h6>
+    <!-- <h6>Загальне</h6>
     <div class="row g-2 align-items-center">
       <div class="col-md-5 col-12 mb-3 mb-md-0 me-5" style="margin-top: 0px;">
         <label for="nameInput" class="col-form-label">Назва</label>
@@ -21,7 +21,7 @@
           <button class="btn btn-primary" type="button">Змінити</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <h6>Замовлення</h6>
     <SettingsOption ref="ordersSafetyMode" type="switch" title="Режим безпеки"
@@ -61,8 +61,8 @@
       value="Скинути" />
 
     <h6>Постачальники</h6>
-    <SettingsOption ref="suppliersSafetyMode" :value="settingsData.suppliersSafetyMode" type="switch"
-      title="Режим безпеки" info='Функція видалення постачальників не буде доступна поки це налаштування активне.'
+    <SettingsOption ref="suppliersSafetyMode" type="switch" title="Режим безпеки"
+      info='Функція видалення постачальників не буде доступна поки це налаштування активне.'
       @optionChanged="(value) => changes.suppliersSafetyMode = value" />
   </div>
 

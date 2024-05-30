@@ -9,9 +9,12 @@
                 <div class="modal-body">
                     <form id="newExpenseForm">
                         <InputField ref=dateInput label="Дата:" type="date" name="date" :value="todaysDate" />
-                        <CategoriesInput ref="categoryInput" @categoryChanged="(newValue) => selectedCategoryField = newValue" />
-                        <SelectField ref="supplierInput" label="Постачальник: " name="supplier" :options="suppliersData" customOptionValue="+ Додати нового" />
-                        
+                        <CategoriesInput ref="categoryInput"
+                            @categoryChanged="(newValue) => selectedCategoryField = newValue" />
+                        <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
+                            :options="suppliersData.filter((supplier) => !suppliersToIgnore.includes(supplier))"
+                            customOptionValue="+ Додати нового" />
+
                     </form>
                     <form id="expenseElementsForm">
                         <ElementsTable ref="elements" :rows="[]" :category="selectedCategoryField" />
@@ -25,12 +28,13 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
 
 import { useExpensesStore } from '@/stores/expenses';
 import { useSuppliersStore } from '@/stores/suppliers';
+import { useSettingsStore } from '@/stores/settings';
 
 import InputField from '../form_elements/InputField.vue'
 import CategoriesInput from '../form_elements/CategoriesInput.vue'
@@ -39,6 +43,7 @@ import ElementsTable from './ElementsTable.vue'
 
 const todaysDate = new Date().toISOString().split('T')[0];
 const suppliersData = computed(() => useSuppliersStore().suppliersNames)
+const suppliersToIgnore = computed(() => useSettingsStore().settingsData.expensesSuppliersToIgnore)
 
 const selectedCategoryField = ref(null);
 
@@ -72,7 +77,7 @@ function validateExpense() {
         supplierData.forEach((value, key) => {
             json[key] = value;
         });
-        
+
         $(modalElement).modal('hide');
         useExpensesStore().addExpense(json);
 

@@ -8,8 +8,8 @@
   <TableComponent ref="tableComponent" @filterChanged="filterOrders" :filters="tableFilters" :headers="tableHeaders"
     :rows="tableRows" />
 
-  <AdditionModal />
-  <EditingModal />
+  <AdditionModal :statuses="ordersStatuses" />
+  <EditingModal :statuses="ordersStatuses" />
   <DeletionModal />
 
 </template>
@@ -18,7 +18,7 @@
 import { ref, computed, markRaw, watch, onMounted } from 'vue'
 import { useOrdersStore } from '../stores/orders';
 import { useGoodsStore } from '../stores/goods';
-import { orderStatuses } from '../config';
+import { useSettingsStore } from '../stores/settings';
 
 import Headline from '../components/Headline.vue'
 
@@ -37,6 +37,8 @@ const ordersStorage = useOrdersStore();
 // get and filter the expenses
 const ordersData = computed(() => ordersStorage.ordersData)
 const filteredOrders = ref([])
+const safetyMode = computed(() => useSettingsStore().settingsData.ordersSafetyMode === "true" ? true : false);
+const ordersStatuses = computed(() => useSettingsStore().settingsData.ordersStatuses);
 
 function filterOrders() {
   if (tableComponent.value) {
@@ -56,7 +58,7 @@ const tableComponent = ref(null);
 
 const tableFilters = ref([
   { component: markRaw(DateFilter), reference: 'dateFilterComponent' },
-  { component: markRaw(SelectFilter), reference: 'statusFilterComponent', props: { options: orderStatuses } },
+  { component: markRaw(SelectFilter), reference: 'statusFilterComponent', props: { options: ordersStatuses } },
 ])
 
 const tableHeaders = ref([
@@ -87,6 +89,7 @@ const tableRows = computed(() => filteredOrders.value.map(order => [
       delText: "Розібрати",
       editModalId: "#editOrderModal",
       'data-order-id': order.id,
+      delDisabled: safetyMode.value,
     },
   }
 ]));

@@ -1,11 +1,13 @@
 <template>
-  <Headline title="Витрати" description="Тут ви можете зареєструвати та переглянути свої витрати. При додаванні постачання, нові товари будуть додані до вашого складу." />
+  <Headline title="Витрати"
+    description="Тут ви можете зареєструвати та переглянути свої витрати. При додаванні постачання, нові товари будуть додані до вашого складу." />
   <div class="text-center">
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">Додати</button> <br>
   </div>
   <br>
 
-  <TableComponent ref="tableComponent" @filterChanged="filterExpenses" :filters="tableFilters" :headers="tableHeaders" :rows="tableRows" />
+  <TableComponent ref="tableComponent" @filterChanged="filterExpenses" :filters="tableFilters" :headers="tableHeaders"
+    :rows="tableRows" />
 
   <AdditionModal />
   <EditingModal />
@@ -17,6 +19,7 @@ import { ref, computed, markRaw, watch, onMounted } from 'vue'
 import { useExpensesStore } from '../stores/expenses';
 import { useSuppliersStore } from '../stores/suppliers';
 import { useGoodsStore } from '../stores/goods';
+import { useSettingsStore } from '../stores/settings';
 
 import Headline from '../components/Headline.vue'
 
@@ -34,6 +37,7 @@ const suppliersStorage = useSuppliersStore();
 const goodsStorage = useGoodsStore();
 
 // get and filter the expenses
+const safetyMode = computed(() => useSettingsStore().settingsData.expensesSafetyMode === "true" ? true : false);
 const expensesData = computed(() => expensesStorage.expensesData)
 const suppliersData = computed(() => suppliersStorage.suppliersNames)
 const categoriesData = computed(() => goodsStorage.categoriesNames)
@@ -41,11 +45,11 @@ const filteredExpenses = ref([])
 
 function filterExpenses() {
   // console.log(categoriesData.value)
-  if(tableComponent.value) {
+  if (tableComponent.value) {
     const dateFilterComponent = tableComponent.value.$refs.dateFilterComponent[0]
     const supplierFilterComponent = tableComponent.value.$refs.supplierFilterComponent[0]
     const categoryFilterComponent = tableComponent.value.$refs.categoryFilterComponent[0]
-    
+
     filteredExpenses.value = expensesData.value.filter(expense => {
       return dateFilterComponent.filterDate(expense.date) &&
         supplierFilterComponent.filterData(suppliersStorage.suppliersData.find(supplier => supplier.id == expense.supplier).name) &&
@@ -62,8 +66,8 @@ const tableComponent = ref(null);
 
 const tableFilters = ref([
   { component: markRaw(DateFilter), reference: 'dateFilterComponent' },
-  { component: markRaw(SelectFilter), reference: 'supplierFilterComponent', props: {options: suppliersData} },
-  { component: markRaw(SelectFilter), reference: 'categoryFilterComponent', props: {options: categoriesData} },
+  { component: markRaw(SelectFilter), reference: 'supplierFilterComponent', props: { options: suppliersData } },
+  { component: markRaw(SelectFilter), reference: 'categoryFilterComponent', props: { options: categoriesData } },
 ])
 
 const tableHeaders = ref([
@@ -79,12 +83,13 @@ const tableRows = computed(() => filteredExpenses.value.map(expense => [
   suppliersStorage.suppliersData.find(supplier => supplier.id == expense.supplier).name,
   goodsStorage.goodsData.find(category => category.id == expense.category).name,
   expense.total,
-  { 
-    component: ActionButtons, 
-    props: { 
-      delModalId: "#delExpenseModal", 
-      editModalId: "#editExpenseModal", 
+  {
+    component: ActionButtons,
+    props: {
+      delModalId: "#delExpenseModal",
+      editModalId: "#editExpenseModal",
       'data-expense-id': expense.id,
+      delDisabled: safetyMode.value,
     },
   }
 ]));
@@ -94,4 +99,3 @@ onMounted(() => {
 
 })
 </script>
-

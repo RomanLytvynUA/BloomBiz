@@ -1,7 +1,5 @@
 const BASE_URL = 'http://127.0.0.1:5000/';
 
-export const orderStatuses = ['Продано', 'Списано', 'Чорнетка', 'Вітрина']
-
 export const urlList = {
     "getSuppliers": BASE_URL + "suppliers/get",
     "delSupplier": BASE_URL + "suppliers/delete/",

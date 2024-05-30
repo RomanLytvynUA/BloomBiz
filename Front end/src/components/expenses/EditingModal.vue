@@ -8,10 +8,15 @@
                 </div>
                 <div class="modal-body">
                     <form id="editExpenseForm">
-                        <InputField ref="dateInput" label="Дата:" type="date" name="date" :value="expenseData ? new Date(expenseData.date.split('-').reverse().join('-')).toISOString().split('T')[0] : null" />
-                        <CategoriesInput ref="categoryInput" :constant="categoryData ? {category: categoryData.name, units: categoryData.units} : {}" /> 
-                        <SelectField ref="supplierInput" label="Постачальник: " name="supplier" :options="suppliersNames" :preselectedValue="supplierData ? supplierData.name : null" customOptionValue="+ Додати нового" />
-                        
+                        <InputField ref="dateInput" label="Дата:" type="date" name="date"
+                            :value="expenseData ? new Date(expenseData.date.split('-').reverse().join('-')).toISOString().split('T')[0] : null" />
+                        <CategoriesInput ref="categoryInput"
+                            :constant="categoryData ? { category: categoryData.name, units: categoryData.units } : {}" />
+                        <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
+                            :options="suppliersNames.filter((supplier) => !suppliersToIgnore.includes(supplier))"
+                            :preselectedValue="supplierData ? supplierData.name : null"
+                            customOptionValue="+ Додати нового" />
+
                     </form>
                     <form id="editExpenseElementsForm">
                         <ElementsTable ref="elements" :rows="[]" :category="categoryData ? categoryData.name : null" />
@@ -25,13 +30,14 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
 
 import { useExpensesStore } from '@/stores/expenses';
 import { useSuppliersStore } from '@/stores/suppliers';
-import { useGoodsStore } from '../../stores/goods'; 
+import { useGoodsStore } from '../../stores/goods';
+import { useSettingsStore } from '@/stores/settings';
 
 import InputField from '../form_elements/InputField.vue'
 import CategoriesInput from '../form_elements/CategoriesInput.vue'
@@ -40,6 +46,7 @@ import ElementsTable from './ElementsTable.vue'
 
 const expenseData = computed(() => useExpensesStore().expensesData.find((expense) => expense.id == selectedExpenseId.value))
 const suppliersNames = computed(() => useSuppliersStore().suppliersNames)
+const suppliersToIgnore = computed(() => useSettingsStore().settingsData.expensesSuppliersToIgnore)
 const supplierData = computed(() => expenseData.value ? useSuppliersStore().suppliersData.find((supplier) => supplier.id === expenseData.value.supplier) : null)
 const categoryData = computed(() => expenseData.value ? useGoodsStore().goodsData.find((category) => category.id == expenseData.value.category) : null)
 
@@ -57,14 +64,14 @@ onMounted(() => {
 });
 
 watch(expenseData, () => {
-    if(expenseData.value) {
+    if (expenseData.value) {
         elements.value.reset()
         elements.value.totalPrice = expenseData.value.total
-        
+
         for (const element of expenseData.value.elements) {
             const elementData = useGoodsStore().minGoodsData.find((product) => product.id === element.product)
             elements.value.addRow(categoryData.value.name, elementData ? elementData.name : "-",
-             element.quantity, element.price);
+                element.quantity, element.price);
         }
     }
 })
@@ -96,7 +103,7 @@ function validateExpense() {
         supplierData.forEach((value, key) => {
             json[key] = value;
         });
-        
+
         $(modalElement).modal('hide');
         useExpensesStore().editExpense(json);
     }

@@ -9,7 +9,8 @@
                 <button type="button" class="btn btn btn-warning" data-bs-toggle="modal"
                     data-bs-target="#editCategoryModal">Змінити</button>
                 <button type="button" class="btn btn btn-danger" style="border-bottom-right-radius: 0;"
-                    data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">Видалити</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteCategoryModal"
+                    :disabled="safetyMode">Видалити</button>
             </div>
         </div>
         <div v-for="category in categories" class="accordion-item">
@@ -37,8 +38,9 @@
                                 <ul class="list-group list-group-flush text-center">
                                     <li class="list-group-item">
                                         <div style="overflow: auto;">
-                                            <ActionButtons editModalId="#editProductModal" delModalId="#delProductModal"
-                                                :data-name="product.product" :data-product-id="product.id"
+                                            <ActionButtons :delDisabled="safetyMode" editModalId="#editProductModal"
+                                                delModalId="#delProductModal" :data-name="product.product"
+                                                :data-product-id="product.id"
                                                 style="display: flex; justify-content: center;" />
                                         </div>
                                     </li>
@@ -65,6 +67,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useGoodsStore } from '../../stores/goods';
+import { useSettingsStore } from '@/stores/settings';
+
 import ActionButtons from '../table_elements/ActionButtons.vue';
 
 import ProductAddition from './assortmentControls/ProductAddition.vue'
@@ -77,6 +81,7 @@ import CategoryDeletion from './assortmentControls/CategoryDeletion.vue'
 
 const categories = computed(() => useGoodsStore().categoriesNames)
 const goodsData = computed(() => useGoodsStore().inStockGoodsData)
+const safetyMode = computed(() => useSettingsStore().settingsData.goodsSafetyMode === "true" ? true : false);
 </script>
 
 <style scoped>

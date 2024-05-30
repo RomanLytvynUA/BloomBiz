@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { urlList } from '../config'
+import { useExpensesStore } from './expenses'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
     const suppliersData = ref([])
@@ -18,11 +19,12 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     }
 
     async function delSupplier(id) {
-        const response = await fetch(urlList.delSupplier+id, {
-          method: 'DELETE',
+        const response = await fetch(urlList.delSupplier + id, {
+            method: 'DELETE',
         });
-      
+
         fetchSuppliers();
+        useExpensesStore().fetchExpenses();
     }
 
     async function addSupplier(json) {
@@ -48,7 +50,7 @@ export const useSuppliersStore = defineStore('suppliers', () => {
 
         fetchSuppliers();
     }
-      
+
 
     return { suppliersData, fetchSuppliers, delSupplier, addSupplier, editSupplier, suppliersNames }
 })

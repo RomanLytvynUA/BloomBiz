@@ -25,6 +25,7 @@
         </div>
         <canvas ref="incomeChart"></canvas>
     </div>
+
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
         id="offcanvasFilters">
         <div class="offcanvas-header">
@@ -79,12 +80,13 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { orderStatuses } from '../../../config';
 import { useOrdersStore } from '../../../stores/orders';
 import { useExpensesStore } from '../../../stores/expenses';
 import { useGoodsStore } from '../../../stores/goods';
 import { useSuppliersStore } from '../../../stores/suppliers';
+import { useSettingsStore } from '../../../stores/settings';
 import { eachWeekOfInterval, format, eachDayOfInterval, getMonth, getYear, addMonths, eachYearOfInterval, isEqual, endOfYear, startOfDay, isSameWeek, eachMonthOfInterval, isSameMonth, eachQuarterOfInterval, isSameQuarter, isSameYear } from 'date-fns';
+
 import DateFilter from '../../table_elements/filters/DateFilter.vue';
 import Chart from 'chart.js/auto';
 
@@ -98,6 +100,7 @@ const categoriesData = computed(() => useGoodsStore().goodsData)
 const suppliersData = computed(() => useSuppliersStore().suppliersData)
 const suppliers = computed(() => useSuppliersStore().suppliersNames)
 
+const orderStatuses = computed(() => useSettingsStore().settingsData.ordersStatuses);
 const filteredOrderStatuses = ['Продано']
 const filteredExpenseCategories = [].concat(categories.value)
 const filteredExpenseSuppliers = [].concat(suppliers.value)

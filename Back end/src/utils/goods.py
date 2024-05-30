@@ -2,6 +2,7 @@ from .. import db
 from ..models.goods import Goods, Categories, Decommissions
 from ..models.orders import OrdersElements
 from ..models.expenses import ExpensesElements
+from ..models.settings import Settings
 
 
 def util_create_category(name, units):
@@ -65,6 +66,7 @@ def util_set_product_price(product_id, price):
 
 def util_calc_instock():
     in_stock_goods = []
+    margin = int(Settings.query.filter_by(name='defaultMargin').first().value)
     all_goods = Goods.query.order_by(Goods.id).all()
 
     for product in all_goods:
@@ -74,7 +76,7 @@ def util_calc_instock():
         bought_goods = ExpensesElements.query.filter_by(product=product).order_by(ExpensesElements.id).all()
         for bought_product in bought_goods:
             quantity += bought_product.quantity
-            price = round(bought_product.price*2.5)
+            price = round(bought_product.price*(margin+100)/100)
 
         decommissioned_goods = Decommissions.query.filter_by(product=product).all()
         for decommissioned_product in decommissioned_goods:

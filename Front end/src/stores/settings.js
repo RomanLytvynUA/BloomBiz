@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { urlList } from '../config'
+import { useGoodsStore } from './goods'
 
 export const useSettingsStore = defineStore('settings', () => {
     const settingsData = ref({})
@@ -25,6 +26,7 @@ export const useSettingsStore = defineStore('settings', () => {
         })
 
         fetchSettings();
+        useGoodsStore().fetchInStockGoods()
     }
 
     async function editSettings(json) {
@@ -37,6 +39,7 @@ export const useSettingsStore = defineStore('settings', () => {
         })
 
         fetchSettings();
+        useGoodsStore().fetchInStockGoods()
     }
 
 

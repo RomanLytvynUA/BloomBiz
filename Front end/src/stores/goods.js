@@ -10,6 +10,7 @@ export const useGoodsStore = defineStore('goods', () => {
     const minGoodsData = computed(() => goodsData.value.flatMap(category => category.goods))
     const goodsNames = computed(() => minGoodsData.value.flatMap(product => product.name))
     const categoriesNames = computed(() => goodsData.value.map(category => category.name));
+
     async function fetchGoods() {
         try {
             const response = await fetch(urlList.getGoods)

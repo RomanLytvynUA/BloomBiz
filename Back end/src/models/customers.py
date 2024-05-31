@@ -3,7 +3,7 @@ from src import db
 class Customers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    contact_info = db.Column(db.String(100))
+    contactInfo = db.Column(db.String(100))
     address = db.Column(db.String(100))
     additional = db.Column(db.String(100))
 
@@ -14,7 +14,7 @@ class Customers(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'contact_info': self.contact_info,
+            'contactInfo': self.contactInfo,
             'address': self.address,
             'additional': self.additional,
         }

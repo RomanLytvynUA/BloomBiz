@@ -9,10 +9,10 @@ class Orders(db.Model):
     discount = db.Column(db.Float)
     price = db.Column(db.Float)
     
-    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=True)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=True)
 
-    elements = db.relationship('OrdersElements', backref='order', lazy=True)
+    elements = db.relationship('OrdersElements', backref='order', passive_deletes=True, lazy=True)
 
 
     def generate_dict(self):
@@ -22,6 +22,8 @@ class Orders(db.Model):
             'status': self.status,
             'discount': self.discount,
             'price': self.price,
+            'customer': self.ordering_customer.generate_dict(),
+            'receiver': self.receiving_customer.generate_dict(),
             'elements': self.generate_elements_dict(),
         }
 

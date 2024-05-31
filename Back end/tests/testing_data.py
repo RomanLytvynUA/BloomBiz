@@ -5,6 +5,7 @@ from src.models.goods import *
 from src.models.suppliers import *
 from src.models.expenses import *
 from src.models.orders import *
+from src.models.customers import *
 
 
 def clear_db():
@@ -137,10 +138,29 @@ def add_testing_expenses_elements(return_raw=False):
         return expense.generate_dict()
 
 
-def add_testing_orders():
+def add_testing_customers():
+    with app.app_context():
+        customers_data = [
+            {'name': 'Name', 'contactInfo': '+380000000000', "address": "Address", 'additional': "text"},
+        ]
+
+        db.session.query(Customers).delete()
+        db.session.execute(text("ALTER SEQUENCE customers_id_seq RESTART WITH 1"))
+        db.session.commit()
+
+        for data in customers_data:
+            customer = Customers(**data)
+            db.session.add(customer)
+            db.session.commit()
+            data['id'] = customer.id
+
+        return customers_data
+
+
+def add_testing_orders(customer_id):
     with app.app_context():
         orders_data = [
-            {'date': '2023-11-01', 'status': 'Status', 'price': 1.0, 'discount': 2.0},
+            {'date': '2023-11-01', 'status': 'Status', 'price': 1.0, 'discount': 2.0, "customer_id": customer_id, "receiver_id": customer_id},
         ]
 
         db.session.query(Orders).delete()

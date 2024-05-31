@@ -1,9 +1,10 @@
 from src import db
 from src.models.goods import Categories, Goods
 from src.utils.goods import *
+from src.utils.settings import util_reset_settings, default_settings
 from tests.testing_data import add_testing_orders, add_testing_orders_elements, \
     add_testing_categories, add_testing_goods, add_testing_expenses, add_testing_expenses_elements, \
-    add_testing_suppliers, add_testing_decommissions, clear_db
+    add_testing_suppliers, add_testing_decommissions, add_testing_customers, clear_db
 
 
 def test_category_generate_dict(app_client):
@@ -109,17 +110,18 @@ def test_util_calc_instock(app_client):
     THEN properly calculated data is returned;
     """
     clear_db()
+    util_reset_settings()
     add_testing_suppliers()
     add_testing_categories()
     add_testing_goods()
     add_testing_expenses()
     expense_data = add_testing_expenses_elements()
-    add_testing_orders()
+    add_testing_orders(add_testing_customers()[0]['id'])
     orders_data = add_testing_orders_elements()
     decomissions_data = add_testing_decommissions()
 
     expected_product1_quantity = expense_data['elements'][0]['quantity']-list(orders_data['elements'].values())[0][0]['quantity']-decomissions_data[0]['quantity']
-    expected_product1_price = round(expense_data['elements'][0]['price']*2.5)
+    expected_product1_price = round(expense_data['elements'][0]['price']*(default_settings['defaultMargin']+100)/100)
     
     # Setting product2 price to custom in order to check price selection functionality
     expected_product2_price = 55555
@@ -132,9 +134,9 @@ def test_util_calc_instock(app_client):
     calculated_goods = util_calc_instock()
 
     assert calculated_goods == [{'category': 'Category', 'category_id': 1, 'product': 'Product1',
-                                 'quantity': expected_product1_quantity, 'id': 1, 'units': 'units', 'price': expected_product1_price},
-                                {'category': 'Category', 'product': 'Product2', 'quantity': expected_product2_quantity,
-                                 'id': 2, 'category_id': 1, 'units': 'units', 'price': expected_product2_price}]
+                                 'quantity': float(expected_product1_quantity), 'id': 1, 'units': 'units', 'price': float(expected_product1_price)},
+                                {'category': 'Category', 'product': 'Product2', 'quantity': float(expected_product2_quantity),
+                                 'id': 2, 'category_id': 1, 'units': 'units', 'price': float(expected_product2_price)}]
 
 
 def test_util_create_decommission(app_client):

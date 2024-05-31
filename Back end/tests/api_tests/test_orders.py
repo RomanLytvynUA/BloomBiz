@@ -4,7 +4,7 @@ from src.models.goods import Goods
 from src.models.orders import Orders, OrdersElements
 from tests.testing_data import clear_db, add_testing_orders, \
     add_testing_categories, add_testing_goods, \
-    add_testing_orders_elements
+    add_testing_orders_elements, add_testing_customers
 
 
 def test_get_orders(urls):
@@ -18,12 +18,12 @@ def test_get_orders(urls):
     clear_db()
     add_testing_categories()
     add_testing_goods()
-    add_testing_orders()
-    expense = add_testing_orders_elements()
+    add_testing_orders(add_testing_customers()[0]['id'])
+    order = add_testing_orders_elements()
 
     response = requests.get(url=url)
 
-    assert json.loads(response.text) == [expense]
+    assert json.loads(response.text) == [order]
 
 
 def test_create_order(urls, app_client):
@@ -76,7 +76,7 @@ def test_edit_order(urls, app_client):
     clear_db()
     category = add_testing_categories()['name']
     products = add_testing_goods()
-    add_testing_orders()
+    add_testing_orders(add_testing_customers()[0]['id'])
     order_data = add_testing_orders_elements()
     data = {'order_id': order_data['id'], 'date': "2023/11/1", 'price': 1, 'status': 'Status', 'discount': 2,
             "elements": {
@@ -109,9 +109,8 @@ def test_del_order(urls, app_client):
     clear_db()
     add_testing_categories()
     add_testing_goods()
-    add_testing_orders()
+    add_testing_orders(add_testing_customers()[0]['id'])
     order_data = add_testing_orders_elements()
-
     response = requests.delete(url=url+str(order_data['id']))
     order = Orders.query.filter_by(id=order_data['id']).all()
 

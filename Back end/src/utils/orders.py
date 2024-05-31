@@ -2,7 +2,7 @@ from .. import db
 from ..models.orders import Orders
 
 
-def util_create_order(date, discount, price, status):
+def util_create_order(date, discount, price, status, customer=None, receiver=None):
     order = Orders(date=date, discount=discount, price=price, status=status)
     db.session.add(order)
     return {'order': order,

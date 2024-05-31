@@ -22,8 +22,8 @@ class Orders(db.Model):
             'status': self.status,
             'discount': self.discount,
             'price': self.price,
-            'customer': self.ordering_customer.generate_dict(),
-            'receiver': self.receiving_customer.generate_dict(),
+            'customer': self.ordering_customer.generate_dict() if self.ordering_customer else None,
+            'receiver': self.receiving_customer.generate_dict() if self.receiving_customer else None,
             'elements': self.generate_elements_dict(),
         }
 

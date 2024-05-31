@@ -1,14 +1,19 @@
 from src import db
+from .customers import Customers
 
 
 class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date)
+    date = db.Column(db.DateTime)
     status = db.Column(db.String(100))
     discount = db.Column(db.Float)
     price = db.Column(db.Float)
+    
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=False)
 
-    elements = db.relationship('OrdersElements', backref='order', passive_deletes=True, lazy=True)
+    elements = db.relationship('OrdersElements', backref='order', lazy=True)
+
 
     def generate_dict(self):
         return {

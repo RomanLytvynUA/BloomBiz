@@ -42,3 +42,4 @@ coverage
 
 /cypress/videos/
 /cypress/screenshots/
+Back end/src/models/__pycache__/orders.cpython-311.pyc

@@ -3,6 +3,7 @@ from src.models.goods import *
 from src.models.suppliers import *
 from src.models.expenses import *
 from src.models.settings import *
+from src.models.customers import *
 
 from src.utils.settings import util_reset_settings
 

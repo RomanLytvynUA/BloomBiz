@@ -20,9 +20,9 @@ def test_orders_generate_dict(app_client):
     order_data = add_testing_orders(add_testing_customers()[0]['id'])[0]
     order_data['elements'] = add_testing_orders_elements(return_raw=True)
 
-    order_data['receiver'] = Customers.query.filter_by(id=order_data['receiver_id']).first().generate_dict()
+    order_data['receiver'] = order_data['receiver_id']
     del order_data['receiver_id']
-    order_data['customer'] = Customers.query.filter_by(id=order_data['customer_id']).first().generate_dict()
+    order_data['customer'] = order_data['customer_id']
     del order_data['customer_id']
 
     order_obj = Orders.query.filter_by(id=order_data['id']).first()

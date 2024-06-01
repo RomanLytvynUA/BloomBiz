@@ -1,13 +1,38 @@
-from datetime import datetime, timedelta
 import random
+import argparse
+from datetime import datetime, timedelta
 from src import db, app
 from sqlalchemy import text
-from src.models.goods import *
-from src.models.suppliers import *
-from src.models.expenses import *
-from src.models.orders import *
+from src.models.goods import Goods, Categories
+from src.models.suppliers import Suppliers
+from src.models.expenses import Expenses, ExpensesElements
+from src.models.orders import Orders, OrdersElements
 from src.utils.settings import util_reset_settings
 
+# Argument Parser
+parser = argparse.ArgumentParser(description='Process some dates.')
+parser.add_argument('--years', type=int, default=0, help='number of years to subtract from the current year')
+parser.add_argument('--months', type=int, default=0, help='number of months to subtract from the current month')
+parser.add_argument('--days', type=int, default=0, help='number of days to subtract from the current day')
+args = parser.parse_args()
+
+starting_date = None
+today = datetime.today()
+year = args.years
+months = args.months
+days = args.days
+
+
+if year == 0 and months == 0 and days == 0:
+    starting_date = today.replace(month=1, day=1)
+else:
+    target_year = today.year - year
+    target_month = today.month - months
+    if target_month <= 0:
+        target_year -= 1
+        target_month += 12
+    starting_date = today.replace(year=target_year, month=target_month, day=1) - timedelta(days=days)
+    starting_date = starting_date
 
 def add_categories():
     categories_data = [
@@ -25,14 +50,12 @@ def add_categories():
 
     db.session.commit()
 
-
 def add_goods():
-    flowers = Categories.query.filter_by(id=1).first()
-    packing = Categories.query.filter_by(id=2).first()
-    toys = Categories.query.filter_by(id=3).first()
+    flowers = Categories.query.filter_by(name='Квіти').first()
+    packing = Categories.query.filter_by(name='Упаковка').first()
+    toys = Categories.query.filter_by(name='Іграшки').first()
 
     goods_data = [
-        # Id 1 - 20 (x20)
         {'category': flowers, 'name': 'Білі троянди'},
         {'category': flowers, 'name': 'Червоні троянди'},
         {'category': flowers, 'name': 'Рожеві троянди'},
@@ -53,8 +76,6 @@ def add_goods():
         {'category': flowers, 'name': 'Амаріліси'},
         {'category': flowers, 'name': 'Нарциси'},
         {'category': flowers, 'name': 'Гвоздики'},
-
-        # Id 21 - 31 (x10)
         {'category': packing, 'name': 'Біла обгортка'},
         {'category': packing, 'name': 'Прозора обгортка'},
         {'category': packing, 'name': 'Зелена обгортка'},
@@ -65,8 +86,6 @@ def add_goods():
         {'category': packing, 'name': 'Червона смужка'},
         {'category': packing, 'name': 'Жовта смужка'},
         {'category': packing, 'name': 'Помаранчева смужка'},
-
-        # Id 32 - 41 (х10)
         {'category': toys, 'name': 'Рожевий заєць'},
         {'category': toys, 'name': 'Маленький медвідь'},
         {'category': toys, 'name': 'Великий медвідь'},
@@ -83,11 +102,10 @@ def add_goods():
     db.session.execute(text(f"ALTER SEQUENCE goods_id_seq RESTART WITH 1"))
 
     for data in goods_data:
-        category = Goods(**data)
-        db.session.add(category)
+        good = Goods(**data)
+        db.session.add(good)
 
     db.session.commit()
-
 
 def add_suppliers():
     suppliers_data = [
@@ -108,27 +126,20 @@ def add_suppliers():
 
     db.session.commit()
 
-
 def add_expenses():
-    today = datetime.today()
-    # starting_date = (today.replace(day=1) - timedelta(days=1)).replace(day=1)
-    starting_date = today.replace(day=1, month=1)
-
     suppliers = Suppliers.query.all()
     categories = Categories.query.all()
 
     expenses_data = []
-
     current_day = starting_date
     expense_probability = 60
     while current_day <= today:
         chance = random.randint(0, 100)
-        if chance <= expense_probability: 
+        if chance <= expense_probability:
             expenses_data.append({
                 'date': current_day, 'supplier': random.choice(suppliers), 'category': random.choice(categories), 'total': 0
             })
         current_day += timedelta(days=1)
-    
 
     db.session.query(Expenses).delete()
     db.session.execute(text("ALTER SEQUENCE expenses_id_seq RESTART WITH 1"))
@@ -139,7 +150,6 @@ def add_expenses():
 
     db.session.commit()
 
-
 def add_expenses_elms():
     expenses_elms_data = []
 
@@ -148,7 +158,9 @@ def add_expenses_elms():
 
     for category in Categories.query.all():
         available_goods = Goods.query.filter_by(category=category).all()
-        for expense in Expenses.query.filter_by(category=category).all():
+        expenses = Expenses.query.filter_by(category=category).all()
+        for i, expense in enumerate(expenses):
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling expense {i+1}/{len(expenses)}")
             used_elements = []
             expense_total = 0
             elements_quantity = range(1, 6)
@@ -164,9 +176,9 @@ def add_expenses_elms():
 
                     expenses_elms_data.append(
                         {'expense': expense,
-                        'product': available_goods[element],
-                        'quantity': quantity,
-                        'price': price},
+                         'product': available_goods[element],
+                         'quantity': quantity,
+                         'price': price},
                     )
 
             expense.total = expense_total
@@ -179,12 +191,7 @@ def add_expenses_elms():
 
     db.session.commit()
 
-
 def add_orders():
-    today = datetime.today()
-    # starting_date = (today.replace(day=1) - timedelta(days=1)).replace(day=1)
-    starting_date = today.replace(day=1, month=1)
-
     statuses = ["Продано", "Списано", "Вітрина"]
     orders_data = []
 
@@ -192,7 +199,7 @@ def add_orders():
     order_probability = 60
     while current_day <= today:
         chance = random.randint(0, 100)
-        if chance <= order_probability: 
+        if chance <= order_probability:
             orders_data.append({
                 'date': current_day, 'status': random.choices(statuses, weights=(75, 20, 5), k=1)[0], 'price': 0, 'discount': 0
             })
@@ -207,40 +214,43 @@ def add_orders():
 
     db.session.commit()
 
-
 def add_orders_elements():
     order_elements = []
 
     db.session.query(OrdersElements).delete()
     db.session.execute(text("ALTER SEQUENCE orders_elements_id_seq RESTART WITH 1"))
-
-    for order in Orders.query.all():
+    orders = Orders.query.all()
+    for i, order in enumerate(orders):
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling order {i+1}/{len(orders)}")
         categories = Categories.query.all()
         order_categories = random.sample(categories, random.randint(1, len(categories)))
         used_elements = []
-        elements_limit = 5 # Need to set max quantity of elements so that not all products are used for oldest orders
+        elements_limit = 5
         price = 0
-        
+
         for category in order_categories:
             available_goods = ExpensesElements.query.join(ExpensesElements.product).filter(Goods.category == category).all()
             elements_quantity = range(3, 5)
 
-            if len(used_elements) >= elements_limit: break
-            if len(available_goods) == 0: continue
+            if len(used_elements) >= elements_limit:
+                break
+            if len(available_goods) == 0:
+                continue
 
             for element in elements_quantity:
                 element = available_goods[random.randint(0, len(available_goods)-1)]
                 if element.product not in used_elements:
                     instock_quantity = (
-                        sum(elem.quantity for elem in available_goods if elem.product == element.product) - 
+                        sum(elem.quantity for elem in available_goods if elem.product == element.product) -
                         sum(elem['quantity'] for elem in order_elements if elem['product'] == element.product)
                     )
-                    if instock_quantity == 0: continue
+                    if instock_quantity == 0:
+                        continue
                     used_elements.append(element.product)
 
                     quantity = random.randint(1, min(instock_quantity, 10))
                     element_price = random.randint(10, 25) * 2.20
-                    price += quantity * element_price 
+                    price += quantity * element_price
 
                     order_elements.append({
                         'order': order,
@@ -248,7 +258,7 @@ def add_orders_elements():
                         'quantity': quantity,
                         'price': element_price,
                     })
-        if len(used_elements) == 0: 
+        if len(used_elements) == 0:
             db.session.delete(order)
             db.session.commit()
         else:
@@ -261,16 +271,29 @@ def add_orders_elements():
 
     db.session.commit()
 
-
 with app.app_context():
+    time_started = datetime.now()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Generating data from {starting_date.strftime('%Y-%m-%d')}")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting...")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Dropping db")
     db.drop_all()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Creating db")
     db.create_all()
 
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Resetting settings")
     util_reset_settings()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding categories")
     add_categories()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding goods")
     add_goods()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding suppliers")
     add_suppliers()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding expenses")
     add_expenses()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding expenses elements")
     add_expenses_elms()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding orders")
     add_orders()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding orders elements")
     add_orders_elements()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Done in {datetime.now() - time_started}")

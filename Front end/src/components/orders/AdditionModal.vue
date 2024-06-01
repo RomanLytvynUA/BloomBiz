@@ -12,6 +12,7 @@
                         <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
                             preselectedValue="" />
                     </form>
+                    <CustomerSelect ref="customerSelect" />
 
                     <form id="orderElementsForm">
                         <ElementsList ref="elementsList" @elements-changed="(data) => elements = data"
@@ -43,13 +44,15 @@ import { computed, ref, onMounted, watch } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
 
 import ElementsList from './ElementsList.vue'
+import CustomerSelect from './customers/CustomerSelect.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
 
 const props = defineProps(['statuses'])
 
 const todaysDate = new Date().toISOString().split('T')[0];
-const elementsList = ref(null)
+const customerSelect = ref(null);
+const elementsList = ref(null);
 watch(elementsList, () => {
     if (elementsList.value) {
         elementsList.value.setNewData([], { 'null': true })
@@ -64,10 +67,11 @@ const statusInput = ref(null)
 const elements = ref(null)
 
 function validateExpense() {
-    let valid = true
-    const form = document.getElementById('newOrderForm')
-    const generalForm = document.getElementById('orderGeneralForm')
-    const elementsForm = document.getElementById('orderElementsForm')
+    let valid = true;
+    const form = document.getElementById('newOrderForm');
+    const generalForm = document.getElementById('orderGeneralForm');
+    const elementsForm = document.getElementById('orderElementsForm');
+    const customerData = customerSelect.value.collectData();
 
     // add 'is-invalid' class to every element of <form> where there is no value
     for (const element of [...form.elements, ...elementsForm.elements, ...generalForm.elements]) {
@@ -79,12 +83,12 @@ function validateExpense() {
         }
     }
 
-    if (valid) {
+    if (valid && typeof customerData === "object") {
         const modalElement = document.getElementById('addOrderModal');
         const formData = new FormData(form)
         const generalFormData = new FormData(generalForm)
 
-        let json = {}
+        let json = customerData;
         json.elements = elements.value
         formData.forEach((value, key) => {
             json[key] = value;

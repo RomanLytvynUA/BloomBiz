@@ -37,7 +37,7 @@ def test_util_create_customer_clone(app_client):
     queried_customers = Customers.query.filter_by(contactInfo=customer_data.contactInfo).all()
 
     assert len(queried_customers) == 1
-    assert customer_obj[0] == customer_data
+    assert customer_obj == customer_data
     assert queried_customers[0].name == customer_data.name
     assert queried_customers[0].contactInfo == customer_data.contactInfo
     assert queried_customers[0].address == customer_data.address

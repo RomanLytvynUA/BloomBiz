@@ -5,6 +5,7 @@ from src.models.goods import Categories
 from ..utils.suppliers import util_create_supplier
 from ..utils.goods import util_create_category, util_create_product
 from ..utils.orders import util_create_order
+from ..utils.customers import util_create_customer
 
 orders = Blueprint("orders", __name__)
 
@@ -26,8 +27,19 @@ def create_order():
         status = orders_data['status']
         discount = orders_data['discount']
         order_elements = orders_data['elements']
+        customer = None
+        receiver = None
+        
+        if 'customer' in orders_data:
+            customer = util_create_customer(orders_data['customer']['name'], orders_data['customer']['contactInfo'],
+                                             orders_data['customer']['address'], orders_data['customer']['additional'])['customer']
+            if 'receiver' in orders_data:
+                receiver = util_create_customer(orders_data['receiver']['name'], orders_data['receiver']['contactInfo'],
+                                                orders_data['receiver']['address'], orders_data['receiver']['additional'])['customer']
+            else:
+                receiver = customer
 
-        order = util_create_order(date=date, discount=discount, status=status, price=price)['order']
+        order = util_create_order(date=date, discount=discount, status=status, price=price, customer=customer, receiver=receiver)['order']
 
         # Looping through each element of a copy of order elements list where product string is either
         # replaced with an existing object of goods or fresh created one.
@@ -41,7 +53,6 @@ def create_order():
                                              product=element['product'], order=order)
                 db.session.add(new_element)
         db.session.commit()
-
         return "Created new order successfully.", 200
     return "Missing required data.", 406
 

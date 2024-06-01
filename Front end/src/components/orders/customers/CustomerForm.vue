@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label for="contactInfo">Контакти клієнта</label>
-            <input v-if="newCustomer" type="text" class="form-control" name="customerContacts" id="customerContacts">
-            <select v-model="selectedCustomer" v-if="!newCustomer" class="form-select" name="customerContacts"
-                id="customerContacts" @change="selectedCustomer === 'new' ? newCustomer = true : {}">
+            <input v-if="newCustomer" type="text" class="form-control" name="contactInfo" id="contactInfo">
+            <select v-model="selectedCustomer" v-if="!newCustomer" class="form-select" name="contactInfo"
+                id="contactInfo" @change="selectedCustomer === 'new' ? newCustomer = true : {}">
                 <option hidden></option>
                 <option style="background-color: green;" value="new">+ Додати нового</option>
             </select>

@@ -12,6 +12,6 @@ def util_create_customer(name, contact_info, address='', additional=''):
         return {'customer': new_customer,
                 'message': 'Created new customer successfully.'}
     else:
-        return {'customer': customer,
+        return {'customer': customer[0],
                 'message': 'Customer with contacts already exists.'}
 

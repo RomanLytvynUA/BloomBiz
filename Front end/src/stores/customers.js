@@ -3,14 +3,14 @@ import { defineStore } from 'pinia'
 import { urlList } from '../config'
 import { useOrdersStore } from './orders'
 
-export const useSettingsStore = defineStore('settings', () => {
+export const useCustomersStore = defineStore('customers', () => {
     const customersData = ref({})
 
     async function fetchCustomers() {
         try {
             const response = await fetch(urlList.getCustomers)
             const data = await response.json()
-            settingsData.value = data
+            customersData.value = data
         } catch (error) {
             console.error('Error fetching customers:', error)
         }
@@ -50,5 +50,5 @@ export const useSettingsStore = defineStore('settings', () => {
         useOrdersStore().fetchOrders();
     }
 
-    return { customersData, addCustomer, editCustomer, delCustomer }
+    return { customersData, fetchCustomers, addCustomer, editCustomer, delCustomer }
 })

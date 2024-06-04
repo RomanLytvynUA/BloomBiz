@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useGoodsStore } from './goods'
+import { useCustomersStore } from './customers'
 import { urlList } from '../config'
 
 export const useOrdersStore = defineStore('orders', () => {
@@ -18,10 +19,10 @@ export const useOrdersStore = defineStore('orders', () => {
 
     async function delOrder(id) {
         try {
-            const response = await fetch(urlList.delOrder+id, {
+            const response = await fetch(urlList.delOrder + id, {
                 method: 'DELETE'
             })
-            
+
             fetchOrders()
             useGoodsStore().fetchInStockGoods()
         } catch (error) {
@@ -41,11 +42,12 @@ export const useOrdersStore = defineStore('orders', () => {
 
             fetchOrders()
             useGoodsStore().fetchInStockGoods()
+            useCustomersStore().fetchCustomers()
         } catch (error) {
             console.log('Error while adding a new order:', error)
         }
     }
-    
+
     async function editOrder(data) {
         try {
             const response = await fetch(urlList.editOrder, {

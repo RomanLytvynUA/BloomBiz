@@ -1,5 +1,6 @@
 import random
 import argparse
+from progress.bar import ChargingBar
 from datetime import datetime, timedelta
 from src import db, app
 from sqlalchemy import text
@@ -156,11 +157,12 @@ def add_expenses_elms():
     db.session.query(ExpensesElements).delete()
     db.session.execute(text("ALTER SEQUENCE expenses_elements_id_seq RESTART WITH 1"))
 
+    bar = ChargingBar(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling expenses", max=len(Expenses.query.all()), suffix="%(index)d/%(max)d")
     for category in Categories.query.all():
         available_goods = Goods.query.filter_by(category=category).all()
         expenses = Expenses.query.filter_by(category=category).all()
-        for i, expense in enumerate(expenses):
-            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling expense {i+1}/{len(expenses)}")
+        for expense in expenses:
+            bar.next()
             used_elements = []
             expense_total = 0
             elements_quantity = range(1, 6)
@@ -180,9 +182,9 @@ def add_expenses_elms():
                          'quantity': quantity,
                          'price': price},
                     )
-
             expense.total = expense_total
             db.session.add(expense)
+    bar.finish()
     db.session.commit()
 
     for data in expenses_elms_data:
@@ -220,8 +222,9 @@ def add_orders_elements():
     db.session.query(OrdersElements).delete()
     db.session.execute(text("ALTER SEQUENCE orders_elements_id_seq RESTART WITH 1"))
     orders = Orders.query.all()
-    for i, order in enumerate(orders):
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling order {i+1}/{len(orders)}")
+    bar = ChargingBar(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling orders", max=len(Orders.query.all()), suffix="%(index)d/%(max)d")
+    for order in orders:
+        bar.next()
         categories = Categories.query.all()
         order_categories = random.sample(categories, random.randint(1, len(categories)))
         used_elements = []
@@ -264,6 +267,7 @@ def add_orders_elements():
         else:
             order.price = round(price)
             db.session.add(order)
+    bar.finish()
 
     for data in order_elements:
         order_element = OrdersElements(**data)
@@ -274,7 +278,6 @@ def add_orders_elements():
 with app.app_context():
     time_started = datetime.now()
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Generating data from {starting_date.strftime('%Y-%m-%d')}")
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting...")
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Dropping db")
     db.drop_all()
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Creating db")

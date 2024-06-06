@@ -76,6 +76,25 @@ def edit_order():
         status = orders_data['status']
         discount = orders_data['discount']
         order_elements = orders_data['elements']
+        customer = None
+        receiver = None
+        
+        if 'customer' in orders_data:
+            customer_name = orders_data['customer']['name'] if 'name' in orders_data['customer'] else ''
+            customer_contact_info = orders_data['customer']['contactInfo'] if 'contactInfo' in orders_data['customer'] else ''
+            customer_address = orders_data['customer']['address'] if 'address' in orders_data['customer'] else ''
+            customer_additional = orders_data['customer']['additional'] if 'additional' in orders_data['customer'] else ''
+
+            customer = util_create_customer(customer_name, customer_contact_info, customer_address, customer_additional)['customer']
+            if 'receiver' in orders_data:
+                receiver_name = orders_data['receiver']['name'] if 'name' in orders_data['receiver'] else ''
+                receiver_contact_info = orders_data['receiver']['contactInfo'] if 'contactInfo' in orders_data['receiver'] else ''
+                receiver_address = orders_data['receiver']['address'] if 'address' in orders_data['receiver'] else ''
+                receiver_additional = orders_data['receiver']['additional'] if 'additional' in orders_data['receiver'] else ''
+                
+                receiver = util_create_customer(receiver_name, receiver_contact_info, receiver_address, receiver_additional)['customer']
+            else:
+                receiver = customer
 
         order = Orders.query.filter_by(id=orders_data['order_id']).first()
         if not order: return f"Failed to fetch the given order.", 406
@@ -83,6 +102,8 @@ def edit_order():
         order.price = price
         order.status = status
         order.discount = discount
+        order.customer_id = customer.id
+        order.receiver_id = receiver.id
         db.session.add(order)
 
         for element in OrdersElements.query.filter_by(order=order).all():

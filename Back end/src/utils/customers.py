@@ -3,9 +3,9 @@ from ..models.customers import Customers
 
 
 def util_create_customer(name, contact_info, address='', additional=''):
-    customer = Customers.query.filter_by(contactInfo=contact_info).all()
+    customer = Customers.query.filter_by(contactInfo=str(contact_info)).all()
     if not len(customer):
-        new_customer = Customers(name=name, contactInfo=contact_info, address=address, additional=additional)
+        new_customer = Customers(name=str(name), contactInfo=str(contact_info), address=str(address), additional=str(additional))
         db.session.add(new_customer)
         db.session.commit()
 

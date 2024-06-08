@@ -1,15 +1,16 @@
 <template>
     <div class="mb-3">
-        <div class="accordion" id="customerSelectAccordion">
+        <div class="accordion" :id="'customerSelectAccordion' + accordionIdPrefix">
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#customerSelectAccordionBody" data-bs-parent="#customerSelectAccordion">
+                        :data-bs-target="'#customerSelectAccordionBody' + accordionIdPrefix"
+                        :data-bs-parent="'#customerSelectAccordion' + accordionIdPrefix">
                         Інформація про клієнта
                     </button>
                 </h2>
-                <div id="customerSelectAccordionBody" class="accordion-collapse collapse"
-                    data-bs-parent="#customerSelectAccordion">
+                <div :id="'customerSelectAccordionBody' + accordionIdPrefix" class="accordion-collapse collapse"
+                    :data-bs-parent="'#customerSelectAccordion' + accordionIdPrefix">
                     <div class="accordion-body">
                         <div class="mb-3">
                             <div class="form-check">
@@ -21,7 +22,7 @@
                         </div>
                         <div id="customersData" v-if="!guest">
                             <form id="customerForm">
-                                <CustomerForm />
+                                <CustomerForm ref="customerForm" />
                             </form>
                             <div class="mb-3">
                                 <div class="form-check">
@@ -32,7 +33,7 @@
                                 </div>
                             </div>
                             <form v-if="!receiverIsOrderer" id="receiverForm">
-                                <CustomerForm />
+                                <CustomerForm ref="receiverForm" />
                             </form>
                         </div>
                     </div>
@@ -43,12 +44,42 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 
 import CustomerForm from './CustomerForm.vue';
 
+const props = defineProps(['accordionIdPrefix'])
 const guest = ref(true)
 const receiverIsOrderer = ref(true)
+
+const customerForm = ref(null);
+const receiverForm = ref(null);
+
+function updateData(customerId, receiverId) {
+    guest.value = customerId ? false : true;
+    receiverIsOrderer.value = receiverId !== customerId ? false : true;
+
+    if (!guest.value) {
+        // Have to wait untill form is mounted
+        if (customerForm.value === null) {
+            const stopWatch = watch(customerForm, (value) => {
+                if (value) { customerForm.value.preselectCustomer(customerId); stopWatch(); }
+            }, { immediate: true });
+        } else {
+            customerForm.value.preselectCustomer(customerId)
+        }
+    }
+    if (!receiverIsOrderer.value) {
+        // Have to wait untill form is mounted
+        if (receiverForm.value === null) {
+            const stopWatch = watch(receiverForm, (value) => {
+                if (value) { receiverForm.value.preselectCustomer(receiverId); stopWatch(); }
+            }, { immediate: true });
+        } else {
+            receiverForm.value.preselectCustomer(receiverId)
+        }
+    }
+}
 
 function collectData() {
     if (guest.value === true) {
@@ -96,7 +127,7 @@ function collectData() {
         return json
     }
 }
-defineExpose({ collectData })
+defineExpose({ collectData, updateData })
 </script>
 
 <style scoped>

@@ -12,7 +12,8 @@
                         <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
                             :preselectedValue="orderData ? orderData.status : null" />
                     </form>
-
+                    <CustomerSelect ref="customerSelect"
+                        :accordionIdPrefix="'EditOrder' + (orderData ? orderData.id : 0)" />
                     <form id="editOrderElementsForm">
                         <ElementsList ref="elementsList" @elements-changed="(data) => { elements = data; }"
                             @total-price-changed="(total) => {
@@ -45,6 +46,7 @@ import { computed, ref, onMounted, watch, watchEffect } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
 
 import ElementsList from './ElementsList.vue'
+import CustomerSelect from './customers/CustomerSelect.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
 
@@ -56,7 +58,8 @@ const orderData = computed(() => {
 })
 
 const orderDate = ref(null);
-const elementsList = ref(null)
+const customerSelect = ref(null);
+const elementsList = ref(null);
 
 const orderDiscount = ref(0)
 const orderTotal = ref(0)
@@ -84,6 +87,7 @@ onMounted(() => {
     modalElement.addEventListener('show.bs.modal', (event) => {
         const btn = event.relatedTarget;
         orderId.value = btn.parentElement.getAttribute('data-order-id');
+        customerSelect.value.updateData(orderData.value ? orderData.value.customer : null, orderData.value ? orderData.value.receiver : null);
     });
 });
 
@@ -92,6 +96,7 @@ function validateExpense() {
     const form = document.getElementById('editOrderForm')
     const elementsForm = document.getElementById('editOrderElementsForm')
     const generalForm = document.getElementById('editOrderGeneralForm')
+    const customerData = customerSelect.value.collectData();
 
     // add 'is-invalid' class to every element of <form> where there is no value
     for (const element of [...form.elements, ...elementsForm.elements, ...generalForm.elements]) {
@@ -103,12 +108,12 @@ function validateExpense() {
         }
     }
 
-    if (valid) {
+    if (valid && typeof customerData === "object") {
         const modalElement = document.getElementById('editOrderModal');
         const formData = new FormData(form)
         const generalFormData = new FormData(generalForm)
 
-        let json = {}
+        let json = customerData
         json.elements = elements.value ? elements.value : []
         json.order_id = orderId.value
         formData.forEach((value, key) => {

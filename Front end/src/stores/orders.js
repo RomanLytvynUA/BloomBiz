@@ -60,6 +60,7 @@ export const useOrdersStore = defineStore('orders', () => {
 
             fetchOrders()
             useGoodsStore().fetchInStockGoods()
+            useCustomersStore().fetchCustomers()
         } catch (error) {
             console.log('Error while editing a new order:', error)
         }

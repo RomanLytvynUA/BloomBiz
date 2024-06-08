@@ -12,7 +12,7 @@
                         <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
                             preselectedValue="" />
                     </form>
-                    <CustomerSelect ref="customerSelect" />
+                    <CustomerSelect ref="customerSelect" accordionIdPrefix="CreateOrder" />
 
                     <form id="orderElementsForm">
                         <ElementsList ref="elementsList" @elements-changed="(data) => elements = data"

@@ -32,12 +32,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useCustomersStore } from '../../../stores/customers';
 
 const customersData = computed(() => useCustomersStore().customersData)
 
 const newCustomer = ref(false)
+
 const selectedCustomer = ref('')
 const selectedCustomerData = computed(() => customersData.value.find(customer => customer.contactInfo === selectedCustomer.value))
+function preselectCustomer(customerId) {
+    const preselectedCustomerData = customersData.value.find(customer => customer.id === customerId);
+    selectedCustomer.value = preselectedCustomerData ? preselectedCustomerData.contactInfo : "";
+}
+defineExpose({ preselectCustomer })
 </script>

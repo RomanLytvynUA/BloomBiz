@@ -131,6 +131,7 @@ def add_suppliers():
 
 def add_customers():
     customers_data = [
+        {'name': 'Жабчак Ганна', 'contactInfo': '+380 66 278 8550', 'address': 'вул. Рьостер-Штрассе 8, Вальтроп', 'additional': 'Бірюзова адвокат'},
         {'name': 'Антон', 'contactInfo': '+380 11 123 4567', 'address': 'вул. Хрещатик, 1', 'additional': 'Не пунктуальний'},
         {'name': 'Олександр Миколайович', 'contactInfo': '+380 12 234 5678', 'address': 'вул. Сумська, 2', 'additional': 'Ввічливий'},
         {'name': 'Марія Коваленко', 'contactInfo': '+380 13 345 6789', 'address': 'вул. Дерибасівська, 3', 'additional': 'Любить каву'},

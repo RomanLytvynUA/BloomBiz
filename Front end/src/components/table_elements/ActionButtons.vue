@@ -1,7 +1,9 @@
 <template>
     <div class="btn-group btn-group-sm justify-content-center" role="group">
-        <button type="button" class="btn btn-sm btn-outline-danger opacity-75" data-bs-toggle="modal"
-            :data-bs-target="delModalId" :disabled="delDisabled">{{ delText }}</button>
+        <button ref="tooltipButton" type="button" class="btn btn-sm btn-outline-danger opacity-75"
+            :data-toggle="delDisabled ? 'tooltip' : ''"
+            :title="delDisabled ? 'Функція не доступна, перевірте налаштування.' : ''"
+            :data-bs-toggle="!delDisabled ? 'modal' : ''" :data-bs-target="delModalId">{{ delText }}</button>
         <button type="button" class="btn btn-sm btn-outline-success opacity-75" data-bs-toggle="modal"
             :data-bs-target="editModalId">{{ editText }}</button>
     </div>
@@ -21,6 +23,20 @@ export default {
             type: String,
             default: 'Редагувати'
         },
+    },
+    mounted() {
+        $('[data-toggle="tooltip"]').click(function () {
+            $(this).tooltip('show');
+            $(this).mouseleave(function () {
+                $(this).tooltip('dispose')
+            });
+        });
     }
 }
 </script>
+
+<style scoped>
+.btn[data-toggle="tooltip"] {
+    cursor: not-allowed;
+}
+</style>

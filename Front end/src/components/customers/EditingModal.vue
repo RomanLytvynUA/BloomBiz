@@ -1,24 +1,26 @@
 <template>
-    <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Змінити постачальника</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="editSupplierForm">
+                <form id="editCustomerForm">
                     <div class="modal-body">
                         <InputField label="Ім'я:" type="text" name="name"
-                            :value="oldSupplierData ? oldSupplierData.name : ''" />
+                            :value="oldCustomerData ? oldCustomerData.name : ''" />
                         <InputField label="Контакти:" type="text" name="contactInfo"
-                            :value="oldSupplierData ? oldSupplierData.contactInfo : ''" />
+                            :value="oldCustomerData ? oldCustomerData.contactInfo : ''" />
+                        <InputField label="Адреса:" type="text" name="address"
+                            :value="oldCustomerData ? oldCustomerData.address : ''" />
                         <InputField label="Додатково:" type="text" name="additional"
-                            :value="oldSupplierData ? oldSupplierData.additional : ''" />
+                            :value="oldCustomerData ? oldCustomerData.additional : ''" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
                         <button type="submit" class="btn btn-primary"
-                            @click.prevent="validateSupplier">Зберегти</button>
+                            @click.prevent="validateCustomer()">Зберегти</button>
                     </div>
                 </form>
             </div>
@@ -28,28 +30,27 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useCustomersStore } from '@/stores/customers';
 import InputField from '../form_elements/InputField.vue';
-import { useSuppliersStore } from '@/stores/suppliers';
 
-const suppliersStore = useSuppliersStore();
-const supplierId = ref(null)
-const oldSupplierData = computed(() => suppliersStore.suppliersData.find(supplier => supplier.id === Number(supplierId.value)))
+const selectedCustomerId = ref(null);
+const oldCustomerData = computed(() => useCustomersStore().customersData.find(customer => customer.id === Number(selectedCustomerId.value)))
 
 onMounted(() => {
-    const modalElement = document.getElementById('editSupplierModal');
+    const modalElement = document.getElementById('editCustomerModal');
     modalElement.addEventListener('show.bs.modal', (event) => {
         const btn = event.relatedTarget;
-        supplierId.value = btn.parentElement.getAttribute('data-supplier-id');
+        selectedCustomerId.value = btn.parentElement.getAttribute('data-customer-id');
     });
 });
 
-function validateSupplier() {
+function validateCustomer() {
     let valid = true
-    const form = document.getElementById('editSupplierForm')
+    const form = document.getElementById('editCustomerForm')
 
     // add 'is-invalid' class to every element of <form> where there is no value
     for (const element of form.elements) {
-        if (element.tagName === 'INPUT' && !element.value && element.name !== 'additional') {
+        if (element.tagName === 'INPUT' && !element.value && !['additional', 'address'].includes(element.name)) {
             element.classList.add('is-invalid');
             valid = false
         } else {
@@ -58,17 +59,17 @@ function validateSupplier() {
     }
 
     if (valid) {
-        const suppliersStore = useSuppliersStore();
-        const supplierData = new FormData(form);
+        const customerData = new FormData(form)
 
         let json = {}
-        json['id'] = supplierId.value;
-        supplierData.forEach((value, key) => {
+        json.id = selectedCustomerId.value;
+        customerData.forEach((value, key) => {
             json[key] = value;
         });
 
-        $(document.getElementById('editSupplierModal')).modal('hide');
-        suppliersStore.editSupplier(json);
+        $(document.getElementById('editCustomerModal')).modal('hide');
+        useCustomersStore().editCustomer(json);
+        form.reset();
     }
 }
 </script>

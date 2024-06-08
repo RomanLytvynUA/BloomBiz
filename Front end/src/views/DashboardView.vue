@@ -22,13 +22,6 @@
                   </svg>
                   Асортимент
                 </a>
-                <!-- <a href="#crm" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
-                  :class="{ 'active': isActiveLink('crm') }">
-                  <svg class="bi me-2" width="24" height="24" fill="currentColor">
-                    <use :xlink:href="`${icons}#icon-person`"></use>
-                  </svg>
-                  Клієнти
-                </a> -->
                 <!-- <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded d-flex align-items-center"
                   :class="{ 'active': isActiveLink('calendar') }">
                   <svg class="bi me-2" width="24" height="24" fill="currentColor">

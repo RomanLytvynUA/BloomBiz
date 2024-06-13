@@ -6,7 +6,7 @@
   </div>
   <br>
 
-  <TableComponent :headers="tableHeaders" :rows="tableRows" />
+  <TableComponent ref="tableComponent" :filters="tableFilters" :headers="tableHeaders" :rows="tableRows" />
 
   <AdditionModal />
   <EditingModal />
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, markRaw } from 'vue';
 import { useSuppliersStore } from '@/stores/suppliers';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -24,11 +24,28 @@ import ActionButtons from '../components/table_elements/ActionButtons.vue';
 import AdditionModal from '../components/suppliers/AdditionModal.vue';
 import EditingModal from '../components/suppliers/EditingModal.vue';
 import DeletionModal from '../components/suppliers/DeletionModal.vue';
+import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 
-// get the suppliers
+const tableComponent = ref(null)
+const nameFilterComponent = ref(null)
+const contactsFilterComponent = ref(null)
+
 const suppliersStore = useSuppliersStore();
 const safetyMode = computed(() => useSettingsStore().settingsData.suppliersSafetyMode === "true" ? true : false);
 const suppliers = computed(() => suppliersStore.suppliersData);
+
+const filteredSuppliers = computed(() => tableComponent.value ? suppliers.value.filter(supplier => {
+  const nameFilterComponent = tableComponent.value.$refs.nameFilterComponent[0];
+  const contactsFilterComponent = tableComponent.value.$refs.contactsFilterComponent[0];
+
+  return nameFilterComponent.filterData(supplier.name) && contactsFilterComponent.filterData(supplier.contactInfo)
+}) : [])
+
+const tableFilters = ref([
+  { component: markRaw(InputFilter), reference: 'nameFilterComponent', props: { placeholder: 'Введіть ім\'я...' } },
+  { component: markRaw(InputFilter), reference: 'contactsFilterComponent', props: { placeholder: 'Введіть контакти...' } },
+])
+
 const tableHeaders = ref([
   { 'name': 'Ім\'я', 'size': '150px' },
   { 'name': 'Контакти', 'size': '290px' },
@@ -36,7 +53,7 @@ const tableHeaders = ref([
   { 'name': 'Дія', 'size': '250px' },
 ]);
 
-const tableRows = computed(() => suppliers.value.map(supplier => [
+const tableRows = computed(() => filteredSuppliers.value.map(supplier => [
   supplier.name,
   supplier.contactInfo,
   supplier.additional,

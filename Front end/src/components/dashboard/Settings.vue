@@ -33,6 +33,10 @@
     <SettingsAccordion @option-deleted="changes.ordersGoodsToIgnore = ordersGoodsToIgnore;" name="ordersGoodsIngore"
       title="Ігнорувати товари" info="*товари, що не будуть відображенні при створенні замовлення."
       additionModalId="orderGoodsIgnoreModal" :values="ordersGoodsToIgnore" />
+    <SettingsAccordion @option-deleted="changes.ordersCustomersToIgnore = ordersCustomersToIgnore;"
+      name="ordersCustomersToIgnore" title="Ігнорувати клієнтів"
+      info="*клієнти, що не будуть відображенні при створенні замовлення." additionModalId="ordersCustomersIgnoreModal"
+      :values="ordersCustomersToIgnore" />
     <SettingsAccordion @option-deleted="changes.ordersStatuses = ordersStatuses;" name="orderStatuses"
       title="Статуси замовлень" additionModalId="addStatusModal"
       info="*статуси, що можуть бути пов'язані з замовленнями." :values="ordersStatuses" />
@@ -64,6 +68,11 @@
     <SettingsOption ref="suppliersSafetyMode" type="switch" title="Режим безпеки"
       info='Функція видалення постачальників не буде доступна поки це налаштування активне.'
       @optionChanged="(value) => changes.suppliersSafetyMode = value" />
+
+    <h6>Клієнти</h6>
+    <SettingsOption ref="customersSafetyMode" type="switch" title="Режим безпеки"
+      info='Функція видалення клієнтів не буде доступна поки це налаштування активне.'
+      @optionChanged="(value) => changes.customersSafetyMode = value" />
   </div>
 
   <StatusAdditionModal
@@ -77,6 +86,10 @@
     idPrefix="expensesGoods" title="Оберіть товар" labelName="Назва"
     :options="useGoodsStore().goodsNames.filter((product) => !expensesGoodsToIgnore.includes(product))" />
   <IgnoreModal
+    @dataSelected="(customerName) => { ordersCustomersToIgnore.push(customerName); changes.ordersCustomersToIgnore = ordersCustomersToIgnore }"
+    idPrefix="ordersCustomers" title="Оберіть контакти клієнта" labelName="Контакти"
+    :options="useCustomersStore().customersContacts.filter((contactInfo) => !ordersCustomersToIgnore.includes(contactInfo))" />
+  <IgnoreModal
     @dataSelected="(name) => { expensesSuppliersToIgnore.push(name); changes.expensesSuppliersToIgnore = expensesSuppliersToIgnore }"
     idPrefix="expensesSuppliers" title="Оберіть постачальника" labelName="Ім'я"
     :options="useSuppliersStore().suppliersNames.filter((name) => !expensesSuppliersToIgnore.includes(name))" />
@@ -86,6 +99,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useGoodsStore } from '../../stores/goods';
+import { useCustomersStore } from '../../stores/customers';
 import { useSuppliersStore } from '../../stores/suppliers';
 import { useSettingsStore } from '../../stores/settings';
 
@@ -104,6 +118,7 @@ const settingsData = computed(() => useSettingsStore().settingsData)
 const ordersSafetyMode = ref(null)
 const ordersHideOutOfStock = ref(null)
 const ordersGoodsToIgnore = ref([]);
+const ordersCustomersToIgnore = ref([]);
 const ordersStatuses = ref(settingsData.ordersStatuses);
 
 const expensesSafetyMode = ref(null);
@@ -114,6 +129,8 @@ const goodsSafetyMode = ref(null);
 const defaultMargin = ref(null);
 
 const suppliersSafetyMode = ref(null);
+
+const customersSafetyMode = ref(null);
 
 // Only keep actual changes
 watch(() => changes.value, (data) => {
@@ -136,6 +153,7 @@ function populateSettings(data) {
   ordersSafetyMode.value.switchInput = data.ordersSafetyMode;
   ordersHideOutOfStock.value.switchInput = data.ordersHideOutOfStock;
   ordersGoodsToIgnore.value = [...data.ordersGoodsToIgnore];
+  ordersCustomersToIgnore.value = [...data.ordersCustomersToIgnore];
   ordersStatuses.value = [...data.ordersStatuses];
 
   expensesSafetyMode.value.switchInput = data.expensesSafetyMode;
@@ -146,6 +164,8 @@ function populateSettings(data) {
   defaultMargin.value.intInput = data.defaultMargin;
 
   suppliersSafetyMode.value.switchInput = data.suppliersSafetyMode;
+
+  customersSafetyMode.value.switchInput = data.customersSafetyMode;
 }
 </script>
 

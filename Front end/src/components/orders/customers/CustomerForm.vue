@@ -5,9 +5,11 @@
             <input v-if="newCustomer" type="text" class="form-control" name="contactInfo" id="contactInfo">
             <select v-model="selectedCustomer" v-if="!newCustomer" class="form-select" name="contactInfo"
                 id="contactInfo" @change="selectedCustomer === 'new' ? newCustomer = true : {}">
-                <option hidden></option>
+                <option v-if="!filteredCustomersData.map(customer => customer.contactInfo).includes(selectedCustomer)"
+                    hidden> {{ selectedCustomer }}</option>
                 <option style="background-color: green;" value="new">+ Додати нового</option>
-                <option :value="customer.contactInfo" v-for="customer in customersData">{{ customer.contactInfo }}
+                <option :value="customer.contactInfo" v-for="customer in filteredCustomersData">
+                    {{ customer.contactInfo }}
                 </option>
             </select>
         </div>
@@ -34,8 +36,10 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 import { useCustomersStore } from '../../../stores/customers';
+import { useSettingsStore } from '@/stores/settings';
 
 const customersData = computed(() => useCustomersStore().customersData)
+const filteredCustomersData = computed(() => customersData.value.filter(customer => !useSettingsStore().settingsData.ordersCustomersToIgnore.includes(customer.contactInfo)))
 
 const newCustomer = ref(false)
 

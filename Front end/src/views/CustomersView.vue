@@ -17,6 +17,7 @@
 import { ref, computed, markRaw } from 'vue';
 
 import { useCustomersStore } from '../stores/customers';
+import { useSettingsStore } from '../stores/settings';
 
 import Headline from '../components/Headline.vue'
 
@@ -28,6 +29,7 @@ import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 import TableComponent from '../components/table_elements/TableComponent.vue';
 import ActionButtons from '../components/table_elements/ActionButtons.vue';
 
+const safetyMode = computed(() => useSettingsStore().settingsData.customersSafetyMode === "true" ? true : false);
 const customersData = computed(() => tableComponent.value ? useCustomersStore().customersData.filter(customer => {
     const nameFilterComponent = tableComponent.value.$refs.nameFilterComponent[0];
     const contactsFilterComponent = tableComponent.value.$refs.contactsFilterComponent[0];
@@ -63,7 +65,7 @@ const tableRows = computed(() => customersData.value.map(customer => [
             delModalId: "#delCustomerModal",
             editModalId: "#editCustomerModal",
             'data-customer-id': customer.id,
-            //   delDisabled: safetyMode.value,
+            delDisabled: safetyMode.value,
         },
     }
 ]));

@@ -4,7 +4,8 @@ import { urlList } from '../config'
 import { useOrdersStore } from './orders'
 
 export const useCustomersStore = defineStore('customers', () => {
-    const customersData = ref({})
+    const customersData = ref({});
+    const customersContacts = computed(() => customersData.value.flatMap(customer => customer.contactInfo));
 
     async function fetchCustomers() {
         try {
@@ -50,5 +51,5 @@ export const useCustomersStore = defineStore('customers', () => {
         useOrdersStore().fetchOrders();
     }
 
-    return { customersData, fetchCustomers, addCustomer, editCustomer, delCustomer }
+    return { customersData, customersContacts, fetchCustomers, addCustomer, editCustomer, delCustomer }
 })

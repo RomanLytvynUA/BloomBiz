@@ -55,6 +55,18 @@ const receiverIsOrderer = ref(true)
 const customerForm = ref(null);
 const receiverForm = ref(null);
 
+function reset() {
+    $(`#customerSelectAccordionBody${props.accordionIdPrefix}`).collapse('hide');
+    if (guest.value !== true) {
+        $('#customerForm')[0].reset()
+    }
+    if (receiverIsOrderer.value !== true) {
+        $('#receiverForm')[0].reset()
+    }
+    guest.value = true
+    receiverIsOrderer.value = true
+}
+
 function updateData(customerId, receiverId) {
     guest.value = customerId ? false : true;
     receiverIsOrderer.value = receiverId !== customerId ? false : true;
@@ -81,10 +93,9 @@ function updateData(customerId, receiverId) {
     }
 }
 
+
 function collectData() {
     if (guest.value === true) {
-        $("#customerSelectAccordionBody").collapse('hide');
-        receiverIsOrderer.value = true
         return {}
     }
 
@@ -116,18 +127,12 @@ function collectData() {
             receiverData.forEach((value, key) => {
                 json.receiver[key] = value;
             });
-            receiverForm.reset()
         }
-
-        $("#customerSelectAccordionBody").collapse('hide');
-        customerForm.reset()
-        guest.value = true
-        receiverIsOrderer.value = true
 
         return json
     }
 }
-defineExpose({ collectData, updateData })
+defineExpose({ collectData, updateData, reset })
 </script>
 
 <style scoped>

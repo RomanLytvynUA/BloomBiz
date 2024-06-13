@@ -129,6 +129,7 @@ function validateExpense() {
             orderDiscount.value = 0
             orderTotal.value = 0
             dateInput.value.reset();
+            customerSelect.value.reset();
             statusInput.value.reset();
             orderId.value = null;
         }, { once: true });

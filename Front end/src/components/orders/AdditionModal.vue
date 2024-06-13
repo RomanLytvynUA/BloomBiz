@@ -106,7 +106,8 @@ function validateExpense() {
             elements.value = null
             dateInput.value.reset();
             statusInput.value.reset();
-            elementsList.value.reset()
+            customerSelect.value.reset()
+            elementsList.value.reset();
         });
     }
 }

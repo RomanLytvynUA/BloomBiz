@@ -5,9 +5,11 @@ import { useCustomersStore } from './customers'
 import { urlList } from '../config'
 
 export const useOrdersStore = defineStore('orders', () => {
+    const inLoadingState = ref(false)
     const ordersData = ref([])
 
     async function fetchOrders() {
+        inLoadingState.value = true;
         try {
             const response = await fetch(urlList.getOrders)
             const data = await response.json()
@@ -15,6 +17,7 @@ export const useOrdersStore = defineStore('orders', () => {
         } catch (error) {
             console.error('Error fetching orders:', error)
         }
+        inLoadingState.value = false;
     }
 
     async function delOrder(id) {
@@ -66,5 +69,5 @@ export const useOrdersStore = defineStore('orders', () => {
         }
     }
 
-    return { ordersData, fetchOrders, delOrder, addOrder, editOrder }
+    return { ordersData, inLoadingState, fetchOrders, delOrder, addOrder, editOrder }
 })

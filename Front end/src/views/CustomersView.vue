@@ -6,7 +6,8 @@
     </div>
     <br>
 
-    <TableComponent ref="tableComponent" :rows="tableRows" :headers="tableHeaders" :filters="tableFilters" />
+    <TableComponent ref="tableComponent" :loading="loading" :rows="tableRows" :headers="tableHeaders"
+        :filters="tableFilters" />
 
     <AdditionModal />
     <EditingModal />
@@ -28,6 +29,8 @@ import DeletionModal from '../components/customers/DeletionModal.vue';
 import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 import TableComponent from '../components/table_elements/TableComponent.vue';
 import ActionButtons from '../components/table_elements/ActionButtons.vue';
+
+const loading = computed(() => useCustomersStore().inLoadingState);
 
 const safetyMode = computed(() => useSettingsStore().settingsData.customersSafetyMode === "true" ? true : false);
 const customersData = computed(() => tableComponent.value ? useCustomersStore().customersData.filter(customer => {

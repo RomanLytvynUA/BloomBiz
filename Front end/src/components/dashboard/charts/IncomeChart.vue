@@ -23,8 +23,16 @@
                     data-bs-target="#offcanvasFilters">Фільтри</button>
             </div>
         </div>
-        <canvas ref="incomeChart"></canvas>
+        <canvas v-show="!loading" ref="incomeChart"></canvas>
     </div>
+
+    <br>
+    <div v-if="loading" class="d-flex justify-content-center">
+        <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <br>
 
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
         id="offcanvasFilters">
@@ -93,6 +101,8 @@ import Chart from 'chart.js/auto';
 let incomeChartObj = null
 const incomeChart = ref(null);
 
+const loading = computed(() => useSuppliersStore().inLoadingState || useGoodsStore().inLoadingState
+    || useOrdersStore().inLoadingState || useExpensesStore().inLoadingState);
 const ordersData = computed(() => useOrdersStore().ordersData)
 const expensesData = computed(() => useExpensesStore().expensesData)
 const categories = computed(() => useGoodsStore().categoriesNames)

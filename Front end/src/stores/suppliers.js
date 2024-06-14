@@ -4,11 +4,13 @@ import { urlList } from '../config'
 import { useExpensesStore } from './expenses'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
+    const inLoadingState = ref(false)
     const suppliersData = ref([])
 
     const suppliersNames = computed(() => suppliersData.value.map(supplier => supplier.name))
 
     async function fetchSuppliers() {
+        inLoadingState.value = true;
         try {
             const response = await fetch(urlList.getSuppliers)
             const data = await response.json()
@@ -16,6 +18,7 @@ export const useSuppliersStore = defineStore('suppliers', () => {
         } catch (error) {
             console.error('Error fetching suppliers:', error)
         }
+        inLoadingState.value = false;
     }
 
     async function delSupplier(id) {
@@ -52,5 +55,5 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     }
 
 
-    return { suppliersData, fetchSuppliers, delSupplier, addSupplier, editSupplier, suppliersNames }
+    return { inLoadingState, suppliersData, fetchSuppliers, delSupplier, addSupplier, editSupplier, suppliersNames }
 })

@@ -6,8 +6,8 @@
   </div>
   <br>
 
-  <TableComponent ref="tableComponent" @filterChanged="filterExpenses" :filters="tableFilters" :headers="tableHeaders"
-    :rows="tableRows" />
+  <TableComponent ref="tableComponent" :loading="loading" @filterChanged="filterExpenses" :filters="tableFilters"
+    :headers="tableHeaders" :rows="tableRows" />
 
   <AdditionModal />
   <EditingModal />
@@ -37,6 +37,7 @@ const suppliersStorage = useSuppliersStore();
 const goodsStorage = useGoodsStore();
 
 // get and filter the expenses
+const loading = computed(() => useExpensesStore().inLoadingState);
 const safetyMode = computed(() => useSettingsStore().settingsData.expensesSafetyMode === "true" ? true : false);
 const expensesData = computed(() => expensesStorage.expensesData)
 const suppliersData = computed(() => suppliersStorage.suppliersNames)

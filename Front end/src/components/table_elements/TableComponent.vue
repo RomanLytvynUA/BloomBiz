@@ -12,7 +12,7 @@
                     <th v-for="header in headers" :key="header" scope="col" :width="header.size">{{ header.name }}</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-show="!loading">
                 <tr v-for="row in rows" :key="row">
                     <td v-for="data in row">
                         <!-- Check if the data is an object with a 'component' property -->
@@ -25,9 +25,14 @@
             </tbody>
         </table>
         <br>
-        <h6 v-show="!rows.length">
+        <h6 v-show="!rows.length && !loading">
             Данних, що збігаються з вашим запитом не знайдено ¯\_(ツ)_/¯
         </h6>
+    </div>
+    <div v-if="loading" class="d-flex justify-content-center">
+        <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
 </template>
 
@@ -40,7 +45,12 @@ export default {
         width: {
             default: '85%',
             type: String
+        },
+        loading: {
+            default: false,
+            type: Boolean
         }
     },
+    emits: ['filterChanged'],
 }
 </script>

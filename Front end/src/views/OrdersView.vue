@@ -4,9 +4,8 @@
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addOrderModal">Додати</button> <br>
   </div>
   <br>
-
-  <TableComponent ref="tableComponent" @filterChanged="filterOrders" :filters="tableFilters" :headers="tableHeaders"
-    :rows="tableRows" />
+  <TableComponent ref="tableComponent" :loading="loading" @filterChanged="filteringState = true; filterOrders()"
+    :filters="tableFilters" :headers="tableHeaders" :rows="tableRows" />
 
   <AdditionModal :statuses="ordersStatuses" />
   <EditingModal :statuses="ordersStatuses" />
@@ -33,6 +32,7 @@ import EditingModal from '../components/orders/EditingModal.vue';
 import DeletionModal from '../components/orders/DeletionModal.vue';
 
 const ordersStorage = useOrdersStore();
+const loading = computed(() => useOrdersStore().inLoadingState);
 
 // get and filter the expenses
 const ordersData = computed(() => ordersStorage.ordersData)
@@ -44,11 +44,11 @@ function filterOrders() {
   if (tableComponent.value) {
     const dateFilterComponent = tableComponent.value.$refs.dateFilterComponent[0]
     const statusFilterComponent = tableComponent.value.$refs.statusFilterComponent[0]
-
-    filteredOrders.value = ordersData.value.filter(order => {
+    const filteredData = ordersData.value.filter(order => {
       return dateFilterComponent.filterDate(order.date) &&
         statusFilterComponent.filterData(order.status)
     })
+    filteredOrders.value = filteredData
   }
 }
 watch(ordersData, filterOrders)

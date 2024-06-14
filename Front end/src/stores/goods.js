@@ -5,6 +5,7 @@ import { useExpensesStore } from '@/stores/expenses'
 import { useOrdersStore } from '@/stores/orders'
 
 export const useGoodsStore = defineStore('goods', () => {
+    const inLoadingState = ref(false)
     const goodsData = ref([])
     const inStockGoodsData = ref([])
     const minGoodsData = computed(() => goodsData.value.flatMap(category => category.goods))
@@ -12,15 +13,17 @@ export const useGoodsStore = defineStore('goods', () => {
     const categoriesNames = computed(() => goodsData.value.map(category => category.name));
 
     async function fetchGoods() {
+        inLoadingState.value = true;
         try {
             const response = await fetch(urlList.getGoods)
             const data = await response.json()
             goodsData.value = data
 
-            fetchInStockGoods()
+            await fetchInStockGoods()
         } catch (error) {
             console.error('Error fetching goods:', error)
         }
+        inLoadingState.value = false;
     }
 
     async function createCategory(categoryData) {
@@ -114,6 +117,7 @@ export const useGoodsStore = defineStore('goods', () => {
     }
 
     async function fetchInStockGoods() {
+        inLoadingState.value = true;
         try {
             const response = await fetch(urlList.getInStockGoods)
             const data = await response.json()
@@ -121,6 +125,7 @@ export const useGoodsStore = defineStore('goods', () => {
         } catch (error) {
             console.error('Error fetching in stock goods:', error)
         }
+        inLoadingState.value = false;
     }
 
     async function submitDecommission(productData) {
@@ -171,7 +176,7 @@ export const useGoodsStore = defineStore('goods', () => {
     }
 
     return {
-        goodsData, goodsNames, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
+        goodsData, goodsNames, inLoadingState, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
         setProductPrice, createProduct, editProduct, delProduct, createCategory, editCategory, delCategory, resetProductPrices,
     }
 })

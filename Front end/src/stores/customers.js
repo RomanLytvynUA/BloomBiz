@@ -4,10 +4,12 @@ import { urlList } from '../config'
 import { useOrdersStore } from './orders'
 
 export const useCustomersStore = defineStore('customers', () => {
+    const inLoadingState = ref(false)
     const customersData = ref({});
     const customersContacts = computed(() => customersData.value.flatMap(customer => customer.contactInfo));
 
     async function fetchCustomers() {
+        inLoadingState.value = true;
         try {
             const response = await fetch(urlList.getCustomers)
             const data = await response.json()
@@ -15,6 +17,7 @@ export const useCustomersStore = defineStore('customers', () => {
         } catch (error) {
             console.error('Error fetching customers:', error)
         }
+        inLoadingState.value = false;
     }
 
     async function addCustomer(json) {

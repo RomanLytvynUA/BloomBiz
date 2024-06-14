@@ -1,7 +1,9 @@
 <template>
-  <Headline title="Товари на складі" description="Тут ви можете переглянути товари, які у вас є та списати їх. Нові позиції будуть додані на склад одразу після реєстрації нової витрати." />
+  <Headline title="Товари на складі"
+    description="Тут ви можете переглянути товари, які у вас є та списати їх. Нові позиції будуть додані на склад одразу після реєстрації нової витрати." />
 
-  <TableComponent ref="tableComponent" @filterChanged="filterGoods" :filters="tableFilters" :headers="tableHeaders" :rows="tableRows" />
+  <TableComponent ref="tableComponent" :loading="loading" @filterChanged="filterGoods" :filters="tableFilters"
+    :headers="tableHeaders" :rows="tableRows" />
 </template>
 
 <script setup>
@@ -17,11 +19,12 @@ import SelectFilter from '../components/table_elements/filters/SelectFilter.vue'
 import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 
 // get and filter data
+const loading = computed(() => useGoodsStore().inLoadingState);
 const goodsData = computed(() => useGoodsStore().inStockGoodsData)
 const categoriesData = computed(() => useGoodsStore().categoriesNames)
 const filteredGoods = ref([])
 
-function filterGoods() {
+async function filterGoods() {
   if (tableComponent.value) {
     const categoryFilterComponent = tableComponent.value.$refs.categoryFilterComponent[0];
     const productFilterComponent = tableComponent.value.$refs.productFilterComponent[0];
@@ -57,9 +60,9 @@ watch(goodsData, filterGoods)
 const tableComponent = ref(null);
 
 const tableFilters = ref([
-  { component: markRaw(SelectFilter), reference: 'categoryFilterComponent', props: {options: categoriesData} },
-  { component: markRaw(InputFilter), reference: 'productFilterComponent', props: {placeholder: 'Введіть назву товару...'} },
-  { component: markRaw(SelectFilter), reference: 'quantityFilterComponent', props: {options: ["В асортименті", "Не в наявності", "Погрішність"], defaultText: "В наявності"} },
+  { component: markRaw(SelectFilter), reference: 'categoryFilterComponent', props: { options: categoriesData } },
+  { component: markRaw(InputFilter), reference: 'productFilterComponent', props: { placeholder: 'Введіть назву товару...' } },
+  { component: markRaw(SelectFilter), reference: 'quantityFilterComponent', props: { options: ["В асортименті", "Не в наявності", "Погрішність"], defaultText: "В наявності" } },
 ])
 
 const tableHeaders = ref([
@@ -74,18 +77,18 @@ const tableRows = computed(() => filteredGoods.value.map(product => [
   product.category,
   product.product,
   `${product.quantity} ${product.units}`,
-  { 
-    component: PriceControl, 
-    props: { 
-      prefilledValue: product.price, 
-      productId: product.id, 
+  {
+    component: PriceControl,
+    props: {
+      prefilledValue: product.price,
+      productId: product.id,
     },
   },
-  { 
-    component: DecommissionBtnGroup, 
-    props: { 
-      productName: product.product, 
-      productCategory: product.category, 
+  {
+    component: DecommissionBtnGroup,
+    props: {
+      productName: product.product,
+      productCategory: product.category,
     },
   },
 ]));

@@ -5,9 +5,11 @@ import { useGoodsStore } from '@/stores/goods'
 import { urlList } from '../config'
 
 export const useExpensesStore = defineStore('expenses', () => {
+    const inLoadingState = ref(false);
     const expensesData = ref([])
 
     async function fetchExpenses() {
+        inLoadingState.value = true;
         try {
             const response = await fetch(urlList.getExpenses)
             const data = await response.json()
@@ -15,8 +17,9 @@ export const useExpensesStore = defineStore('expenses', () => {
         } catch (error) {
             console.error('Error fetching expenses:', error)
         }
+        inLoadingState.value = false;
     }
-    
+
     async function addExpense(expenseData) {
         const response = await fetch(urlList.addExpense, {
             method: 'POST',
@@ -46,11 +49,11 @@ export const useExpensesStore = defineStore('expenses', () => {
     }
 
     async function delExpense(expenseId) {
-        const response = await fetch(urlList.delExpense+expenseId, {method: 'DELETE'})
+        const response = await fetch(urlList.delExpense + expenseId, { method: 'DELETE' })
 
         fetchExpenses()
         useGoodsStore().fetchInStockGoods()
     }
 
-    return { expensesData, fetchExpenses, delExpense, addExpense, editExpense }
+    return { expensesData, inLoadingState, fetchExpenses, delExpense, addExpense, editExpense }
 })

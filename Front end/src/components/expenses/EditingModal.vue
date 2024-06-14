@@ -13,7 +13,7 @@
                         <CategoriesInput ref="categoryInput"
                             :constant="categoryData ? { category: categoryData.name, units: categoryData.units } : {}" />
                         <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
-                            :options="suppliersNames.filter((supplier) => !suppliersToIgnore.includes(supplier))"
+                            :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
                             :preselectedValue="supplierData ? supplierData.name : null"
                             customOptionValue="+ Додати нового" />
 

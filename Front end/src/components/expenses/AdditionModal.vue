@@ -12,7 +12,7 @@
                         <CategoriesInput ref="categoryInput"
                             @categoryChanged="(newValue) => selectedCategoryField = newValue" />
                         <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
-                            :options="suppliersData.filter((supplier) => !suppliersToIgnore.includes(supplier))"
+                            :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
                             customOptionValue="+ Додати нового" />
 
                     </form>
@@ -42,7 +42,7 @@ import SelectField from '../form_elements/SelectField.vue'
 import ElementsTable from './ElementsTable.vue'
 
 const todaysDate = new Date().toISOString().split('T')[0];
-const suppliersData = computed(() => useSuppliersStore().suppliersNames)
+const suppliersNames = computed(() => useSuppliersStore().suppliersNames)
 const suppliersToIgnore = computed(() => useSettingsStore().settingsData.expensesSuppliersToIgnore)
 
 const selectedCategoryField = ref(null);

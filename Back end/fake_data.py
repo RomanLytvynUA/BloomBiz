@@ -131,33 +131,34 @@ def add_suppliers():
 
 def add_customers():
     customers_data = [
-        {'name': 'Жабчак Ганна', 'contactInfo': '+380 66 278 8550', 'address': 'вул. Рьостер-Штрассе 8, Вальтроп', 'additional': 'Бірюзова адвокат'},
-        {'name': 'Антон', 'contactInfo': '+380 11 123 4567', 'address': 'вул. Хрещатик, 1', 'additional': 'Не пунктуальний'},
-        {'name': 'Олександр Миколайович', 'contactInfo': '+380 12 234 5678', 'address': 'вул. Сумська, 2', 'additional': 'Ввічливий'},
-        {'name': 'Марія Коваленко', 'contactInfo': '+380 13 345 6789', 'address': 'вул. Дерибасівська, 3', 'additional': 'Любить каву'},
-        {'name': 'Віктор', 'contactInfo': '+380 14 456 7890', 'address': 'вул. Шевченка, 4', 'additional': 'Не любить чекати'},
-        {'name': 'Катерина Олексіївна', 'contactInfo': '+380 15 567 8901', 'address': 'вул. Велика Васильківська, 5', 'additional': 'Завжди посміхається'},
-        {'name': 'Іван Петров', 'contactInfo': '+380 16 678 9012', 'address': 'вул. Галицька, 6', 'additional': 'Вегетаріанець'},
-        {'name': 'Наталія', 'contactInfo': '+380 17 789 0123', 'address': 'вул. Рівна, 7', 'additional': 'Любить подорожувати'},
-        {'name': 'Андрій Мельник', 'contactInfo': '+380 18 890 1234', 'address': 'вул. Франка, 8', 'additional': 'Завжди пунктуальний'},
-        {'name': 'Юлія', 'contactInfo': '+380 19 901 2345', 'address': 'вул. Січових Стрільців, 9', 'additional': 'Має кота'},
-        {'name': 'Дмитро', 'contactInfo': '+380 20 012 3456', 'address': 'вул. Зелена, 10', 'additional': 'Не любить дощ'},
-        {'name': 'Олена Сердюк', 'contactInfo': '+380 21 123 4567', 'address': 'вул. Коцюбинського, 11', 'additional': 'Любить читати'},
-        {'name': 'Сергій', 'contactInfo': '+380 22 234 5678', 'address': 'вул. Володимирська, 12', 'additional': 'Любить спорт'},
-        {'name': 'Валентина Іванівна', 'contactInfo': '+380 23 345 6789', 'address': 'вул. Прорізна, 13', 'additional': 'Колекціонує марки'},
-        {'name': 'Богдан', 'contactInfo': '+380 24 456 7890', 'address': 'вул. Борщагівська, 14', 'additional': 'Гарний кухар'},
-        {'name': 'Світлана', 'contactInfo': '+380 25 567 8901', 'address': 'вул. Антоновича, 15', 'additional': 'Любить танцювати'},
-        {'name': 'Михайло', 'contactInfo': '+380 26 678 9012', 'address': 'вул. Грушевського, 16', 'additional': 'Любить риболовлю'},
-        {'name': 'Ірина Павленко', 'contactInfo': '+380 27 789 0123', 'address': 'вул. Дорошенка, 17', 'additional': 'Не любить солодощів'},
-        {'name': 'Юрій', 'contactInfo': '+380 28 890 1234', 'address': 'вул. Лесі Українки, 18', 'additional': 'Пише вірші'},
-        {'name': 'Тетяна Ростиславівна', 'contactInfo': '+380 29 901 2345', 'address': 'вул. Городоцька, 19', 'additional': 'Має трьох дітей'},
-        {'name': 'Ростислав', 'contactInfo': '+380 30 012 3456', 'address': 'вул. Бандери, 20', 'additional': 'Любить подорожі'},
-        {'name': 'Галина', 'contactInfo': '+380 31 123 4567', 'address': 'вул. Личаківська, 21', 'additional': 'Любить квіти'},
-        {'name': 'Олег', 'contactInfo': '+380 32 234 5678', 'address': 'вул. Теліги, 22', 'additional': 'Має собаку'},
-        {'name': 'Людмила', 'contactInfo': '+380 33 345 6789', 'address': 'вул. Набережна, 23', 'additional': 'Майстриня по вишивці'},
-        {'name': 'Арсен Іванович', 'contactInfo': '+380 34 456 7890', 'address': 'вул. Соборна, 24', 'additional': 'Збирає гриби'},
-        {'name': 'Віра', 'contactInfo': '+380 35 567 8901', 'address': 'вул. Саксаганського, 25', 'additional': 'Любить кататися на велосипеді'}
+        {'name': 'Жабчак Ганна', 'contactInfo': '+380 66 278 8550', 'additional': 'Бірюзова адвокат'},
+        {'name': 'Антон', 'contactInfo': '+380 11 123 4567', 'additional': 'Не пунктуальний'},
+        {'name': 'Олександр Миколайович', 'contactInfo': '+380 12 234 5678', 'additional': 'Ввічливий'},
+        {'name': 'Марія Коваленко', 'contactInfo': '+380 13 345 6789', 'additional': 'Любить каву'},
+        {'name': 'Віктор', 'contactInfo': '+380 14 456 7890', 'additional': 'Не любить чекати'},
+        {'name': 'Катерина Олексіївна', 'contactInfo': '+380 15 567 8901', 'additional': 'Завжди посміхається'},
+        {'name': 'Іван Петров', 'contactInfo': '+380 16 678 9012', 'additional': 'Вегетаріанець'},
+        {'name': 'Наталія', 'contactInfo': '+380 17 789 0123', 'additional': 'Любить подорожувати'},
+        {'name': 'Андрій Мельник', 'contactInfo': '+380 18 890 1234', 'additional': 'Завжди пунктуальний'},
+        {'name': 'Юлія', 'contactInfo': '+380 19 901 2345', 'additional': 'Має кота'},
+        {'name': 'Дмитро', 'contactInfo': '+380 20 012 3456', 'additional': 'Не любить дощ'},
+        {'name': 'Олена Сердюк', 'contactInfo': '+380 21 123 4567', 'additional': 'Любить читати'},
+        {'name': 'Сергій', 'contactInfo': '+380 22 234 5678', 'additional': 'Любить спорт'},
+        {'name': 'Валентина Іванівна', 'contactInfo': '+380 23 345 6789', 'additional': 'Колекціонує марки'},
+        {'name': 'Богдан', 'contactInfo': '+380 24 456 7890', 'additional': 'Гарний кухар'},
+        {'name': 'Світлана', 'contactInfo': '+380 25 567 8901', 'additional': 'Любить танцювати'},
+        {'name': 'Михайло', 'contactInfo': '+380 26 678 9012', 'additional': 'Любить риболовлю'},
+        {'name': 'Ірина Павленко', 'contactInfo': '+380 27 789 0123', 'additional': 'Не любить солодощів'},
+        {'name': 'Юрій', 'contactInfo': '+380 28 890 1234', 'additional': 'Пише вірші'},
+        {'name': 'Тетяна Ростиславівна', 'contactInfo': '+380 29 901 2345', 'additional': 'Має трьох дітей'},
+        {'name': 'Ростислав', 'contactInfo': '+380 30 012 3456', 'additional': 'Любить подорожі'},
+        {'name': 'Галина', 'contactInfo': '+380 31 123 4567', 'additional': 'Любить квіти'},
+        {'name': 'Олег', 'contactInfo': '+380 32 234 5678', 'additional': 'Має собаку'},
+        {'name': 'Людмила', 'contactInfo': '+380 33 345 6789', 'additional': 'Майстриня по вишивці'},
+        {'name': 'Арсен Іванович', 'contactInfo': '+380 34 456 7890', 'additional': 'Збирає гриби'},
+        {'name': 'Віра', 'contactInfo': '+380 35 567 8901', 'additional': 'Любить кататися на велосипеді'}
     ]
+
 
     db.session.query(Customers).delete()
     db.session.execute(text("ALTER SEQUENCE customers_id_seq RESTART WITH 1"))
@@ -172,8 +173,8 @@ def add_customers():
 def add_expenses():
     suppliers = Suppliers.query.all()
     categories = Categories.query.all()
-
     expenses_data = []
+
     current_day = starting_date
     expense_probability = 60
     while current_day <= today:
@@ -236,8 +237,36 @@ def add_expenses_elms():
     db.session.commit()
 
 def add_orders():
-    statuses = ["Продано", "Списано", "Вітрина"]
     orders_data = []
+    statuses = ["Продано", "Списано", "Вітрина"]
+    addresses = [
+        'вул. Рьостер-Штрассе 8, Вальтроп',
+        'вул. Хрещатик, 1',
+        'вул. Сумська, 2',
+        'вул. Дерибасівська, 3',
+        'вул. Шевченка, 4',
+        'вул. Велика Васильківська, 5',
+        'вул. Галицька, 6',
+        'вул. Рівна, 7',
+        'вул. Франка, 8',
+        'вул. Січових Стрільців, 9',
+        'вул. Зелена, 10',
+        'вул. Коцюбинського, 11',
+        'вул. Володимирська, 12',
+        'вул. Прорізна, 13',
+        'вул. Борщагівська, 14',
+        'вул. Антоновича, 15',
+        'вул. Грушевського, 16',
+        'вул. Дорошенка, 17',
+        'вул. Лесі Українки, 18',
+        'вул. Городоцька, 19',
+        'вул. Бандери, 20',
+        'вул. Личаківська, 21',
+        'вул. Теліги, 22',
+        'вул. Набережна, 23',
+        'вул. Соборна, 24',
+        'вул. Саксаганського, 25'
+    ]
 
     current_day = starting_date
     order_probability = 60
@@ -249,8 +278,10 @@ def add_orders():
 
             customer_id = None
             receiver_id = None
+            address = ''
             customer_chance = random.randint(0, 100)
             if customer_chance <= customer_probability:
+                address = random.choice(addresses)
                 customer_id = random.randint(1, len(Customers.query.all()))
                 receiver_chance = random.randint(0, 100)
                 if receiver_chance <= receiver_probability:
@@ -260,7 +291,7 @@ def add_orders():
 
             orders_data.append({
                 'date': current_day, 'status': random.choices(statuses, weights=(75, 20, 5), k=1)[0], 'price': 0, 'discount': 0,
-                'customer_id': customer_id, 'receiver_id': receiver_id,
+                'customer_id': customer_id, 'receiver_id': receiver_id, 'customer_address' : address,
             })
         current_day += timedelta(days=1)
 

@@ -4,7 +4,6 @@ class Customers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     contactInfo = db.Column(db.String(100))
-    address = db.Column(db.String(100))
     additional = db.Column(db.String(100))
 
     ordered_orders = db.relationship('Orders', backref='ordering_customer', lazy=True, foreign_keys='Orders.customer_id')
@@ -15,6 +14,9 @@ class Customers(db.Model):
             'id': self.id,
             'name': self.name,
             'contactInfo': self.contactInfo,
-            'address': self.address,
+            'addresses': self.get_addresses(),
             'additional': self.additional,
         }
+    
+    def get_addresses(self):
+        return list({order.customer_address for order in self.received_orders if order.customer_address})

@@ -2,10 +2,10 @@ from .. import db
 from ..models.customers import Customers
 
 
-def util_create_customer(name, contact_info, address='', additional=''):
+def util_create_customer(name, contact_info, additional=''):
     customer = Customers.query.filter_by(contactInfo=str(contact_info)).all()
     if not len(customer):
-        new_customer = Customers(name=str(name), contactInfo=str(contact_info), address=str(address), additional=str(additional))
+        new_customer = Customers(name=str(name), contactInfo=str(contact_info), additional=str(additional))
         db.session.add(new_customer)
         db.session.commit()
 

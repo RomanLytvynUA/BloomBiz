@@ -3,7 +3,7 @@ from src import app, db
 from src.models.goods import *
 from src.models.suppliers import *
 from src.models.expenses import *
-
+from src.utils.settings import util_reset_settings
 
 @pytest.fixture
 def app_client():
@@ -16,8 +16,8 @@ def app_client():
         yield client
 
         db.session.remove()
-        db.drop_all()
         db.create_all()
+        util_reset_settings()
 
 
 @pytest.fixture

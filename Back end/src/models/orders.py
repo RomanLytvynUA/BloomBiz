@@ -8,7 +8,8 @@ class Orders(db.Model):
     status = db.Column(db.String(100))
     discount = db.Column(db.Float)
     price = db.Column(db.Float)
-    
+    customer_address = db.Column(db.String(100))
+
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=True)
     receiver_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=True)
 

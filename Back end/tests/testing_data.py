@@ -141,7 +141,7 @@ def add_testing_expenses_elements(return_raw=False):
 def add_testing_customers():
     with app.app_context():
         customers_data = [
-            {'name': 'Name', 'contactInfo': '+380000000000', "address": "Address", 'additional': "text"},
+            {'name': 'Name', 'contactInfo': '+380000000000', 'additional': "text"},
         ]
 
         db.session.query(Customers).delete()
@@ -160,7 +160,7 @@ def add_testing_customers():
 def add_testing_orders(customer_id):
     with app.app_context():
         orders_data = [
-            {'date': '2023-11-01', 'status': 'Status', 'price': 1.0, 'discount': 2.0, "customer_id": customer_id, "receiver_id": customer_id},
+            {'date': '2023-11-01', 'status': 'Status', 'price': 1.0, 'discount': 2.0, "customer_address": 'Address', "customer_id": customer_id, "receiver_id": customer_id},
         ]
 
         db.session.query(Orders).delete()

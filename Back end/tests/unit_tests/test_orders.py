@@ -24,6 +24,7 @@ def test_orders_generate_dict(app_client):
     del order_data['receiver_id']
     order_data['customer'] = order_data['customer_id']
     del order_data['customer_id']
+    del order_data['customer_address']
 
     order_obj = Orders.query.filter_by(id=order_data['id']).first()
 

@@ -25,6 +25,7 @@ class Orders(db.Model):
             'price': self.price,
             'customer': self.customer_id if self.customer_id else None,
             'receiver': self.receiver_id if self.receiver_id else None,
+            'customer_address': self.customer_address,
             'elements': self.generate_elements_dict(),
         }
 

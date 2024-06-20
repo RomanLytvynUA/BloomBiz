@@ -16,10 +16,9 @@ def get_customers():
 @customers.route('/create', methods=['POST'])
 def create_customer():
     customer_data = request.get_json()
-    required_data = {'name', 'additional', 'address', 'contactInfo'}
+    required_data = {'name', 'additional', 'contactInfo'}
     if not len(required_data - set(customer_data.keys())):
-        result = util_create_customer(customer_data['name'], customer_data['contactInfo'],
-                                       customer_data['address'], customer_data['additional'])
+        result = util_create_customer(customer_data['name'], customer_data['contactInfo'], customer_data['additional'])
 
         return result['message'], 200
     return "Missing required data.", 406
@@ -28,10 +27,10 @@ def create_customer():
 @customers.route('/edit', methods=['PUT'])
 def edit_customer():
     customer_data = request.get_json()
-    required_data = {'name', 'additional', 'address', 'contactInfo', 'id'}
+    required_data = {'name', 'additional', 'contactInfo', 'id'}
     if not len(required_data - set(customer_data.keys())):
         result = util_edit_customer(customer_data['id'], customer_data['name'],
-                                    customer_data['contactInfo'], customer_data['address'], customer_data['additional'])
+                                    customer_data['contactInfo'], customer_data['additional'])
 
         return result['message'], 200
     return "Missing required data.", 406

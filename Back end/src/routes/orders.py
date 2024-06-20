@@ -29,25 +29,26 @@ def create_order():
         order_elements = orders_data['elements']
         customer = None
         receiver = None
+        order_address = ''
         
         if 'customer' in orders_data:
             customer_name = orders_data['customer']['name'] if 'name' in orders_data['customer'] else ''
             customer_contact_info = orders_data['customer']['contactInfo'] if 'contactInfo' in orders_data['customer'] else ''
-            customer_address = orders_data['customer']['address'] if 'address' in orders_data['customer'] else ''
             customer_additional = orders_data['customer']['additional'] if 'additional' in orders_data['customer'] else ''
+            order_address = orders_data['customer']['address'] if 'address' in orders_data['customer'] else ''
 
-            customer = util_create_customer(customer_name, customer_contact_info, customer_address, customer_additional)['customer']
+            customer = util_create_customer(customer_name, customer_contact_info, customer_additional)['customer']
             if 'receiver' in orders_data:
                 receiver_name = orders_data['receiver']['name'] if 'name' in orders_data['receiver'] else ''
                 receiver_contact_info = orders_data['receiver']['contactInfo'] if 'contactInfo' in orders_data['receiver'] else ''
-                receiver_address = orders_data['receiver']['address'] if 'address' in orders_data['receiver'] else ''
                 receiver_additional = orders_data['receiver']['additional'] if 'additional' in orders_data['receiver'] else ''
+                order_address = orders_data['receiver']['address'] if 'address' in orders_data['receiver'] else ''
                 
-                receiver = util_create_customer(receiver_name, receiver_contact_info, receiver_address, receiver_additional)['customer']
+                receiver = util_create_customer(receiver_name, receiver_contact_info, receiver_additional)['customer']
             else:
                 receiver = customer
 
-        order = util_create_order(date=date, discount=discount, status=status, price=price, customer=customer, receiver=receiver)['order']
+        order = util_create_order(date=date, discount=discount, status=status, price=price, customer=customer, receiver=receiver, address=order_address)['order']
 
         # Looping through each element of a copy of order elements list where product string is either
         # replaced with an existing object of goods or fresh created one.
@@ -78,21 +79,22 @@ def edit_order():
         order_elements = orders_data['elements']
         customer_id = None
         receiver_id = None
+        order_address = ''
         
         if 'customer' in orders_data:
             customer_name = orders_data['customer']['name'] if 'name' in orders_data['customer'] else ''
             customer_contact_info = orders_data['customer']['contactInfo'] if 'contactInfo' in orders_data['customer'] else ''
-            customer_address = orders_data['customer']['address'] if 'address' in orders_data['customer'] else ''
             customer_additional = orders_data['customer']['additional'] if 'additional' in orders_data['customer'] else ''
+            order_address = orders_data['customer']['address'] if 'address' in orders_data['customer'] else ''
 
-            customer_id = util_create_customer(customer_name, customer_contact_info, customer_address, customer_additional)['customer'].id
+            customer_id = util_create_customer(customer_name, customer_contact_info, customer_additional)['customer'].id
             if 'receiver' in orders_data:
                 receiver_name = orders_data['receiver']['name'] if 'name' in orders_data['receiver'] else ''
                 receiver_contact_info = orders_data['receiver']['contactInfo'] if 'contactInfo' in orders_data['receiver'] else ''
-                receiver_address = orders_data['receiver']['address'] if 'address' in orders_data['receiver'] else ''
                 receiver_additional = orders_data['receiver']['additional'] if 'additional' in orders_data['receiver'] else ''
+                order_address = orders_data['receiver']['address'] if 'address' in orders_data['receiver'] else ''
                 
-                receiver_id = util_create_customer(receiver_name, receiver_contact_info, receiver_address, receiver_additional)['customer'].id
+                receiver_id = util_create_customer(receiver_name, receiver_contact_info, receiver_additional)['customer'].id
             else:
                 receiver_id = customer_id
 
@@ -104,6 +106,7 @@ def edit_order():
         order.discount = discount
         order.customer_id = customer_id
         order.receiver_id = receiver_id
+        order.customer_address = order_address
         db.session.add(order)
 
         for element in OrdersElements.query.filter_by(order=order).all():

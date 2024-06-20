@@ -1,31 +1,26 @@
 <template>
+    <!-- <button @click.prevent="(console.log(Boolean(selectedCustomerData)))">#</button> -->
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="contactInfo">Контакти клієнта</label>
-            <input v-if="newCustomer" type="text" class="form-control" name="contactInfo" id="contactInfo">
-            <select v-model="selectedCustomer" v-if="!newCustomer" class="form-select" name="contactInfo"
-                id="contactInfo" @change="selectedCustomer === 'new' ? newCustomer = true : {}">
-                <option v-if="!filteredCustomersData.map(customer => customer.contactInfo).includes(selectedCustomer)"
-                    hidden> {{ selectedCustomer }}</option>
-                <option style="background-color: green;" value="new">+ Додати нового</option>
-                <option :value="customer.contactInfo" v-for="customer in filteredCustomersData">
-                    {{ customer.contactInfo }}
-                </option>
-            </select>
-        </div>
-        <div class="col-md-6 mb-3">
-            <label for="customerName">Ім'я клієнта</label>
-            <input :value="selectedCustomerData ? selectedCustomerData.name : ''" type="text" class="form-control"
-                name="name" id="customerName" :disabled="!newCustomer">
-        </div>
+        <SelectField divClasses="col-md-6 mb-3" label="Ім'я клієнта" name="name" :directCustomOption="newCustomer"
+            :options="filteredCustomersData.map((customer) => customer.name)" customOptionValue="+ Додати нового"
+            :preselectedValue="selectedCustomerData ? selectedCustomerData.name : ''"
+            @customOptionSelected="() => { newCustomer = true; selectedCustomerData = null }"
+            @valueSelected="(option) => selectedCustomerData = customersData.find(customer => customer.name === option)" />
+        <SelectField divClasses="col-md-6 mb-3" label="Контакти клієнта" name="contactInfo"
+            :directCustomOption="newCustomer" :options="filteredCustomersData.map((customer) => customer.contactInfo)"
+            customOptionValue="+ Додати нового"
+            :preselectedValue="selectedCustomerData ? selectedCustomerData.contactInfo : ''"
+            @customOptionSelected="() => { newCustomer = true; selectedCustomerData = null }"
+            @valueSelected="(option) => selectedCustomerData = customersData.find(customer => customer.contactInfo === option)" />
+    </div>
+    <div class="row" v-if="showAddressInput">
+        <SelectField divClasses="col-md-12 mb-3" label="Адреса клієнта" name="address"
+            :disabled="!Boolean(selectedCustomerData)" :directCustomOption="newCustomer"
+            :options="selectedCustomerData ? selectedCustomerData.addresses : []" customOptionValue="+ Додати нову"
+            :preselectedValue="preselectedAddress" />
     </div>
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="customerAddress">Адреса клієнта</label>
-            <input :value="selectedCustomerData ? selectedCustomerData.address : ''" type="text" class="form-control"
-                name="address" id="customerAddress" :disabled="!newCustomer">
-        </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-12 mb-3">
             <label for="customerAddinional">Додатково</label>
             <input :value="selectedCustomerData ? selectedCustomerData.additional : ''" type="text" class="form-control"
                 name="additional" id="customerAddinional" :disabled="!newCustomer">
@@ -37,17 +32,19 @@
 import { ref, watch, computed } from 'vue';
 import { useCustomersStore } from '../../../stores/customers';
 import { useSettingsStore } from '@/stores/settings';
+import SelectField from '@/components/form_elements/SelectField.vue'
+import InputField from '@/components/form_elements/InputField.vue'
+
+const props = defineProps(['showAddressInput', 'preselectedAddress'])
 
 const customersData = computed(() => useCustomersStore().customersData)
 const filteredCustomersData = computed(() => customersData.value.filter(customer => !useSettingsStore().settingsData.ordersCustomersToIgnore.includes(customer.contactInfo)))
 
 const newCustomer = ref(false)
+const selectedCustomerData = ref(null)
 
-const selectedCustomer = ref('')
-const selectedCustomerData = computed(() => customersData.value.find(customer => customer.contactInfo === selectedCustomer.value))
 function preselectCustomer(customerId) {
-    const preselectedCustomerData = customersData.value.find(customer => customer.id === customerId);
-    selectedCustomer.value = preselectedCustomerData ? preselectedCustomerData.contactInfo : "";
+    selectedCustomerData.value = customersData.value.find(customer => customer.id === customerId);
 }
 defineExpose({ preselectCustomer })
 </script>

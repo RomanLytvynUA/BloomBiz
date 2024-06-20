@@ -5,7 +5,7 @@ import { useOrdersStore } from './orders'
 
 export const useCustomersStore = defineStore('customers', () => {
     const inLoadingState = ref(false)
-    const customersData = ref({});
+    const customersData = ref([]);
     const customersContacts = computed(() => customersData.value.flatMap(customer => customer.contactInfo));
 
     async function fetchCustomers() {

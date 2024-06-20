@@ -12,8 +12,15 @@
                             :value="oldCustomerData ? oldCustomerData.name : ''" />
                         <InputField label="Контакти:" type="text" name="contactInfo"
                             :value="oldCustomerData ? oldCustomerData.contactInfo : ''" />
-                        <InputField label="Адреса:" type="text" name="address"
-                            :value="oldCustomerData ? oldCustomerData.address : ''" />
+                        <div class="mb-3">
+                            <label class="form-label">Адреси:</label>
+                            <textarea class="form-control" rows="2" style="resize: none;"
+                                readonly>{{ oldCustomerData ? `${oldCustomerData.addresses.join(', ')}.` : '' }}</textarea>
+                            <div class="form-text">Адреси можуть бути додані до клієнта лише при створенні замовлення.
+                            </div>
+                        </div>
+                        <!-- <InputField label="Адреса:" type="text" name="address"
+                            :value="oldCustomerData ? oldCustomerData.addresses : ''" /> -->
                         <InputField label="Додатково:" type="text" name="additional"
                             :value="oldCustomerData ? oldCustomerData.additional : ''" />
                     </div>

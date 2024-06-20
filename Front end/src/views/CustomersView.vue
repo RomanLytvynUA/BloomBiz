@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, computed, markRaw } from 'vue';
+import { ref, computed, markRaw, watchEffect } from 'vue';
 
 import { useCustomersStore } from '../stores/customers';
 import { useSettingsStore } from '../stores/settings';
@@ -29,17 +29,18 @@ import DeletionModal from '../components/customers/DeletionModal.vue';
 import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 import TableComponent from '../components/table_elements/TableComponent.vue';
 import ActionButtons from '../components/table_elements/ActionButtons.vue';
+import Popover from '../components/table_elements/Popover.vue';
 
 const loading = computed(() => useCustomersStore().inLoadingState);
 
 const safetyMode = computed(() => useSettingsStore().settingsData.customersSafetyMode === "true" ? true : false);
-const customersData = computed(() => tableComponent.value ? useCustomersStore().customersData.filter(customer => {
+const customersData = computed(() => tableComponent.value && !loading.value ? useCustomersStore().customersData.filter(customer => {
     const nameFilterComponent = tableComponent.value.$refs.nameFilterComponent[0];
     const contactsFilterComponent = tableComponent.value.$refs.contactsFilterComponent[0];
     const addressFilterComponent = tableComponent.value.$refs.addressFilterComponent[0];
 
     return nameFilterComponent.filterData(customer.name) && contactsFilterComponent.filterData(customer.contactInfo)
-        && addressFilterComponent.filterData(customer.address)
+        && addressFilterComponent.filterData(customer.addresses.join(' '))
 }) : [])
 
 const tableComponent = ref(null)
@@ -60,8 +61,17 @@ const tableFilters = ref([
 const tableRows = computed(() => customersData.value.map(customer => [
     customer.name,
     customer.contactInfo,
-    customer.address,
-    // customer.additional,
+    (
+        customer.addresses.length ?
+            {
+                component: Popover,
+                props: {
+                    maxSize: 30,
+                    text: `${customer.addresses.join('/')}.`,
+                    title: 'Адреси клієнта:',
+                    id: `customerAddressesPopover${customer.id}`,
+                }
+            } : ''),
     {
         component: ActionButtons,
         props: {

@@ -22,7 +22,8 @@
                         </div>
                         <div id="customersData" v-if="!guest">
                             <form id="customerForm">
-                                <CustomerForm ref="customerForm" />
+                                <CustomerForm ref="customerForm" :showAddressInput="receiverIsOrderer"
+                                    :preselectedAddress="preselectedAddress" />
                             </form>
                             <div class="mb-3">
                                 <div class="form-check">
@@ -33,7 +34,8 @@
                                 </div>
                             </div>
                             <form v-if="!receiverIsOrderer" id="receiverForm">
-                                <CustomerForm ref="receiverForm" />
+                                <CustomerForm ref="receiverForm" :showAddressInput="true"
+                                    :preselectedAddress="preselectedAddress" />
                             </form>
                         </div>
                     </div>
@@ -48,7 +50,7 @@ import { ref, watch, watchEffect } from 'vue';
 
 import CustomerForm from './CustomerForm.vue';
 
-const props = defineProps(['accordionIdPrefix'])
+const props = defineProps(['accordionIdPrefix', 'preselectedAddress'])
 const guest = ref(true)
 const receiverIsOrderer = ref(true)
 

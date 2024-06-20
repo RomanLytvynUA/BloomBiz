@@ -1,13 +1,23 @@
 <template>
-    <div class="mb-3">
+    <div :class="divClasses">
         <label class="form-label">{{ label }}</label>
-        <input class="form-control" v-model="inputValue" :type="type" :name="name">
+        <input class="form-control" v-model="inputValue" :type="type" :name="name" :disabled="disabled">
     </div>
 </template>
 
 <script>
 export default {
-    props: ['label', 'name', 'type', 'value'],
+    props: {
+        'label': String,
+        'name': String,
+        'type': String,
+        'value': String,
+        'disabled': Boolean,
+        'divClasses': {
+            type: String,
+            default: "mb-3"
+        }
+    },
     data() {
         return {
             inputValue: this.value,

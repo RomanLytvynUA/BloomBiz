@@ -13,6 +13,7 @@
                             :preselectedValue="orderData ? orderData.status : null" />
                     </form>
                     <CustomerSelect ref="customerSelect"
+                        :preselectedAddress="orderData ? orderData.customer_address : ''"
                         :accordionIdPrefix="'EditOrder' + (orderData ? orderData.id : 0)" />
                     <form id="editOrderElementsForm">
                         <ElementsList ref="elementsList" @elements-changed="(data) => { elements = data; }"

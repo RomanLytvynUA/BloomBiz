@@ -10,7 +10,6 @@
                     <div class="modal-body">
                         <InputField label="Ім'я:" type="text" name="name" />
                         <InputField label="Контакти:" type="text" name="contactInfo" />
-                        <InputField label="Адреса:" type="text" name="address" />
                         <InputField label="Додатково:" type="text" name="additional" />
                     </div>
                     <div class="modal-footer">

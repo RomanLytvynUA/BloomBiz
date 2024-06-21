@@ -138,6 +138,10 @@ defineExpose({ collectData, updateData, reset })
 </script>
 
 <style scoped>
+form {
+    margin-left: 10px;
+}
+
 .accordion-item .accordion-button:focus {
     outline: none;
     box-shadow: none;

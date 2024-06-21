@@ -8,7 +8,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="newOrderForm">
-                        <InputField ref="dateInput" label="Дата:" type="date" name="date" :value="todaysDate" />
+                        <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
+                            :value="formatISO(new Date()).slice(0, 16)" />
                         <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
                             preselectedValue="" />
                     </form>
@@ -40,6 +41,7 @@
 
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
+import { formatISO } from 'date-fns';
 
 import { useOrdersStore } from '@/stores/orders';
 
@@ -50,7 +52,6 @@ import SelectField from '../form_elements/SelectField.vue'
 
 const props = defineProps(['statuses'])
 
-const todaysDate = new Date().toISOString().split('T')[0];
 const customerSelect = ref(null);
 const elementsList = ref(null);
 watch(elementsList, () => {

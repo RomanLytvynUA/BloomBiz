@@ -8,7 +8,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="editOrderForm">
-                        <InputField ref="dateInput" label="Дата:" type="date" name="date" :value="orderDate" />
+                        <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
+                            :value="orderDate" />
                         <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
                             :preselectedValue="orderData ? orderData.status : null" />
                     </form>
@@ -18,9 +19,9 @@
                     <form id="editOrderElementsForm">
                         <ElementsList ref="elementsList" @elements-changed="(data) => { elements = data; }"
                             @total-price-changed="(total) => {
-                            orderTotal = total;
-                            orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
-                        }" />
+                                orderTotal = total;
+                                orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
+                            }" />
                     </form>
                     <br>
                     <form id="editOrderGeneralForm">
@@ -45,6 +46,7 @@
 <script setup>
 import { computed, ref, onMounted, watch, watchEffect } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
+import { formatISO } from 'date-fns';
 
 import ElementsList from './ElementsList.vue'
 import CustomerSelect from './customers/CustomerSelect.vue'
@@ -72,7 +74,7 @@ const elements = ref(null)
 watch(orderData, () => {
     if (orderData.value) {
         elementsList.value.reset()
-        orderDate.value = new Date(orderData.value.date.split('-').reverse().join('-')).toISOString().split('T')[0]
+        orderDate.value = new Date(orderData.value.date).toISOString().slice(0, 16)
         orderTotal.value = orderData.value.price + orderData.value.price * orderData.value.discount / 100 + 1
         orderDiscount.value = orderData.value.discount
         const prefilledElementsData = { ...orderData.value.elements, null: false };

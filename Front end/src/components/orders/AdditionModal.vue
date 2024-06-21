@@ -15,12 +15,15 @@
                     </form>
                     <CustomerSelect ref="customerSelect" accordionIdPrefix="CreateOrder" />
 
-                    <form id="orderElementsForm">
+                    <form id="orderElementsForm" class="mb-3">
                         <ElementsList ref="elementsList" @elements-changed="(data) => elements = data"
                             @total-price-changed="(total) => orderTotal = total" />
                     </form>
-                    <br>
                     <form id="orderGeneralForm">
+                        <div class="mb-3">
+                            <label for="floatingTextarea">Коментар: </label>
+                            <textarea class="form-control" name="additional"></textarea>
+                        </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Знижка:</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount">

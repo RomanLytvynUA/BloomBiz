@@ -16,15 +16,18 @@
                     <CustomerSelect ref="customerSelect"
                         :preselectedAddress="orderData ? orderData.customer_address : ''"
                         :accordionIdPrefix="'EditOrder' + (orderData ? orderData.id : 0)" />
-                    <form id="editOrderElementsForm">
+                    <form id="editOrderElementsForm" class="mb-3">
                         <ElementsList ref="elementsList" @elements-changed="(data) => { elements = data; }"
                             @total-price-changed="(total) => {
                                 orderTotal = total;
                                 orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
                             }" />
                     </form>
-                    <br>
                     <form id="editOrderGeneralForm">
+                        <div class="mb-3">
+                            <label for="floatingTextarea">Коментар: </label>
+                            <textarea :value="orderAdditional" class="form-control" name="additional"></textarea>
+                        </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Знижка:</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount"
@@ -70,6 +73,7 @@ const orderTotalField = ref(null)
 const dateInput = ref(null)
 const statusInput = ref(null)
 const elements = ref(null)
+const orderAdditional = ref(null)
 
 watch(orderData, () => {
     if (orderData.value) {
@@ -77,6 +81,7 @@ watch(orderData, () => {
         orderDate.value = new Date(orderData.value.date).toISOString().slice(0, 16)
         orderTotal.value = orderData.value.price + orderData.value.price * orderData.value.discount / 100 + 1
         orderDiscount.value = orderData.value.discount
+        orderAdditional.value = orderData.value.additional
         const prefilledElementsData = { ...orderData.value.elements, null: false };
         elementsList.value.reset()
         elementsList.value.setNewData([].concat(...Object.keys(orderData.value.elements)), prefilledElementsData)

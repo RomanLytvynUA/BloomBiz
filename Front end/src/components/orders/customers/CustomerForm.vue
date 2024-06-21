@@ -51,7 +51,6 @@ const selectedCustomerData = ref(null)
 
 function preselectCustomer(customerId) {
     selectedCustomerData.value = customersData.value.find(customer => customer.id === customerId);
-    console.log(selectedCustomerData.value)
 }
 
 defineExpose({ preselectCustomer })

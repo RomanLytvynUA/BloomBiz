@@ -8,8 +8,9 @@ class Orders(db.Model):
     status = db.Column(db.String(100))
     discount = db.Column(db.Float)
     price = db.Column(db.Float)
-    customer_address = db.Column(db.String(100))
+    additional = db.Column(db.String(500))
 
+    customer_address = db.Column(db.String(100))
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=True)
     receiver_id = db.Column(db.Integer, db.ForeignKey('customers.id', ondelete='CASCADE'), nullable=True)
 
@@ -23,6 +24,7 @@ class Orders(db.Model):
             'status': self.status,
             'discount': self.discount,
             'price': self.price,
+            'additional': self.additional,
             'customer': self.customer_id if self.customer_id else None,
             'receiver': self.receiver_id if self.receiver_id else None,
             'customer_address': self.customer_address,

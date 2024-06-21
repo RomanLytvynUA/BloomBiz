@@ -20,12 +20,13 @@ def get_orders():
 def create_order():
     orders_data = request.get_json()
 
-    required_data = {'date', 'price', 'discount', 'status', "elements"}
+    required_data = {'date', 'price', 'discount', 'status', "elements", "additional"}
     if not len(required_data - set(orders_data.keys())):
         date = orders_data['date']
         price = orders_data['price']
         status = orders_data['status']
         discount = orders_data['discount']
+        additional = orders_data['additional']
         order_elements = orders_data['elements']
         customer = None
         receiver = None
@@ -48,7 +49,8 @@ def create_order():
             else:
                 receiver = customer
 
-        order = util_create_order(date=date, discount=discount, status=status, price=price, customer=customer, receiver=receiver, address=order_address)['order']
+        order = util_create_order(date=date, discount=discount, status=status, price=price,
+                                   customer=customer, receiver=receiver, address=order_address, additional=additional)['order']
 
         # Looping through each element of a copy of order elements list where product string is either
         # replaced with an existing object of goods or fresh created one.
@@ -76,6 +78,7 @@ def edit_order():
         price = orders_data['price']
         status = orders_data['status']
         discount = orders_data['discount']
+        additional = orders_data['additional']
         order_elements = orders_data['elements']
         customer_id = None
         receiver_id = None
@@ -104,6 +107,7 @@ def edit_order():
         order.price = price
         order.status = status
         order.discount = discount
+        order.additional = additional
         order.customer_id = customer_id
         order.receiver_id = receiver_id
         order.customer_address = order_address

@@ -29,6 +29,7 @@ def edit_customer():
     customer_data = request.get_json()
     required_data = {'name', 'additional', 'contactInfo', 'id'}
     if not len(required_data - set(customer_data.keys())):
+        
         result = util_edit_customer(customer_data['id'], customer_data['name'],
                                     customer_data['contactInfo'], customer_data['additional'])
 

@@ -16,12 +16,11 @@ def util_create_customer(name, contact_info, additional=''):
                 'message': 'Customer with contacts already exists.'}
 
 
-def util_edit_customer(id, name, contact_info, address='', additional=''):
+def util_edit_customer(id, name, contact_info, additional=''):
     customer = Customers.query.filter_by(id=id).all()
     if len(customer):
         customer[0].name = name
         customer[0].contactInfo = contact_info
-        customer[0].address = address
         customer[0].additional = additional
         db.session.add(customer[0])
         db.session.commit()

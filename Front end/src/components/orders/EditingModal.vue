@@ -17,8 +17,8 @@
                         :preselectedAddress="orderData ? orderData.customer_address : ''"
                         :accordionIdPrefix="'EditOrder' + (orderData ? orderData.id : 0)" />
                     <form id="editOrderElementsForm" class="mb-3">
-                        <ElementsList ref="elementsList" @elements-changed="(data) => { elements = data; }"
-                            @total-price-changed="(total) => {
+                        <ElementsAccordion ref="elementsList" @elements-changed="(data) => { elements = data; }"
+                            :accordionId="orderData ? orderData.id : ''" @total-price-changed="(total) => {
                                 orderTotal = total;
                                 orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
                             }" />
@@ -51,7 +51,7 @@ import { computed, ref, onMounted, watch, watchEffect } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
 import { formatISO } from 'date-fns';
 
-import ElementsList from './ElementsList.vue'
+import ElementsAccordion from './ElementsAccordion.vue'
 import CustomerSelect from './customers/CustomerSelect.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'

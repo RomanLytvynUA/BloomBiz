@@ -16,7 +16,7 @@
                     <CustomerSelect ref="customerSelect" accordionIdPrefix="CreateOrder" />
 
                     <form id="orderElementsForm" class="mb-3">
-                        <ElementsList ref="elementsList" @elements-changed="(data) => elements = data"
+                        <ElementsAccordion ref="elementsList" @elements-changed="(data) => elements = data"
                             @total-price-changed="(total) => orderTotal = total" />
                     </form>
                     <form id="orderGeneralForm">
@@ -48,7 +48,7 @@ import { formatISO } from 'date-fns';
 
 import { useOrdersStore } from '@/stores/orders';
 
-import ElementsList from './ElementsList.vue'
+import ElementsAccordion from './ElementsAccordion.vue'
 import CustomerSelect from './customers/CustomerSelect.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'

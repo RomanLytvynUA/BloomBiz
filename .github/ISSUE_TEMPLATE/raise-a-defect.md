@@ -1,8 +1,7 @@
 ---
-name: Page > Section > Short defect summary (e.g. Suppliers > Table > Filters do not
-  work as expected)
+name: Raise a defect
 about: Create a report to help us improve
-title: ''
+title: Page > Section > Short defect summary
 labels: bug
 assignees: RomanLytvynUA
 

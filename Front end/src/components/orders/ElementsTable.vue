@@ -2,11 +2,11 @@
     <table class="table table-bordered text-center table-sm align-middle">
         <thead>
             <tr>
-                <th scope="col" width="60px"></th>
-                <th scope="col" width="30%" class="small">Товар</th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="35%" class="small">Товар</th>
                 <th scope="col" width="15%" class="small">Кількість</th>
-                <th scope="col" width="20%" class="small">Ціна</th>
-                <th scope="col" width="20%" class="small">Всього</th>
+                <th scope="col" width="15%" class="small">Ціна</th>
+                <th scope="col" width="25%" class="small">Всього</th>
             </tr>
         </thead>
         <tbody>
@@ -16,8 +16,9 @@
                         @click="rows.splice(index, 1); calculateTotalPrice()">X</button>
                 </td>
                 <td>
-                    <SelectField @valueSelected="(newValue) => handleProductSelect(index, newValue)"
-                        :name="'expenseElement' + index" :preselectedValue="rows[index].product" :options="row.options"
+                    <Autocomplete :small="false" :name="'orderElement' + index"
+                        @valueSelected="(newValue) => handleProductSelect(index, newValue)"
+                        :preselectedValue="rows[index].product" :options="row.options" customOptionLabel=""
                         divClasses="" />
                 </td>
                 <td>
@@ -51,7 +52,7 @@ import { ref, computed, watch, watchEffect } from 'vue';
 import { useGoodsStore } from '@/stores/goods';
 import { useSettingsStore } from '@/stores/settings';
 
-import SelectField from '../form_elements/SelectField.vue';
+import Autocomplete from '../form_elements/Autocomplete.vue'
 
 const emit = defineEmits(['totalPriceChanged', 'rowsChanged']);
 const props = defineProps({

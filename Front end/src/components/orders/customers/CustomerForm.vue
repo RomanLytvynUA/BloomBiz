@@ -1,16 +1,16 @@
 <template>
     <div class="row">
-        <SelectField divClasses="col-md-6 mb-3" label="Ім'я клієнта" name="name" :directCustomOption="newCustomer"
-            :options="filteredCustomersData.map((customer) => customer.name)" customOptionValue="+ Додати нового"
+        <Autocomplete divClasses="col-md-6 mb-3" label="Ім'я клієнта" name="name" :forceCustomInput="newCustomer"
+            :options="filteredCustomersData.map((customer) => customer.name)" customOptionLabel="+ Додати нового"
             :preselectedValue="selectedCustomerData ? selectedCustomerData.name : ''"
             @customOptionSelected="() => { newCustomer = true; selectedCustomerData = null }"
-            @valueSelected="(option) => selectedCustomerData = customersData.find(customer => customer.name === option)" />
-        <SelectField divClasses="col-md-6 mb-3" label="Контакти клієнта" name="contactInfo"
-            :directCustomOption="newCustomer" :options="filteredCustomersData.map((customer) => customer.contactInfo)"
-            customOptionValue="+ Додати нового"
+            @valueSelected="(option) => !newCustomer ? selectedCustomerData = customersData.find(customer => customer.name === option) : {}" />
+        <Autocomplete divClasses="col-md-6 mb-3" label="Контакти клієнта" name="contactInfo"
+            :forceCustomInput="newCustomer" :options="filteredCustomersData.map((customer) => customer.contactInfo)"
+            customOptionLabel="+ Додати нового"
             :preselectedValue="selectedCustomerData ? selectedCustomerData.contactInfo : ''"
             @customOptionSelected="() => { newCustomer = true; selectedCustomerData = null }"
-            @valueSelected="(option) => selectedCustomerData = customersData.find(customer => customer.contactInfo === option)" />
+            @valueSelected="(option) => !newCustomer ? selectedCustomerData = customersData.find(customer => customer.contactInfo === option) : {}" />
     </div>
     <div class="row" v-if="showAddressInput">
         <div class="mb-3">
@@ -18,9 +18,9 @@
                 <input v-model="pickup" class="form-check-input" type="checkbox" id="pickupCheckbox">
                 <label class="form-check-label" for="pickupCheckbox">Самовивіз</label>
             </div>
-            <SelectField v-if="!pickup" divClasses="col-md-12" label="Адреса клієнта" name="address"
-                :disabled="!Boolean(selectedCustomerData)" :directCustomOption="newCustomer"
-                :options="selectedCustomerData ? selectedCustomerData.addresses : []" customOptionValue="+ Додати нову"
+            <Autocomplete v-if="!pickup" divClasses="col-md-12" label="Адреса клієнта" name="address"
+                :disabled="!Boolean(selectedCustomerData)" :forceCustomInput="newCustomer"
+                :options="selectedCustomerData ? selectedCustomerData.addresses : []" customOptionLabel="+ Додати нову"
                 :preselectedValue="preselectedAddress" />
         </div>
     </div>
@@ -37,8 +37,9 @@
 import { ref, watch, computed } from 'vue';
 import { useCustomersStore } from '../../../stores/customers';
 import { useSettingsStore } from '@/stores/settings';
+
 import SelectField from '@/components/form_elements/SelectField.vue'
-import InputField from '@/components/form_elements/InputField.vue'
+import Autocomplete from '@/components/form_elements/Autocomplete.vue'
 
 const props = defineProps(['showAddressInput', 'preselectedAddress'])
 

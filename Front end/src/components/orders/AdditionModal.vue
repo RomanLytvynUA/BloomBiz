@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" id="addOrderModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="max-width: 600px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Додати нове замовлення</h5>

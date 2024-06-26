@@ -7,7 +7,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <SelectField ref="select" :label="labelName" customOptionValue="" :options="options" />
+                    <Autocomplete ref="select" :label="labelName" customOptionLabel="" :options="options" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue';
-import SelectField from '../../form_elements/SelectField.vue'
+import { ref } from 'vue';
+import Autocomplete from '../../form_elements/Autocomplete.vue'
 
 const select = ref(null)
 const emit = defineEmits(['statusAdded'])
@@ -32,13 +32,13 @@ const props = defineProps({
 })
 
 function validateStatus() {
-    if (select.value.select !== "") {
-        select.value.$refs.selectElement.classList.remove('is-invalid');
-        emit('dataSelected', select.value.select)
+    if (select.value.input !== "") {
+        select.value.inputElement.classList.remove('is-invalid');
+        emit('dataSelected', select.value.input)
         select.value.reset()
         $(`#${props.idPrefix}IgnoreModal`).modal('hide');
     } else {
-        select.value.$refs.selectElement.classList.add('is-invalid');
+        select.value.inputElement.classList.add('is-invalid');
     }
 }
 </script>

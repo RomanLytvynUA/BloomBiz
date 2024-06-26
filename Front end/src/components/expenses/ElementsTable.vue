@@ -2,11 +2,11 @@
     <table class="table table-bordered text-center table-sm align-middle">
         <thead>
             <tr>
-                <th scope="col" width="70px"></th>
-                <th scope="col" width="30%" class="small">Товар</th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="35%" class="small">Товар</th>
                 <th scope="col" width="15%" class="small">Кількість</th>
-                <th scope="col" width="20%" class="small">Ціна</th>
-                <th scope="col" width="20%" class="small">Всього</th>
+                <th scope="col" width="15%" class="small">Ціна</th>
+                <th scope="col" width="25%" class="small">Всього</th>
             </tr>
         </thead>
         <tbody>
@@ -16,9 +16,10 @@
                         @click="rows.splice(index, 1); calculateTotalPrice()">X</button>
                 </td>
                 <td>
-                    <SelectField @valueSelected="(newValue) => rows[index].product = newValue"
-                        :name="'expenseElement' + index" :preselectedValue="rows[index].product" :options="row.options"
-                        customOptionValue="+ Додати новий" divClasses="" />
+                    <Autocomplete :small="false" :name="'expenseElement' + index"
+                        @valueSelected="(newValue) => rows[index].product = newValue"
+                        :preselectedValue="rows[index].product" :options="row.options"
+                        customOptionLabel="+ Додати новий" divClasses="" />
                 </td>
                 <td>
                     <input v-model="rows[index].quantity" @input="calculateTotalPrice()" type="number"
@@ -52,7 +53,7 @@ import { ref, computed, watch } from 'vue';
 import { useGoodsStore } from '@/stores/goods'
 import { useSettingsStore } from '@/stores/settings';
 
-import SelectField from '../form_elements/SelectField.vue'
+import Autocomplete from '../form_elements/Autocomplete.vue'
 
 const props = defineProps(['category', 'rows']);
 const goodsData = computed(() => useGoodsStore().goodsData)

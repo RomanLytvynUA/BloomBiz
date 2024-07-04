@@ -82,7 +82,6 @@
             </ul>
         </div>
     </div>
-    <!-- <button @click="console.log(filteredOrderStatuses)">---</button> -->
 </template>
 
 
@@ -112,8 +111,8 @@ const suppliers = computed(() => useSuppliersStore().suppliersNames)
 
 const orderStatuses = computed(() => useSettingsStore().settingsData.ordersStatuses);
 const filteredOrderStatuses = ['Продано']
-const filteredExpenseCategories = [].concat(categories.value)
-const filteredExpenseSuppliers = [].concat(suppliers.value)
+let filteredExpenseCategories = [].concat(categories.value)
+let filteredExpenseSuppliers = [].concat(suppliers.value)
 
 const incomeChartDateSelect = ref(null);
 const incomeChartTypeSelect = ref("day")
@@ -167,11 +166,10 @@ const setIncomeChartData = () => {
         return filteredOrderStatuses.includes(order.status) && incomeChartDateSelect.value.filterDate(order.date)
     });
     const expenses = expensesData.value.filter(expense => {
-        const categoryName = categoriesData.value.find(category => category.id === expense.category).name
-        const supplierName = suppliersData.value.find(supplier => supplier.id === expense.supplier).name
+        const categoryName = categoriesData.value.find(category => category.id === expense.category)?.name
+        const supplierName = suppliersData.value.find(supplier => supplier.id === expense.supplier)?.name
         return filteredExpenseCategories.includes(categoryName) && filteredExpenseSuppliers.includes(supplierName) && incomeChartDateSelect.value.filterDate(expense.date)
     });
-
     let expensesPrices = []
     let ordersPrices = []
     let incomePrices = []
@@ -262,9 +260,12 @@ const setIncomeChartData = () => {
     incomeChartObj.update()
 };
 
-watch([ordersData, expensesData], () => {
+watch([ordersData, expensesData, categoriesData, suppliersData], () => {
     setIncomeChartData()
 }, { deep: true })
+
+watch(categories, () => filteredExpenseCategories = [].concat(categories.value))
+watch(suppliers, () => filteredExpenseCategories = [].concat(suppliers.value))
 
 onMounted(() => {
     const ctx = incomeChart.value.getContext('2d');

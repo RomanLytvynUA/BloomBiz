@@ -19,8 +19,9 @@ def create_customer():
     required_data = {'name', 'additional', 'contactInfo'}
     if not len(required_data - set(customer_data.keys())):
         result = util_create_customer(customer_data['name'], customer_data['contactInfo'], customer_data['additional'])
+        changes = {'customers': [result['customer'].generate_dict()]} if result['changes_applied'] else {}
 
-        return result['message'], 200
+        return jsonify(changes), 200
     return "Missing required data.", 406
 
 
@@ -29,11 +30,11 @@ def edit_customer():
     customer_data = request.get_json()
     required_data = {'name', 'additional', 'contactInfo', 'id'}
     if not len(required_data - set(customer_data.keys())):
-        
         result = util_edit_customer(customer_data['id'], customer_data['name'],
                                     customer_data['contactInfo'], customer_data['additional'])
+        changes = {'customers': [result['customer'].generate_dict()]} if result['changes_applied'] else {}
 
-        return result['message'], 200
+        return jsonify(changes), 200
     return "Missing required data.", 406
 
 

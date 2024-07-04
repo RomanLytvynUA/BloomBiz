@@ -19,8 +19,9 @@ def create_supplier():
     required_data = {'name', 'additional', 'contactInfo'}
     if not len(required_data - set(supplier_data.keys())):
         result = util_create_supplier(supplier_data['name'], supplier_data['contactInfo'], supplier_data['additional'])
+        changes = {'suppliers': [result['supplier'].generate_dict()]} if result['changes_applied'] else {}
 
-        return result['message'], 200
+        return jsonify(changes), 200
     return "Missing required data.", 406
 
 
@@ -31,8 +32,9 @@ def edit_supplier():
     if not len(required_data - set(supplier_data.keys())):
         result = util_edit_supplier(supplier_data['id'], supplier_data['name'],
                                     supplier_data['contactInfo'], supplier_data['additional'])
+        changes = {'suppliers': [result['supplier'].generate_dict()]} if result['changes_applied'] else {}
 
-        return result['message'], 200
+        return jsonify(changes), 200
     return "Missing required data.", 406
 
 

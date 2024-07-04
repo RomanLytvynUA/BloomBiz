@@ -65,7 +65,7 @@ const props = defineProps({
 const hideOutOfStock = computed(() => useSettingsStore().settingsData.ordersHideOutOfStock === "true" ? true : false);
 const goodsToIgnore = computed(() => useSettingsStore().settingsData.ordersGoodsToIgnore);
 
-const goodsData = computed(() => useGoodsStore().inStockGoodsData.filter((product) => product.category === props.category));
+const goodsData = computed(() => useGoodsStore().goodsData.find((category) => category.name === props.category)?.goods);
 const totalPrice = ref(0);
 const rows = ref(props.prefilledElements.map(element => ({
     options: goodsData.value.filter((product) => (product.quantity >= 1 || !hideOutOfStock.value) && (!goodsToIgnore.value.includes(product.product))).map(product => product.product),
@@ -85,7 +85,7 @@ calculateTotalPrice(false);
 
 function addRow(value = '', quantity = '', price = '') {
     rows.value.push({
-        options: goodsData.value.filter((product) => (product.quantity >= 1 || !hideOutOfStock.value) && (!goodsToIgnore.value.includes(product.product))).map(product => product.product),
+        options: goodsData.value.filter((product) => (product.quantity >= 1 || !hideOutOfStock.value) && (!goodsToIgnore.value.includes(product.name))).map(product => product.name),
         product: value,
         quantity: quantity,
         price: price,
@@ -97,7 +97,7 @@ function handleProductSelect(index, newValue) {
     const updatedRow = { ...rows.value[index] };
 
     updatedRow.product = newValue;
-    updatedRow.price = goodsData.value.find((product) => product.product === newValue).price;
+    updatedRow.price = goodsData.value.find((product) => product.name === newValue).price;
 
     // Update the row in the array
     rows.value[index] = updatedRow;

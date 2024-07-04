@@ -20,22 +20,29 @@ import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 
 // get and filter data
 const loading = computed(() => useGoodsStore().inLoadingState);
-const goodsData = computed(() => useGoodsStore().inStockGoodsData)
-const categoriesData = computed(() => useGoodsStore().categoriesNames)
-const filteredGoods = ref([])
+const goodsData = computed(() => useGoodsStore().goodsData);
+const categoriesData = computed(() => useGoodsStore().categoriesNames);
+const filteredGoods = ref([]);
 
 async function filterGoods() {
+  filteredGoods.value = [];
   if (tableComponent.value) {
     const categoryFilterComponent = tableComponent.value.$refs.categoryFilterComponent[0];
     const productFilterComponent = tableComponent.value.$refs.productFilterComponent[0];
     const quantityFilterComponent = tableComponent.value.$refs.quantityFilterComponent[0];
 
-    filteredGoods.value = goodsData.value.filter(product => {
-      return (
-        categoryFilterComponent.filterData(product.category) &&
-        productFilterComponent.filterData(product.product) &&
-        (() => {
-          const quantityFilter = quantityFilterComponent.getChoice();
+    for (const category of goodsData.value) {
+      if (!categoryFilterComponent.filterData(category.name)) {
+        continue;
+      }
+
+      filteredGoods.value = filteredGoods.value.concat(...category.goods.filter(product => {
+        product.categoryName = category.name
+        product.categoryUnits = category.units
+        const passesNameFilter = productFilterComponent.filterData(product.name);
+
+        const quantityFilter = quantityFilterComponent.getChoice();
+        const passesQuantityFilter = (() => {
           switch (quantityFilter) {
             case "В наявності":
               return Number(product.quantity) > 0;
@@ -48,9 +55,11 @@ async function filterGoods() {
             default:
               return false;
           }
-        })()
-      );
-    });
+        })();
+
+        return passesNameFilter && passesQuantityFilter;
+      }));
+    }
   }
 }
 
@@ -74,9 +83,9 @@ const tableHeaders = ref([
 ]);
 
 const tableRows = computed(() => filteredGoods.value.map(product => [
-  product.category,
-  product.product,
-  `${product.quantity} ${product.units}`,
+  product.categoryName,
+  product.name,
+  `${product.quantity} ${product.categoryUnits}`,
   {
     component: PriceControl,
     props: {
@@ -87,8 +96,7 @@ const tableRows = computed(() => filteredGoods.value.map(product => [
   {
     component: DecommissionBtnGroup,
     props: {
-      productName: product.product,
-      productCategory: product.category,
+      productId: product.id
     },
   },
 ]));

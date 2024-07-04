@@ -30,24 +30,22 @@
                 <div class="accordion-body">
                     <div class="row align-items-center">
                         <div class="col-md-4"
-                            v-for="product in goodsData.filter(productObj => productObj.category === category)">
+                            v-for="product in goodsData.find(categoryObj => categoryObj.name === category).goods">
                             <div class="card mb-3">
                                 <div class="card-header text-center">
-                                    {{ product.product }}
+                                    {{ product.name }}
                                 </div>
                                 <ul class="list-group list-group-flush text-center">
                                     <li class="list-group-item">
                                         <div style="overflow: auto;">
                                             <ActionButtons :delDisabled="safetyMode" editModalId="#editProductModal"
-                                                delModalId="#delProductModal" :data-name="product.product"
+                                                delModalId="#delProductModal" :data-name="product.name"
                                                 :data-product-id="product.id"
                                                 style="display: flex; justify-content: center;" />
                                         </div>
                                     </li>
                                 </ul>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -80,7 +78,7 @@ import CategoryEditing from './assortmentControls/CategoryEditing.vue'
 import CategoryDeletion from './assortmentControls/CategoryDeletion.vue'
 
 const categories = computed(() => useGoodsStore().categoriesNames)
-const goodsData = computed(() => useGoodsStore().inStockGoodsData)
+const goodsData = computed(() => useGoodsStore().goodsData)
 const safetyMode = computed(() => useSettingsStore().settingsData.goodsSafetyMode === "true" ? true : false);
 </script>
 

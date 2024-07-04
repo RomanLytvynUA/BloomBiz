@@ -51,7 +51,7 @@ function filterOrders() {
     filteredOrders.value = filteredData
   }
 }
-watch(ordersData, filterOrders)
+watch(() => ordersData.value, () => filterOrders(), { deep: true })
 
 // table staff
 const tableComponent = ref(null);
@@ -69,30 +69,35 @@ const tableHeaders = ref([
   { 'name': 'Дія', 'size': '180px' },
 ]);
 
-const tableRows = computed(() => filteredOrders.value.map(order => [
-  new Date(order.date).toLocaleDateString('en-GB').split('/').join('-'),
-  order.status,
-  {
-    component: Popover,
-    props: {
-      maxSize: 20,
-      text: `${[].concat(...Object.values(order.elements)).map(element => useGoodsStore().minGoodsData.find(product => product.id == element.product).name).join(', ')}.`,
-      title: 'Склад замовлення:',
-      id: order.id,
+const tableRows = computed(() => filteredOrders.value.map(order => {
+  return [
+    new Date(order.date).toLocaleDateString('en-GB').split('/').join('-'),
+    order.status,
+    {
+      component: Popover,
+      props: {
+        maxSize: 20,
+        text: `${[].concat(...Object.values(order.elements)).map(element => {
+          const productData = useGoodsStore().minGoodsData.find(product => product.id == element.product)
+          return productData ? productData.name : ''
+        }).join(', ')}.`,
+        title: 'Склад замовлення:',
+        id: order.id,
+      },
     },
-  },
-  order.price,
-  {
-    component: ActionButtons,
-    props: {
-      delModalId: "#delOrderModal",
-      delText: "Розібрати",
-      editModalId: "#editOrderModal",
-      'data-order-id': order.id,
-      delDisabled: safetyMode.value,
-    },
-  }
-]));
+    order.price,
+    {
+      component: ActionButtons,
+      props: {
+        delModalId: "#delOrderModal",
+        delText: "Розібрати",
+        editModalId: "#editOrderModal",
+        'data-order-id': order.id,
+        delDisabled: safetyMode.value,
+      },
+    }
+  ]
+}));
 
 onMounted(() => {
   filterOrders()

@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useSuppliersStore } from '@/stores/suppliers'
 import { useGoodsStore } from '@/stores/goods'
 import { urlList } from '../config'
+import { updateData } from './general'
 
 export const useExpensesStore = defineStore('expenses', () => {
     const inLoadingState = ref(false);
@@ -29,9 +29,8 @@ export const useExpensesStore = defineStore('expenses', () => {
             body: JSON.stringify(expenseData),
         })
 
-        useSuppliersStore().fetchSuppliers();
-        useGoodsStore().fetchGoods();
-        fetchExpenses();
+        const changes = await response.json()
+        updateData(changes)
     }
 
     async function editExpense(expenseData) {
@@ -43,16 +42,15 @@ export const useExpensesStore = defineStore('expenses', () => {
             body: JSON.stringify(expenseData),
         })
 
-        useSuppliersStore().fetchSuppliers();
-        useGoodsStore().fetchGoods();
-        fetchExpenses();
+        const changes = await response.json()
+        updateData(changes)
     }
 
     async function delExpense(expenseId) {
         const response = await fetch(urlList.delExpense + expenseId, { method: 'DELETE' })
 
         fetchExpenses()
-        useGoodsStore().fetchInStockGoods()
+        useGoodsStore().fetchGoods()
     }
 
     return { expensesData, inLoadingState, fetchExpenses, delExpense, addExpense, editExpense }

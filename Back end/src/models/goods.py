@@ -32,11 +32,13 @@ class Goods(db.Model):
     orders_elements = db.relationship('OrdersElements', backref='product', passive_deletes=True, lazy=True)
 
     def generate_dict(self):
-        return {
+        from src.utils.goods import util_calc_instock
+
+        return {**{
             'id': self.id,
             'name': self.name,
             'category': self.category_id,
-        }
+        }, **util_calc_instock(self.id)}
 
 
 class Decommissions(db.Model):

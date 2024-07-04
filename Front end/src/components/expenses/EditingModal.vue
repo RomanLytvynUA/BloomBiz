@@ -104,6 +104,7 @@ function validateExpense() {
             json[key] = value;
         });
 
+        supplierInput.value.reset()
         $(modalElement).modal('hide');
         useExpensesStore().editExpense(json);
     }

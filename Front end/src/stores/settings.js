@@ -26,7 +26,6 @@ export const useSettingsStore = defineStore('settings', () => {
         })
 
         fetchSettings();
-        useGoodsStore().fetchInStockGoods()
     }
 
     async function editSettings(json) {
@@ -39,7 +38,6 @@ export const useSettingsStore = defineStore('settings', () => {
         })
 
         fetchSettings();
-        useGoodsStore().fetchInStockGoods()
     }
 
 

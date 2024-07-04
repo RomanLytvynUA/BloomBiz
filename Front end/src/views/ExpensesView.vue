@@ -45,7 +45,6 @@ const categoriesData = computed(() => goodsStorage.categoriesNames)
 const filteredExpenses = ref([])
 
 function filterExpenses() {
-  // console.log(categoriesData.value)
   if (tableComponent.value) {
     const dateFilterComponent = tableComponent.value.$refs.dateFilterComponent[0]
     const supplierFilterComponent = tableComponent.value.$refs.supplierFilterComponent[0]
@@ -53,14 +52,13 @@ function filterExpenses() {
 
     filteredExpenses.value = expensesData.value.filter(expense => {
       return dateFilterComponent.filterDate(expense.date) &&
-        supplierFilterComponent.filterData(suppliersStorage.suppliersData.find(supplier => supplier.id == expense.supplier).name) &&
-        categoryFilterComponent.filterData(goodsStorage.goodsData.find(category => category.id == expense.category).name)
+        supplierFilterComponent.filterData(suppliersStorage.suppliersData.find(supplier => supplier.id == expense.supplier)?.name) &&
+        categoryFilterComponent.filterData(goodsStorage.goodsData.find(category => category.id == expense.category)?.name)
     })
   }
 }
 
-watch(expensesData, filterExpenses)
-// watch(categoriesData, console.log(categoriesData))
+watch(() => expensesData.value, filterExpenses, { deep: true })
 
 // table staff
 const tableComponent = ref(null);
@@ -81,8 +79,8 @@ const tableHeaders = ref([
 
 const tableRows = computed(() => filteredExpenses.value.map(expense => [
   new Date(expense.date).toLocaleDateString('en-GB').split('/').join('-'),
-  suppliersStorage.suppliersData.find(supplier => supplier.id == expense.supplier).name,
-  goodsStorage.goodsData.find(category => category.id == expense.category).name,
+  suppliersStorage.suppliersData.find(supplier => supplier.id == expense.supplier)?.name,
+  goodsStorage.goodsData.find(category => category.id == expense.category)?.name,
   expense.total,
   {
     component: ActionButtons,

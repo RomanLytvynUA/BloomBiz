@@ -10,9 +10,11 @@ def util_create_customer(name, contact_info, additional=''):
         db.session.commit()
 
         return {'customer': new_customer,
+                'changes_applied': True,
                 'message': 'Created new customer successfully.'}
     else:
         return {'customer': customer[0],
+                'changes_applied': False,
                 'message': 'Customer with contacts already exists.'}
 
 
@@ -26,8 +28,10 @@ def util_edit_customer(id, name, contact_info, additional=''):
         db.session.commit()
 
         return {'customer': customer[0],
+                'changes_applied': True,
                 'message': 'Edited customer successfully.'}
     else:
         return {'customer': customer[0],
+                'changes_applied': False,
                 'message': 'Failed to fetch a customer with given id.'}
 

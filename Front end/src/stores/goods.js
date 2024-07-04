@@ -3,11 +3,11 @@ import { defineStore } from 'pinia'
 import { urlList } from '../config'
 import { useExpensesStore } from '@/stores/expenses'
 import { useOrdersStore } from '@/stores/orders'
+import { updateData } from './general'
 
 export const useGoodsStore = defineStore('goods', () => {
     const inLoadingState = ref(false)
     const goodsData = ref([])
-    const inStockGoodsData = ref([])
     const minGoodsData = computed(() => goodsData.value.flatMap(category => category.goods))
     const goodsNames = computed(() => minGoodsData.value.flatMap(product => product.name))
     const categoriesNames = computed(() => goodsData.value.map(category => category.name));
@@ -19,7 +19,6 @@ export const useGoodsStore = defineStore('goods', () => {
             const data = await response.json()
             goodsData.value = data
 
-            await fetchInStockGoods()
         } catch (error) {
             console.error('Error fetching goods:', error)
         }
@@ -28,14 +27,16 @@ export const useGoodsStore = defineStore('goods', () => {
 
     async function createCategory(categoryData) {
         try {
-            await fetch(urlList.addCategory, {
+            const response = await fetch(urlList.addCategory, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(categoryData),
             })
-            fetchGoods()
+
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.error('Error creating category:', error)
         }
@@ -43,16 +44,17 @@ export const useGoodsStore = defineStore('goods', () => {
 
     async function editCategory(categoryData) {
         try {
-            await fetch(urlList.editCategory, {
+            const response = await fetch(urlList.editCategory, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(categoryData),
             })
-            fetchGoods()
+
+            const changes = await response.json()
+            updateData(changes)
             useOrdersStore().fetchOrders()
-            useExpensesStore().fetchExpenses()
         } catch (error) {
             console.error('Error editing category:', error)
         }
@@ -73,14 +75,16 @@ export const useGoodsStore = defineStore('goods', () => {
 
     async function createProduct(productData) {
         try {
-            await fetch(urlList.addProduct, {
+            const response = await fetch(urlList.addProduct, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
             })
-            fetchGoods()
+
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.error('Error creating product:', error)
         }
@@ -88,16 +92,16 @@ export const useGoodsStore = defineStore('goods', () => {
 
     async function editProduct(productData) {
         try {
-            await fetch(urlList.editProduct, {
+            const response = await fetch(urlList.editProduct, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
             })
-            fetchGoods()
-            useOrdersStore().fetchOrders()
-            useExpensesStore().fetchExpenses()
+
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.error('Error editing product:', error)
         }
@@ -108,24 +112,13 @@ export const useGoodsStore = defineStore('goods', () => {
             await fetch(`${urlList.delProduct}/${productId}`, {
                 method: 'DELETE',
             })
+
             fetchGoods()
             useOrdersStore().fetchOrders()
             useExpensesStore().fetchExpenses()
         } catch (error) {
             console.error('Error editing product:', error)
         }
-    }
-
-    async function fetchInStockGoods() {
-        inLoadingState.value = true;
-        try {
-            const response = await fetch(urlList.getInStockGoods)
-            const data = await response.json()
-            inStockGoodsData.value = data
-        } catch (error) {
-            console.error('Error fetching in stock goods:', error)
-        }
-        inLoadingState.value = false;
     }
 
     async function submitDecommission(productData) {
@@ -138,7 +131,8 @@ export const useGoodsStore = defineStore('goods', () => {
                 body: JSON.stringify(productData),
             })
 
-            fetchInStockGoods()
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.error('Error adding a decommission:', error)
         }
@@ -154,7 +148,8 @@ export const useGoodsStore = defineStore('goods', () => {
                 body: JSON.stringify(productData),
             })
 
-            fetchInStockGoods()
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.error('Error editing product price:', error)
         }
@@ -169,14 +164,14 @@ export const useGoodsStore = defineStore('goods', () => {
                 },
             })
 
-            fetchInStockGoods()
+            fetchGoods()
         } catch (error) {
             console.error('Error editing product price:', error)
         }
     }
 
     return {
-        goodsData, goodsNames, inLoadingState, inStockGoodsData, categoriesNames, minGoodsData, fetchGoods, fetchInStockGoods, submitDecommission,
+        goodsData, goodsNames, inLoadingState, categoriesNames, minGoodsData, fetchGoods, submitDecommission,
         setProductPrice, createProduct, editProduct, delProduct, createCategory, editCategory, delCategory, resetProductPrices,
     }
 })

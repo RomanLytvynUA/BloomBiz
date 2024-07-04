@@ -1,7 +1,9 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { urlList } from '../config'
+import { updateData } from './general'
 import { useExpensesStore } from './expenses'
+import { useGoodsStore } from './goods'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
     const inLoadingState = ref(false)
@@ -28,6 +30,7 @@ export const useSuppliersStore = defineStore('suppliers', () => {
 
         fetchSuppliers();
         useExpensesStore().fetchExpenses();
+        useGoodsStore().fetchGoods();
     }
 
     async function addSupplier(json) {
@@ -39,7 +42,8 @@ export const useSuppliersStore = defineStore('suppliers', () => {
             body: JSON.stringify(json),
         })
 
-        fetchSuppliers();
+        const changes = await response.json();
+        updateData(changes);
     }
 
     async function editSupplier(json) {
@@ -51,7 +55,8 @@ export const useSuppliersStore = defineStore('suppliers', () => {
             body: JSON.stringify(json),
         })
 
-        fetchSuppliers();
+        const changes = await response.json();
+        updateData(changes);
     }
 
 

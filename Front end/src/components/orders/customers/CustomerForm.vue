@@ -19,7 +19,7 @@
                 <label class="form-check-label" for="pickupCheckbox">Самовивіз</label>
             </div>
             <Autocomplete v-if="!pickup" divClasses="col-md-12" label="Адреса клієнта" name="address"
-                :disabled="!Boolean(selectedCustomerData)" :forceCustomInput="newCustomer"
+                :disabled="!Boolean(selectedCustomerData) && !newCustomer" :forceCustomInput="newCustomer"
                 :options="selectedCustomerData ? selectedCustomerData.addresses : []" customOptionLabel="+ Додати нову"
                 :preselectedValue="preselectedAddress" />
         </div>
@@ -27,8 +27,8 @@
     <div class="row">
         <div class="col-md-12 mb-3">
             <label for="customerAddinional">Додатково</label>
-            <input :value="selectedCustomerData ? selectedCustomerData.additional : ''" type="text" class="form-control"
-                name="additional" id="customerAddinional" :disabled="!newCustomer">
+            <input v-model="additionalField" type="text" class="form-control" name="additional" id="customerAddinional"
+                :disabled="!newCustomer">
         </div>
     </div>
 </template>
@@ -38,7 +38,6 @@ import { ref, watch, computed } from 'vue';
 import { useCustomersStore } from '../../../stores/customers';
 import { useSettingsStore } from '@/stores/settings';
 
-import SelectField from '@/components/form_elements/SelectField.vue'
 import Autocomplete from '@/components/form_elements/Autocomplete.vue'
 
 const props = defineProps(['showAddressInput', 'preselectedAddress'])
@@ -46,6 +45,7 @@ const props = defineProps(['showAddressInput', 'preselectedAddress'])
 const customersData = computed(() => useCustomersStore().customersData)
 const filteredCustomersData = computed(() => customersData.value.filter(customer => !useSettingsStore().settingsData.ordersCustomersToIgnore.includes(customer.contactInfo)))
 
+const additionalField = ref('')
 const pickup = ref(!Boolean(props.preselectedAddress))
 const newCustomer = ref(false)
 const selectedCustomerData = ref(null)
@@ -53,6 +53,12 @@ const selectedCustomerData = ref(null)
 function preselectCustomer(customerId) {
     selectedCustomerData.value = customersData.value.find(customer => customer.id === customerId);
 }
+
+watch(() => selectedCustomerData.value, () => {
+    if (!newCustomer.value) {
+        additionalField.value = selectedCustomerData.value?.additional
+    }
+})
 
 defineExpose({ preselectCustomer })
 </script>

@@ -1,6 +1,7 @@
 from .. import db
 from flask import jsonify, request, Blueprint
 from src.models.expenses import Expenses, ExpensesElements
+from src.models.goods import Goods
 from ..utils.suppliers import util_create_supplier
 from ..utils.goods import util_create_category, util_create_product
 from ..utils.expenses import util_create_expense
@@ -20,27 +21,25 @@ def create_expense():
 
     required_data = {'date', 'total', 'supplier', 'category', "elements"}
     if not len(required_data - set(expense_data.keys())):
-        date = expense_data['date']
-        total = expense_data['total']
-        supplier = expense_data['supplier']
-        category = expense_data['category']
-        expense_elements = expense_data['elements']
-        units = ''
-        if expense_data.get('categoryUnits') is not None: units = expense_data['categoryUnits']
-
-        expense = util_create_expense(date=date, total=total, supplier=supplier,
-                                      category=category, units=units)['expense']
-
-        # Looping through each element of a copy of expense elements list where product string is either
-        # replaced with an existing object of goods or fresh created one.
-        for element in [dict(element, product=util_create_product(element.get('product'), expense.category)['product'])
-                        for element in expense_elements]:
+        new_expense_data = util_create_expense(date=expense_data['date'], total=expense_data['total'], supplier=expense_data['supplier'],
+                                      category=expense_data['category'], units=expense_data.get('categoryUnits', ''))
+        new_expense_obj = new_expense_data['expense']
+        for element in expense_data['elements']:
             new_element = ExpensesElements(quantity=element['quantity'], price=element['price'],
-                                           product=element['product'], expense=expense)
+                                           product=util_create_product(element.get('product'), new_expense_obj.category)['product'], 
+                                           expense=new_expense_obj)
             db.session.add(new_element)
         db.session.commit()
-
-        return "Created new expense successfully.", 200
+        
+        changes = {
+            'expenses': [new_expense_obj.generate_dict()],
+            'suppliers': [new_expense_obj.supplier.generate_dict()] if new_expense_data['supplier_changes_applied'] else [],
+            'categories': [new_expense_obj.category.generate_dict()] if new_expense_data['category_changes_applied'] else [],
+            # add all products from expense elements to changes since new products might have been added and price needs to be recalculated
+            'goods': [element.product.generate_dict() for element in new_expense_obj.elements],
+        }
+        
+        return jsonify(changes), 200
     return "Missing required data.", 406
 
 
@@ -50,31 +49,50 @@ def edit_expense():
 
     required_data = {'expense_id', 'date', 'total', 'supplier', "elements"}
     if not len(required_data - set(expense_data.keys())):
-        expense_id = expense_data['expense_id']
-        date = expense_data['date']
-        total = expense_data['total']
-        supplier = expense_data['supplier']
-        expense_elements = expense_data['elements']
+        changes = {}
 
-        expense = Expenses.query.filter_by(id=expense_id).all()[0]
-        expense.date = date
-        expense.total = total
-        expense.supplier = util_create_supplier(supplier)['supplier']
+        # change expense properties
+        expense = Expenses.query.filter_by(id=expense_data['expense_id']).all()[0]
+        expense.date = expense_data['date']
+        expense.total = expense_data['total']
+        supplier_data = util_create_supplier(expense_data['supplier'])
+        expense.supplier = supplier_data['supplier']
+        changes['suppliers'] = [expense.supplier.generate_dict()] if supplier_data['changes_applied'] else []
         db.session.add(expense)
+        db.session.commit()
 
+        # delete old elements
+        deleted_products_id = []
         for element in ExpensesElements.query.filter_by(expense=expense).all():
+            deleted_products_id.append(element.product.id)
             db.session.delete(element)
+        db.session.commit()
 
-        # Looping through each element of a copy of expense elements list where product string is either
-        # replaced with an existing object of goods or fresh created one.
-        for element in [dict(element, product=util_create_product(element.get('product'), expense.category)['product'])
-                        for element in expense_elements]:
+        # add deleted elements to changes so that the prices are recalculated
+        deleted_goods = Goods.query.filter(Goods.id.in_(deleted_products_id)).all()
+        changes['goods'] = [product.generate_dict() for product in deleted_goods]
+        
+        # add new elements
+        for element in expense_data['elements']:
             new_element = ExpensesElements(quantity=element['quantity'], price=element['price'],
-                                           product=element['product'], expense=expense)
+                                           product=util_create_product(element.get('product'), expense.category)['product'],
+                                           expense=expense)
             db.session.add(new_element)
         db.session.commit()
 
-        return "Edited expense successfully.", 200
+        # must add expense to changes only after adding expense elements
+        changes['expenses'] = [expense.generate_dict()]
+
+        # add all products from expense elements to changes since new products might have been added, prices needs to be recalculated
+        for element in expense.elements:
+            # remove old product from changes if it is there
+            for product_changed in changes['goods']:
+                if product_changed['id'] == element.product.id:
+                    changes['goods'].remove(product_changed)
+                    break
+            changes['goods'].append(element.product.generate_dict())
+            
+        return jsonify(changes), 200
     return "Missing required data.", 406
 
 

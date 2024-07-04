@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useGoodsStore } from './goods'
 import { useCustomersStore } from './customers'
 import { urlList } from '../config'
+import { updateData } from './general'
 
 export const useOrdersStore = defineStore('orders', () => {
     const inLoadingState = ref(false)
@@ -27,7 +28,7 @@ export const useOrdersStore = defineStore('orders', () => {
             })
 
             fetchOrders()
-            useGoodsStore().fetchInStockGoods()
+            useGoodsStore().fetchGoods()
         } catch (error) {
             console.log('Error deleting order:', error)
         }
@@ -43,9 +44,8 @@ export const useOrdersStore = defineStore('orders', () => {
                 body: JSON.stringify(data)
             })
 
-            fetchOrders()
-            useGoodsStore().fetchInStockGoods()
-            useCustomersStore().fetchCustomers()
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.log('Error while adding a new order:', error)
         }
@@ -61,9 +61,8 @@ export const useOrdersStore = defineStore('orders', () => {
                 body: JSON.stringify(data)
             })
 
-            fetchOrders()
-            useGoodsStore().fetchInStockGoods()
-            useCustomersStore().fetchCustomers()
+            const changes = await response.json()
+            updateData(changes)
         } catch (error) {
             console.log('Error while editing a new order:', error)
         }

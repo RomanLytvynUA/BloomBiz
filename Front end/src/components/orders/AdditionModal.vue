@@ -8,10 +8,16 @@
                 </div>
                 <div class="modal-body">
                     <form id="newOrderForm">
-                        <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
-                            :value="formatISO(new Date()).slice(0, 16)" />
-                        <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
-                            preselectedValue="" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
+                                    :value="formatISO(new Date()).slice(0, 16)" />
+                            </div>
+                            <div class="col-sm-6">
+                                <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
+                                    preselectedValue="" />
+                            </div>
+                        </div>
                     </form>
                     <CustomerSelect ref="customerSelect" accordionIdPrefix="CreateOrder" />
 

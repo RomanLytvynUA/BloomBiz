@@ -10,12 +10,19 @@
                     <form id="editExpenseForm">
                         <InputField ref="dateInput" label="Дата:" type="date" name="date"
                             :value="expenseData ? new Date(expenseData.date.split('-').reverse().join('-')).toISOString().split('T')[0] : null" />
-                        <CategoriesInput ref="categoryInput"
-                            :constant="categoryData ? { category: categoryData.name, units: categoryData.units } : {}" />
-                        <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
-                            :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
-                            :preselectedValue="supplierData ? supplierData.name : null"
-                            customOptionValue="+ Додати нового" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <CategoriesInput ref="categoryInput"
+                                    :constant="categoryData ? { category: categoryData.name, units: categoryData.units } : {}" />
+                            </div>
+                            <div class="col-sm-6">
+
+                                <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
+                                    :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
+                                    :preselectedValue="supplierData ? supplierData.name : null"
+                                    customOptionValue="+ Додати нового" />
+                            </div>
+                        </div>
 
                     </form>
                     <form id="editExpenseElementsForm">

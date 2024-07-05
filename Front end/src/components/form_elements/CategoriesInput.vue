@@ -1,21 +1,21 @@
 <template>
     <label class="form-label">{{ label }}</label>
     <div v-if="!constant" class="input-group mb-3">
-        <select v-if="!customCategory" v-model="categorySelect" class="form-select" name="category" style="width: 85%">
+        <select v-if="!customCategory" v-model="categorySelect" class="form-select" name="category" style="width: 75%">
             <option v-if="customOption" style="background-color: green;">+ Додати нову</option>
             <option v-else hidden></option>
             <option v-for="category in categories" :key="category.id" :value="category.name">{{ category.name }}
             </option>
         </select>
         <input v-if="customCategory" v-model="customCategoryInput" type="text" name="category" class="form-control"
-            style="width: 85%;">
+            style="width: 75%;">
 
-        <input class="form-control" v-model="categoryUnits" name="categoryUnits" style="width: 15%"
+        <input class="form-control" v-model="categoryUnits" name="categoryUnits" style="width: 25%"
             :disabled="!customCategory">
     </div>
     <div v-else class="input-group mb-3">
-        <input :value="constant.category" class="form-select" style="width: 85%" disabled>
-        <input :value="constant.units" class="form-control" style="width: 15%" disabled>
+        <input :value="constant.category" class="form-select" style="width: 75%" disabled>
+        <input :value="constant.units" class="form-control" style="width: 25%" disabled>
     </div>
 </template>
 

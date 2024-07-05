@@ -8,10 +8,16 @@
                 </div>
                 <div class="modal-body">
                     <form id="editOrderForm">
-                        <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
-                            :value="orderDate" />
-                        <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
-                            :preselectedValue="orderData ? orderData.status : null" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
+                                    :value="orderDate" />
+                            </div>
+                            <div class="col-sm-6">
+                                <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
+                                    :preselectedValue="orderData ? orderData.status : null" />
+                            </div>
+                        </div>
                     </form>
                     <CustomerSelect ref="customerSelect"
                         :preselectedAddress="orderData ? orderData.customer_address : ''"
@@ -19,9 +25,9 @@
                     <form id="editOrderElementsForm" class="mb-3">
                         <ElementsAccordion ref="elementsList" @elements-changed="(data) => { elements = data; }"
                             :accordionId="orderData ? orderData.id : ''" @total-price-changed="(total) => {
-                                orderTotal = total;
-                                orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
-                            }" />
+                                        orderTotal = total;
+                                        orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
+                                    }" />
                     </form>
                     <form id="editOrderGeneralForm">
                         <div class="mb-3">

@@ -62,11 +62,11 @@ const tableFilters = ref([
 ])
 
 const tableHeaders = ref([
-  { 'name': 'Дата', 'size': '300px' },
-  { 'name': 'Статус', 'size': '125px' },
-  { 'name': 'Склад', 'size': '200px' },
-  { 'name': 'Ціна', 'size': '125px' },
-  { 'name': 'Дія', 'size': '180px' },
+  { 'name': 'Дата', 'size': '30%' },
+  { 'name': 'Статус', 'size': '10%' },
+  { 'name': 'Склад', 'size': '30%' },
+  { 'name': 'Ціна', 'size': '10%' },
+  { 'name': 'Дія', 'size': '20%' },
 ]);
 
 const tableRows = computed(() => filteredOrders.value.map(order => {

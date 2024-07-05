@@ -54,3 +54,12 @@ export default {
     emits: ['filterChanged'],
 }
 </script>
+
+<style scoped>
+.table td,
+.table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>

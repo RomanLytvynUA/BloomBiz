@@ -9,11 +9,17 @@
                 <div class="modal-body">
                     <form id="newExpenseForm">
                         <InputField ref=dateInput label="Дата:" type="date" name="date" :value="todaysDate" />
-                        <CategoriesInput ref="categoryInput"
-                            @categoryChanged="(newValue) => selectedCategoryField = newValue" />
-                        <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
-                            :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
-                            customOptionValue="+ Додати нового" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <CategoriesInput ref="categoryInput"
+                                    @categoryChanged="(newValue) => selectedCategoryField = newValue" />
+                            </div>
+                            <div class="col-sm-6">
+                                <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
+                                    :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
+                                    customOptionValue="+ Додати нового" />
+                            </div>
+                        </div>
 
                     </form>
                     <form id="expenseElementsForm">

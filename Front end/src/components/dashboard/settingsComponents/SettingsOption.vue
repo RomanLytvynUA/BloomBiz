@@ -6,7 +6,7 @@
                     <p class="mb-0">{{ title }}</p>
                     <p class="text-muted mb-0">{{ info }}</p>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto" style="padding: 0px;">
                     <div class="input-group">
                         <div v-if="type === 'switch'" class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch" v-model="switchInput">
@@ -52,6 +52,6 @@ defineExpose({ switchInput, intInput })
 </script>
 <style scoped>
 .form-check-input {
-    cursor: pointer;
+    cursor:pointer;
 }
 </style>

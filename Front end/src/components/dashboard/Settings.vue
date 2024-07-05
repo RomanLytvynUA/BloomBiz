@@ -31,15 +31,15 @@
       info='Не відображати товари яких немає в наявності при створенні замовлення.'
       @optionChanged="(value) => changes.ordersHideOutOfStock = value" />
     <SettingsAccordion @option-deleted="changes.ordersGoodsToIgnore = ordersGoodsToIgnore;" name="ordersGoodsIngore"
-      title="Ігнорувати товари" info="*товари, що не будуть відображенні при створенні замовлення."
+      title="Ігнорувати товари" info="Товари, що не будуть відображенні при створенні замовлення."
       additionModalId="orderGoodsIgnoreModal" :values="ordersGoodsToIgnore" />
     <SettingsAccordion @option-deleted="changes.ordersCustomersToIgnore = ordersCustomersToIgnore;"
       name="ordersCustomersToIgnore" title="Ігнорувати клієнтів"
-      info="*клієнти, що не будуть відображенні при створенні замовлення." additionModalId="ordersCustomersIgnoreModal"
+      info="Клієнти, що не будуть відображенні при створенні замовлення." additionModalId="ordersCustomersIgnoreModal"
       :values="ordersCustomersToIgnore" />
     <SettingsAccordion @option-deleted="changes.ordersStatuses = ordersStatuses;" name="orderStatuses"
       title="Статуси замовлень" additionModalId="addStatusModal"
-      info="*статуси, що можуть бути пов'язані з замовленнями." :values="ordersStatuses" />
+      info="Статуси, що можуть бути пов'язані з замовленнями." :values="ordersStatuses" />
 
     <h6>Витрати</h6>
     <SettingsOption ref="expensesSafetyMode" type="switch" title="Режим безпеки"
@@ -47,11 +47,11 @@
       @optionChanged="(value) => changes.expensesSafetyMode = value" />
     <SettingsAccordion @option-deleted="changes.expensesSuppliersToIgnore = expensesSuppliersToIgnore;"
       name="expensesSuppliersIngore" title="Ігнорувати постачальників"
-      info="*постачальники, що не будуть відображенні при створенні витрати."
+      info="Постачальники, що не будуть відображенні при створенні витрати."
       additionModalId="expensesSuppliersIgnoreModal" :values="expensesSuppliersToIgnore" />
     <SettingsAccordion @option-deleted="changes.expensesGoodsToIgnore = expensesGoodsToIgnore;"
       name="expensesGoodsIngore" title="Ігнорувати товари"
-      info="*товари, що не будуть відображенні при створенні витрати." additionModalId="expensesGoodsIgnoreModal"
+      info="Товари, що не будуть відображенні при створенні витрати." additionModalId="expensesGoodsIgnoreModal"
       :values="expensesGoodsToIgnore" />
 
     <h6>Товари</h6>

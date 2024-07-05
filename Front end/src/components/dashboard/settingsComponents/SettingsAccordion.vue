@@ -2,10 +2,13 @@
     <div class="accordion" style="margin-bottom: 6px;" :id="name + 'Accordion'">
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    :data-bs-target="'#' + name + 'Options'" :data-bs-parent="'#' + name + 'Accordion'">
-                    {{ title }}
-                    <span class="text-muted mb-0">&nbsp;{{ info }}</span>
+                <button style="padding: 8px 12px 8px 12px;" class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" :data-bs-target="'#' + name + 'Options'"
+                    :data-bs-parent="'#' + name + 'Accordion'">
+                    <span class="d-block w-100">
+                        <p style="margin: 0px 0px 5px 0px;">{{ title }}</p>
+                        <p class="text-muted mb-0" style="display: block;">{{ info }}</p>
+                    </span>
                 </button>
             </h2>
             <div :id="name + 'Options'" class="accordion-collapse collapse" :data-bs-parent="'#' + name + 'Accordion'">

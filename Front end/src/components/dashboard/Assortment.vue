@@ -5,12 +5,13 @@
         <div class="d-flex">
             <div class="btn-group btn-group-sm flex-grow-1">
                 <button type=" button" class="btn btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#addCategoryModal" style="border-bottom-left-radius: 0;">Додати</button>
+                    data-bs-target="#addCategoryModal"
+                    :style="categories.length ? 'border-bottom-left-radius: 0;' : ''">Додати</button>
                 <button type="button" class="btn btn btn-warning" data-bs-toggle="modal"
                     data-bs-target="#editCategoryModal">Змінити</button>
-                <button type="button" class="btn btn btn-danger" style="border-bottom-right-radius: 0;"
-                    data-bs-toggle="modal" data-bs-target="#deleteCategoryModal"
-                    :disabled="safetyMode">Видалити</button>
+                <button type="button" class="btn btn btn-danger"
+                    :style="categories.length ? 'border-bottom-right-radius: 0;' : ''" data-bs-toggle="modal"
+                    data-bs-target="#deleteCategoryModal" :disabled="safetyMode">Видалити</button>
             </div>
         </div>
         <div v-for="category in categories" class="accordion-item">
@@ -28,20 +29,19 @@
                         style="border-top-left-radius: 0; border-top-right-radius: 0;">+</button>
                 </div>
                 <div class="accordion-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-4"
+                    <div class="row g-2 align-items-center justify-content-center">
+                        <div class="col-auto"
                             v-for="product in goodsData.find(categoryObj => categoryObj.name === category).goods">
-                            <div class="card mb-3">
+                            <div class="card">
                                 <div class="card-header text-center">
                                     {{ product.name }}
                                 </div>
                                 <ul class="list-group list-group-flush text-center">
                                     <li class="list-group-item">
-                                        <div style="overflow: auto;">
+                                        <div>
                                             <ActionButtons :delDisabled="safetyMode" editModalId="#editProductModal"
                                                 delModalId="#delProductModal" :data-name="product.name"
-                                                :data-product-id="product.id"
-                                                style="display: flex; justify-content: center;" />
+                                                :data-product-id="product.id" />
                                         </div>
                                     </li>
                                 </ul>

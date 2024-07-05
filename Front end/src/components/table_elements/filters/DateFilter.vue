@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="type === 'year' || type === 'quarter'" class="input-group input-group-sm mb-3">
+        <div v-if="type === 'year' || type === 'quarter'" class="input-group input-group-sm" :class="{ 'mb-3': mb3 }">
             <span class="input-group-text">Від </span>
             <select ref="fromYearFilter" class="form-select" @input="$emit('filterChanged')">
                 <option v-for="i in 10" :selected="type === 'quarter' ? i === 1 : i === 10"
@@ -15,7 +15,7 @@
                 </option>
             </select>
         </div>
-        <div v-else class="input-group input-group-sm mb-3">
+        <div v-else class="input-group input-group-sm" :class="{ 'mb-3': mb3 }">
             <span class="input-group-text">Від </span>
             <input ref="fromDateFilter" :type="type === 'day' ? 'date' : type" class="form-control"
                 :value="firstDefaultDate" @input="$emit('filterChanged')">
@@ -34,7 +34,10 @@ export default {
     props: {
         type: {
             default: 'date'
-        }
+        },
+        mb3: {
+            default: true
+        },
     },
     data() {
         return {

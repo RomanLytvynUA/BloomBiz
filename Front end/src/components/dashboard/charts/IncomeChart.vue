@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="row g-2 justify-content-center">
-            <div class="col-auto d-flex align-items-center">
-                <p>Статистика прибутку за </p>
+        <div class="row g-2 align-items-center justify-content-center">
+            <div class="col-auto">
+                <p style="margin-bottom: 0;">Статистика прибутку за </p>
             </div>
             <div class="col-auto">
                 <select v-model="incomeChartTypeSelect" class="form-select form-select-sm">
@@ -14,7 +14,7 @@
                 </select>
             </div>
             <div class="col-auto">
-                <DateFilter :type="incomeChartTypeSelect" ref="incomeChartDateSelect" @filterChanged="() => {
+                <DateFilter :mb3="false" :type="incomeChartTypeSelect" ref="incomeChartDateSelect" @filterChanged="() => {
                     incomeChartObj.data.labels = getIncomeChartLabels(); incomeChartObj.update(); setIncomeChartData();
                 }" />
             </div>
@@ -23,16 +23,16 @@
                     data-bs-target="#offcanvasFilters">Фільтри</button>
             </div>
         </div>
-        <canvas v-show="!loading" ref="incomeChart"></canvas>
     </div>
-
     <br>
+    <canvas v-show="!loading" ref="incomeChart"></canvas>
+
     <div v-if="loading" class="d-flex justify-content-center">
+        <br>
         <div class="spinner-border text-secondary" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    <br>
 
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
         id="offcanvasFilters">
@@ -42,6 +42,7 @@
         </div>
         <div class="offcanvas-body">
             <h5>Замовлення</h5>
+            <hr>
             <h6>Статус</h6>
             <ul class="filter-ul">
                 <li v-for="status in orderStatuses" :key="status">
@@ -55,7 +56,9 @@
                     </div>
                 </li>
             </ul>
+            <br>
             <h5>Витрити</h5>
+            <hr>
             <h6>Постачальники</h6>
             <ul class="filter-ul">
                 <li v-for="supplier in suppliers" :key="supplier">
@@ -295,6 +298,9 @@ onMounted(() => {
                 tension: 0.1,
             },
             ]
+        },
+        options: {
+            responsive: true,
         },
     })
     setIncomeChartData();

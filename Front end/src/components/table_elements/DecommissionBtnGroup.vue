@@ -1,6 +1,7 @@
 <template>
-    <div class="input-group input-group-sm">
-        <input v-model="quantityInput" type="number" class="form-control" placeholder="Кількість">
+    <div class="input-group input-group-sm flex-nowrap">
+        <input v-model="quantityInput" type="number" class="form-control" placeholder="Кількість"
+            style="min-width: 90px;">
         <button class="btn btn-sm btn-outline-danger opacity-75" type="button"
             @click="submitDecommission">Списати</button>
     </div>

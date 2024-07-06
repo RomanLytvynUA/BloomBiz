@@ -28,7 +28,7 @@ export default {
         $('[data-toggle="tooltip"]').click(function () {
             $(this).tooltip('show');
             $(this).mouseleave(function () {
-                $(this).tooltip('dispose')
+                $(this).tooltip('dispose');
             });
         });
     }
@@ -38,5 +38,11 @@ export default {
 <style scoped>
 .btn[data-toggle="tooltip"] {
     cursor: not-allowed;
+    opacity: 50% !important;
+}
+
+.btn[data-toggle="tooltip"]:hover {
+    background-color: var(--bs-btn-bg);
+    color: var(--bs-btn-color);
 }
 </style>

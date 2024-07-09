@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { urlList } from '../config'
+import { useGoodsStore } from './goods'
 import { useAuthStore } from './auth'
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -39,6 +40,7 @@ export const useSettingsStore = defineStore('settings', () => {
             useAuthStore().logout()
         } else {
             fetchSettings();
+            useGoodsStore().fetchGoods();
         }
     }
 
@@ -56,6 +58,9 @@ export const useSettingsStore = defineStore('settings', () => {
             useAuthStore().logout()
         } else {
             fetchSettings();
+            if (Object.keys(json).includes('defaultMargin')) {
+                useGoodsStore().fetchGoods();
+            }
         }
     }
 

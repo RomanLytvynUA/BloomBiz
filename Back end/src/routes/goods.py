@@ -8,9 +8,15 @@ from src.utils.goods import (
     util_create_decommission,
     util_set_product_price,
 )
+from flask_jwt_extended import verify_jwt_in_request
 
 
 goods = Blueprint("goods", __name__)
+
+
+@goods.before_request
+def before_request_func():
+    verify_jwt_in_request()
 
 
 @goods.route("/get", methods=["GET"])

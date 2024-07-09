@@ -4,12 +4,18 @@ from src.models.orders import Orders, OrdersElements
 from src.models.goods import Goods
 from src.models.goods import Categories
 from src.models.customers import Customers
-from ..utils.suppliers import util_create_supplier
-from ..utils.goods import util_create_category, util_create_product
+from ..utils.goods import util_create_product
 from ..utils.orders import util_create_order
 from ..utils.customers import util_create_customer
+from flask_jwt_extended import verify_jwt_in_request
+
 
 orders = Blueprint("orders", __name__)
+
+
+@orders.before_request
+def before_request_func():
+    verify_jwt_in_request()
 
 
 @orders.route("/get", methods=["GET"])

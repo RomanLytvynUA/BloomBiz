@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useGoodsStore } from '@/stores/goods'
 import { urlList } from '../config'
 import { updateData } from './general'
+import { useAuthStore } from './auth'
 
 export const useExpensesStore = defineStore('expenses', () => {
     const inLoadingState = ref(false);
@@ -11,9 +12,18 @@ export const useExpensesStore = defineStore('expenses', () => {
     async function fetchExpenses() {
         inLoadingState.value = true;
         try {
-            const response = await fetch(urlList.getExpenses)
-            const data = await response.json()
-            expensesData.value = data
+            const response = await fetch(urlList.getExpenses, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+                }
+            })
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const data = await response.json()
+                expensesData.value = data
+            }
         } catch (error) {
             console.error('Error fetching expenses:', error)
         }
@@ -24,33 +34,49 @@ export const useExpensesStore = defineStore('expenses', () => {
         const response = await fetch(urlList.addExpense, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(expenseData),
         })
-
-        const changes = await response.json()
-        updateData(changes)
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            const changes = await response.json()
+            updateData(changes)
+        }
     }
 
     async function editExpense(expenseData) {
         const response = await fetch(urlList.editExpense, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(expenseData),
         })
-
-        const changes = await response.json()
-        updateData(changes)
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            const changes = await response.json()
+            updateData(changes)
+        }
     }
 
     async function delExpense(expenseId) {
-        const response = await fetch(urlList.delExpense + expenseId, { method: 'DELETE' })
-
-        fetchExpenses()
-        useGoodsStore().fetchGoods()
+        const response = await fetch(urlList.delExpense + expenseId, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+            }
+        })
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            fetchExpenses()
+            useGoodsStore().fetchGoods()
+        }
     }
 
     return { expensesData, inLoadingState, fetchExpenses, delExpense, addExpense, editExpense }

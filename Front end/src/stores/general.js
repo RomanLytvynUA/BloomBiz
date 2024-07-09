@@ -37,6 +37,8 @@ export function updateData(data) {
                         useCustomersStore().customersData.unshift(changedCustomer)
                     }
                 })
+
+                break;
             case 'goods':
                 const goodsData = useGoodsStore().goodsData
                 data['goods'].forEach((changedProduct) => {

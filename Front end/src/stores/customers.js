@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { urlList } from '../config'
 import { useOrdersStore } from './orders'
 import { updateData } from './general'
+import { useAuthStore } from './auth'
 
 export const useCustomersStore = defineStore('customers', () => {
     const inLoadingState = ref(false)
@@ -12,9 +13,18 @@ export const useCustomersStore = defineStore('customers', () => {
     async function fetchCustomers() {
         inLoadingState.value = true;
         try {
-            const response = await fetch(urlList.getCustomers)
-            const data = await response.json()
-            customersData.value = data
+            const response = await fetch(urlList.getCustomers, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+                }
+            })
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const data = await response.json()
+                customersData.value = data
+            }
         } catch (error) {
             console.error('Error fetching customers:', error)
         }
@@ -25,35 +35,49 @@ export const useCustomersStore = defineStore('customers', () => {
         const response = await fetch(urlList.addCustomer, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(json),
         })
-
-        const changes = await response.json()
-        updateData(changes)
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            const changes = await response.json()
+            updateData(changes)
+        }
     }
 
     async function editCustomer(json) {
         const response = await fetch(urlList.editCustomer, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(json),
         })
-
-        const changes = await response.json()
-        updateData(changes)
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            const changes = await response.json()
+            updateData(changes)
+        }
     }
 
     async function delCustomer(id) {
         const response = await fetch(urlList.delCustomer + id, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+            }
         });
-
-        fetchCustomers();
-        useOrdersStore().fetchOrders();
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            fetchCustomers();
+            useOrdersStore().fetchOrders();
+        }
     }
 
     return { customersData, customersContacts, fetchCustomers, addCustomer, editCustomer, delCustomer }

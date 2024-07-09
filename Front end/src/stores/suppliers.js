@@ -4,6 +4,7 @@ import { urlList } from '../config'
 import { updateData } from './general'
 import { useExpensesStore } from './expenses'
 import { useGoodsStore } from './goods'
+import { useAuthStore } from './auth'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
     const inLoadingState = ref(false)
@@ -14,9 +15,18 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     async function fetchSuppliers() {
         inLoadingState.value = true;
         try {
-            const response = await fetch(urlList.getSuppliers)
-            const data = await response.json()
-            suppliersData.value = data
+            const response = await fetch(urlList.getSuppliers, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+                }
+            })
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const data = await response.json()
+                suppliersData.value = data
+            }
         } catch (error) {
             console.error('Error fetching suppliers:', error)
         }
@@ -26,37 +36,52 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     async function delSupplier(id) {
         const response = await fetch(urlList.delSupplier + id, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+            }
         });
-
-        fetchSuppliers();
-        useExpensesStore().fetchExpenses();
-        useGoodsStore().fetchGoods();
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            fetchSuppliers();
+            useExpensesStore().fetchExpenses();
+            useGoodsStore().fetchGoods();
+        }
     }
 
     async function addSupplier(json) {
         const response = await fetch(urlList.addSupplier, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(json),
         })
-
-        const changes = await response.json();
-        updateData(changes);
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            const changes = await response.json();
+            updateData(changes);
+        }
     }
 
     async function editSupplier(json) {
         const response = await fetch(urlList.editSupplier, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(json),
         })
 
-        const changes = await response.json();
-        updateData(changes);
+        if (!response.ok) {
+            useAuthStore().logout()
+        } else {
+            const changes = await response.json();
+            updateData(changes);
+        }
     }
 
 

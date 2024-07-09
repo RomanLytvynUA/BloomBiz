@@ -1,6 +1,9 @@
 const BASE_URL = 'http://127.0.0.1:5000/';
 
 export const urlList = {
+    "login": BASE_URL + "auth/login",
+    "register": BASE_URL + "auth/register",
+
     "getSuppliers": BASE_URL + "suppliers/get",
     "delSupplier": BASE_URL + "suppliers/delete/",
     "addSupplier": BASE_URL + "suppliers/create",

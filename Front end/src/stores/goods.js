@@ -1,9 +1,10 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { urlList } from '../config'
+import { updateData } from './general'
+import { useAuthStore } from './auth'
 import { useExpensesStore } from '@/stores/expenses'
 import { useOrdersStore } from '@/stores/orders'
-import { updateData } from './general'
 
 export const useGoodsStore = defineStore('goods', () => {
     const inLoadingState = ref(false)
@@ -15,10 +16,18 @@ export const useGoodsStore = defineStore('goods', () => {
     async function fetchGoods() {
         inLoadingState.value = true;
         try {
-            const response = await fetch(urlList.getGoods)
-            const data = await response.json()
-            goodsData.value = data
-
+            const response = await fetch(urlList.getGoods, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+                },
+            })
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const data = await response.json()
+                goodsData.value = data
+            }
         } catch (error) {
             console.error('Error fetching goods:', error)
         }
@@ -30,13 +39,18 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.addCategory, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(categoryData),
             })
 
-            const changes = await response.json()
-            updateData(changes)
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const changes = await response.json()
+                updateData(changes)
+            }
         } catch (error) {
             console.error('Error creating category:', error)
         }
@@ -47,14 +61,17 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.editCategory, {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(categoryData),
             })
-
-            const changes = await response.json()
-            updateData(changes)
-            useOrdersStore().fetchOrders()
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const changes = await response.json()
+                updateData(changes)
+            }
         } catch (error) {
             console.error('Error editing category:', error)
         }
@@ -62,14 +79,21 @@ export const useGoodsStore = defineStore('goods', () => {
 
     async function delCategory(categoryId) {
         try {
-            await fetch(`${urlList.delCategory}/${categoryId}`, {
+            const response = await fetch(`${urlList.delCategory}/${categoryId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+                },
             })
-            fetchGoods()
-            useOrdersStore().fetchOrders()
-            useExpensesStore().fetchExpenses()
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                fetchGoods()
+                useOrdersStore().fetchOrders()
+                useExpensesStore().fetchExpenses()
+            }
         } catch (error) {
-            console.error('Error editing category:', error)
+            console.error('Error deleting category:', error)
         }
     }
 
@@ -78,13 +102,18 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.addProduct, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
             })
 
-            const changes = await response.json()
-            updateData(changes)
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const changes = await response.json()
+                updateData(changes)
+            }
         } catch (error) {
             console.error('Error creating product:', error)
         }
@@ -95,13 +124,17 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.editProduct, {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
             })
-
-            const changes = await response.json()
-            updateData(changes)
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const changes = await response.json()
+                updateData(changes)
+            }
         } catch (error) {
             console.error('Error editing product:', error)
         }
@@ -109,15 +142,21 @@ export const useGoodsStore = defineStore('goods', () => {
 
     async function delProduct(productId) {
         try {
-            await fetch(`${urlList.delProduct}/${productId}`, {
+            const response = await fetch(`${urlList.delProduct}/${productId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
+                },
             })
-
-            fetchGoods()
-            useOrdersStore().fetchOrders()
-            useExpensesStore().fetchExpenses()
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                fetchGoods()
+                useOrdersStore().fetchOrders()
+                useExpensesStore().fetchExpenses()
+            }
         } catch (error) {
-            console.error('Error editing product:', error)
+            console.error('Error deleting product:', error)
         }
     }
 
@@ -126,13 +165,17 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.addDecommission, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
             })
-
-            const changes = await response.json()
-            updateData(changes)
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const changes = await response.json()
+                updateData(changes)
+            }
         } catch (error) {
             console.error('Error adding a decommission:', error)
         }
@@ -143,15 +186,19 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.setProductPrice, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
             })
-
-            const changes = await response.json()
-            updateData(changes)
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                const changes = await response.json()
+                updateData(changes)
+            }
         } catch (error) {
-            console.error('Error editing product price:', error)
+            console.error('Error setting product price:', error)
         }
     }
 
@@ -160,13 +207,17 @@ export const useGoodsStore = defineStore('goods', () => {
             const response = await fetch(urlList.resetProductPrices, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${useAuthStore().jwt_token}`,
                     'Content-Type': 'application/json',
                 },
             })
-
-            fetchGoods()
+            if (!response.ok) {
+                useAuthStore().logout()
+            } else {
+                fetchGoods()
+            }
         } catch (error) {
-            console.error('Error editing product price:', error)
+            console.error('Error resetting product prices:', error)
         }
     }
 

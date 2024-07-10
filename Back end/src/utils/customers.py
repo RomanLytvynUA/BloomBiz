@@ -2,23 +2,29 @@ from .. import db
 from ..models.customers import Customers
 
 
-def util_create_customer(name, contact_info, additional=''):
+def util_create_customer(name, contact_info, additional=""):
     customer = Customers.query.filter_by(contactInfo=str(contact_info)).all()
     if not len(customer):
-        new_customer = Customers(name=str(name), contactInfo=str(contact_info), additional=str(additional))
+        new_customer = Customers(
+            name=str(name), contactInfo=str(contact_info), additional=str(additional)
+        )
         db.session.add(new_customer)
         db.session.commit()
 
-        return {'customer': new_customer,
-                'changes_applied': True,
-                'message': 'Created new customer successfully.'}
+        return {
+            "customer": new_customer,
+            "changes_applied": True,
+            "message": "Created new customer successfully.",
+        }
     else:
-        return {'customer': customer[0],
-                'changes_applied': False,
-                'message': 'Customer with contacts already exists.'}
+        return {
+            "customer": customer[0],
+            "changes_applied": False,
+            "message": "Customer with contacts already exists.",
+        }
 
 
-def util_edit_customer(id, name, contact_info, additional=''):
+def util_edit_customer(id, name, contact_info, additional=""):
     customer = Customers.query.filter_by(id=id).all()
     if len(customer):
         customer[0].name = name
@@ -27,11 +33,14 @@ def util_edit_customer(id, name, contact_info, additional=''):
         db.session.add(customer[0])
         db.session.commit()
 
-        return {'customer': customer[0],
-                'changes_applied': True,
-                'message': 'Edited customer successfully.'}
+        return {
+            "customer": customer[0],
+            "changes_applied": True,
+            "message": "Edited customer successfully.",
+        }
     else:
-        return {'customer': customer[0],
-                'changes_applied': False,
-                'message': 'Failed to fetch a customer with given id.'}
-
+        return {
+            "customer": None,
+            "changes_applied": False,
+            "message": "Failed to fetch a customer with given id.",
+        }

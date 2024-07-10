@@ -86,79 +86,40 @@ def util_set_product_price(product_id, price):
         }
 
 
-def util_calc_instock(id=666666):
+def util_calc_instock(id):
+    product = Goods.query.filter_by(id=id).first()
+    if not product:
+        return {"price": 0, "quantity": 0}
+
     margin = int(Settings.query.filter_by(name="defaultMargin").first().value)
-    if id != 666666:
-        product = Goods.query.filter_by(id=id).first()
 
-        quantity = 0
-        price = 0
+    quantity = 0
+    price = 0
 
-        bought_goods = (
-            ExpensesElements.query.filter_by(product=product)
-            .order_by(ExpensesElements.id)
-            .all()
-        )
-        for bought_product in bought_goods:
-            quantity += bought_product.quantity
-            price = round(bought_product.price * (margin + 100) / 100)
+    bought_goods = (
+        ExpensesElements.query.filter_by(product=product)
+        .order_by(ExpensesElements.id)
+        .all()
+    )
+    for bought_product in bought_goods:
+        quantity += bought_product.quantity
+    # set price corresponding to the last expense
+    if bought_goods:
+        price = round(bought_goods[-1].price * (margin + 100) / 100)
 
-        decommissioned_goods = Decommissions.query.filter_by(product=product).all()
-        for decommissioned_product in decommissioned_goods:
-            quantity -= decommissioned_product.quantity
+    decommissioned_goods = Decommissions.query.filter_by(product=product).all()
+    for decommissioned_product in decommissioned_goods:
+        quantity -= decommissioned_product.quantity
 
-        order_goods = OrdersElements.query.filter_by(product=product).all()
-        for order_product in order_goods:
-            quantity -= order_product.quantity
+    order_goods = OrdersElements.query.filter_by(product=product).all()
+    for order_product in order_goods:
+        quantity -= order_product.quantity
 
-        # Convert quantity to int if it's no float part
-        if quantity - int(quantity) == 0:
-            quantity = int(quantity)
-        # Set price to custom if it's specified in the db
-        if product.price is not None:
-            price = product.price
+    # Convert quantity to int if there is no float part
+    if quantity - int(quantity) == 0:
+        quantity = int(quantity)
+    # Set price to custom if it's specified in the db
+    if product.price is not None:
+        price = product.price
 
-        return {"price": price, "quantity": quantity}
-    in_stock_goods = []
-    all_goods = Goods.query.order_by(Goods.id).all()
-
-    for product in all_goods:
-        quantity = 0
-        price = 0
-
-        bought_goods = (
-            ExpensesElements.query.filter_by(product=product)
-            .order_by(ExpensesElements.id)
-            .all()
-        )
-        for bought_product in bought_goods:
-            quantity += bought_product.quantity
-            price = round(bought_product.price * (margin + 100) / 100)
-
-        decommissioned_goods = Decommissions.query.filter_by(product=product).all()
-        for decommissioned_product in decommissioned_goods:
-            quantity -= decommissioned_product.quantity
-
-        order_goods = OrdersElements.query.filter_by(product=product).all()
-        for order_product in order_goods:
-            quantity -= order_product.quantity
-
-        # Convert quantity to int if it's no float part
-        if quantity - int(quantity) == 0:
-            quantity = int(quantity)
-        # Set price to custom if it's specified in the db
-        if product.price is not None:
-            price = product.price
-
-        in_stock_goods.append(
-            {
-                "category": product.category.name,
-                "category_id": product.category.id,
-                "product": product.name,
-                "quantity": quantity,
-                "id": product.id,
-                "units": product.category.units,
-                "price": price,
-            }
-        )
-    return sorted(in_stock_goods, key=lambda obj: obj["category_id"])
+    return {"price": price, "quantity": quantity}

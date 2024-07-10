@@ -1,7 +1,12 @@
 import datetime
 import json
 import requests
-from tests.testing_data import clear_db, add_testing_categories, add_testing_goods, add_testing_decommissions
+from tests.testing_data import (
+    clear_db,
+    add_testing_category,
+    add_testing_goods,
+    add_testing_decommissions,
+)
 from src.models.goods import Decommissions, Categories, Goods
 
 
@@ -14,13 +19,19 @@ def test_get_goods(urls, app_client):
     url = urls["get_goods"]
 
     clear_db()
-    category = add_testing_categories()
+    category = add_testing_category()
     goods = add_testing_goods(return_obj_dict=True)
 
     response = requests.get(url=url)
 
-    assert json.loads(response.text) == [{"goods": [product for product in goods], "id": category['id'],
-                                          "name": category['name'], "units": category['units']}]
+    assert json.loads(response.text) == [
+        {
+            "goods": [product for product in goods],
+            "id": category["id"],
+            "name": category["name"],
+            "units": category["units"],
+        }
+    ]
 
 
 def test_create_product(urls, app_client):
@@ -33,12 +44,20 @@ def test_create_product(urls, app_client):
     url = urls["create_product"]
 
     clear_db()
-    category = add_testing_categories()
+    category = add_testing_category()
 
-    positive_response = requests.post(url=url, json={"product": "Product1", "category": category['name']}, headers={"Content-Type": "application/json"})
-    negative_response = requests.post(url=url, json={}, headers={"Content-Type": "application/json"})
+    positive_response = requests.post(
+        url=url,
+        json={"product": "Product1", "category": category["name"]},
+        headers={"Content-Type": "application/json"},
+    )
+    negative_response = requests.post(
+        url=url, json={}, headers={"Content-Type": "application/json"}
+    )
 
-    created_product = Goods.query.filter_by(name="Product1", category=Categories.query.filter_by(id=category['id']).first()).all()
+    created_product = Goods.query.filter_by(
+        name="Product1", category=Categories.query.filter_by(id=category["id"]).first()
+    ).all()
 
     assert positive_response.status_code == 201
     assert negative_response.status_code == 406
@@ -56,14 +75,24 @@ def test_edit_product(urls, app_client):
     url = urls["edit_product"]
 
     clear_db()
-    add_testing_categories()
+    add_testing_category()
     product = add_testing_goods(return_obj_dict=True)[0]
 
-    positive_response = requests.put(url=url, json={"product_id": product['id'], "name": "New Name"}, headers={"Content-Type": "application/json"})
-    negative_response1 = requests.put(url=url, json={"product_id": 55555, "name": "New Name2"}, headers={"Content-Type": "application/json"})
-    negative_response2 = requests.put(url=url, json={}, headers={"Content-Type": "application/json"})
+    positive_response = requests.put(
+        url=url,
+        json={"product_id": product["id"], "name": "New Name"},
+        headers={"Content-Type": "application/json"},
+    )
+    negative_response1 = requests.put(
+        url=url,
+        json={"product_id": 55555, "name": "New Name2"},
+        headers={"Content-Type": "application/json"},
+    )
+    negative_response2 = requests.put(
+        url=url, json={}, headers={"Content-Type": "application/json"}
+    )
 
-    edited_product = Goods.query.filter_by(id=product['id']).first()
+    edited_product = Goods.query.filter_by(id=product["id"]).first()
 
     assert positive_response.status_code == 201
     assert negative_response1.status_code == 406
@@ -81,13 +110,13 @@ def test_del_product(urls, app_client):
     url = urls["del_product"]
 
     clear_db()
-    add_testing_categories()
+    add_testing_category()
     product = add_testing_goods(return_obj_dict=True)[0]
 
     positive_response = requests.delete(url=f"{url}/{product['id']}")
     negative_response = requests.delete(url=f"{url}/55555")
 
-    found_products = Goods.query.filter_by(id=product['id']).all()
+    found_products = Goods.query.filter_by(id=product["id"]).all()
 
     assert positive_response.status_code == 200
     assert negative_response.status_code == 406
@@ -104,8 +133,14 @@ def test_create_category(urls, app_client):
 
     clear_db()
 
-    positive_response = requests.post(url=url, json={"category": "Category1", "categoryUnits": "units"}, headers={"Content-Type": "application/json"})
-    negative_response = requests.post(url=url, json={}, headers={"Content-Type": "application/json"})
+    positive_response = requests.post(
+        url=url,
+        json={"category": "Category1", "categoryUnits": "units"},
+        headers={"Content-Type": "application/json"},
+    )
+    negative_response = requests.post(
+        url=url, json={}, headers={"Content-Type": "application/json"}
+    )
 
     created_category = Categories.query.filter_by(name="Category1", units="units").all()
 
@@ -125,13 +160,31 @@ def test_edit_category(urls, app_client):
     url = urls["edit_category"]
 
     clear_db()
-    category = add_testing_categories()
+    category = add_testing_category()
 
-    positive_response = requests.put(url=url, json={"targetCategory": category['name'], "categoryUnits": "New Units", "category": "New Name"}, headers={"Content-Type": "application/json"})
-    negative_response1 = requests.put(url=url, json={"targetCategory": "InvalidName", "categoryUnits": "New Units", "category": "New Name"}, headers={"Content-Type": "application/json"})
-    negative_response2 = requests.put(url=url, json={}, headers={"Content-Type": "application/json"})
+    positive_response = requests.put(
+        url=url,
+        json={
+            "targetCategory": category["name"],
+            "categoryUnits": "New Units",
+            "category": "New Name",
+        },
+        headers={"Content-Type": "application/json"},
+    )
+    negative_response1 = requests.put(
+        url=url,
+        json={
+            "targetCategory": "InvalidName",
+            "categoryUnits": "New Units",
+            "category": "New Name",
+        },
+        headers={"Content-Type": "application/json"},
+    )
+    negative_response2 = requests.put(
+        url=url, json={}, headers={"Content-Type": "application/json"}
+    )
 
-    edited_category = Categories.query.filter_by(id=category['id']).first()
+    edited_category = Categories.query.filter_by(id=category["id"]).first()
 
     assert positive_response.status_code == 201
     assert negative_response1.status_code == 406
@@ -150,12 +203,12 @@ def test_del_category(urls, app_client):
     url = urls["del_category"]
 
     clear_db()
-    category = add_testing_categories()
+    category = add_testing_category()
 
     positive_response = requests.delete(url=f"{url}/{category['id']}")
     negative_response = requests.delete(url=f"{url}/55555")
 
-    found_category = Categories.query.filter_by(id=category['id']).all()
+    found_category = Categories.query.filter_by(id=category["id"]).all()
 
     assert positive_response.status_code == 200
     assert negative_response.status_code == 406
@@ -172,14 +225,20 @@ def test_edit_goods_price(urls, app_client):
     url = urls["edit_goods_price"]
 
     clear_db()
-    add_testing_categories()
+    add_testing_category()
     add_testing_goods()
 
-    data1 = {'product_id': 1, 'price': 55555}
-    data2 = {'product_id': 2, 'price': "RESET"}
-    positive_response1 = requests.post(url=url, json=data1, headers={"Content-Type": "application/json"})
-    positive_response2 = requests.post(url=url, json=data2, headers={"Content-Type": "application/json"})
-    negative_response = requests.post(url=url, json={}, headers={"Content-Type": "application/json"})
+    data1 = {"product_id": 1, "price": 55555}
+    data2 = {"product_id": 2, "price": "RESET"}
+    positive_response1 = requests.post(
+        url=url, json=data1, headers={"Content-Type": "application/json"}
+    )
+    positive_response2 = requests.post(
+        url=url, json=data2, headers={"Content-Type": "application/json"}
+    )
+    negative_response = requests.post(
+        url=url, json={}, headers={"Content-Type": "application/json"}
+    )
 
     queried_price1 = Goods.query.filter_by(id=1).first().price
     queried_price2 = Goods.query.filter_by(id=2).first().price
@@ -201,16 +260,27 @@ def test_create_decommission(urls, app_client):
     url = urls["create_decommission"]
 
     clear_db()
-    category = add_testing_categories()['name']
+    category = add_testing_category()["name"]
     product = add_testing_goods()[0]
     product_obj = Goods.query.filter_by(name=product).first()
 
-    data = {'date': "2023/11/1", 'quantity': 1, 'category': category, 'product': product}
+    data = {
+        "date": "2023/11/1",
+        "quantity": 1,
+        "category": category,
+        "product": product,
+    }
 
-    positive_response = requests.post(url=url, json=data, headers={"Content-Type": "application/json"})
-    negative_response = requests.post(url=url, json={}, headers={"Content-Type": "application/json"})
+    positive_response = requests.post(
+        url=url, json=data, headers={"Content-Type": "application/json"}
+    )
+    negative_response = requests.post(
+        url=url, json={}, headers={"Content-Type": "application/json"}
+    )
 
-    found_decommission = Decommissions.query.filter_by(date="2023/11/1", quantity=1, product=product_obj).all()
+    found_decommission = Decommissions.query.filter_by(
+        date="2023/11/1", quantity=1, product=product_obj
+    ).all()
 
     assert positive_response.status_code == 200
     assert negative_response.status_code == 406
@@ -226,12 +296,12 @@ def test_del_decommission(urls, app_client):
     url = urls["del_decommission"]
 
     clear_db()
-    add_testing_categories()
+    add_testing_category()
     add_testing_goods()
     decommission = add_testing_decommissions()[0]
 
-    response = requests.delete(url=url+str(decommission['id']))
-    supplier = Decommissions.query.filter_by(id=decommission['id']).all()
+    response = requests.delete(url=url + str(decommission["id"]))
+    supplier = Decommissions.query.filter_by(id=decommission["id"]).all()
 
     assert response.status_code == 200
     assert not len(supplier)
@@ -246,7 +316,7 @@ def test_get_decommission(urls):
     url = urls["get_decommissions"]
 
     clear_db()
-    add_testing_categories()
+    add_testing_category()
     add_testing_goods()
     decommission = add_testing_decommissions()
 

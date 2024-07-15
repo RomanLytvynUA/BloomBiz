@@ -99,7 +99,15 @@ def create_order():
 def edit_order():
     orders_data = request.get_json()
 
-    required_data = {"order_id", "date", "price", "discount", "status", "elements"}
+    required_data = {
+        "order_id",
+        "date",
+        "price",
+        "discount",
+        "status",
+        "elements",
+        "additional",
+    }
     if not len(required_data - set(orders_data.keys())):
         changes = {}
 

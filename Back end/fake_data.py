@@ -552,36 +552,43 @@ def add_orders_elements():
     db.session.commit()
 
 
-with app.app_context():
-    time_started = datetime.now()
-    print(
-        f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Generating data from {starting_date.strftime('%Y-%m-%d')}"
-    )
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Dropping db")
-    db.drop_all()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Creating db")
-    db.create_all()
+def populate_fake_data():
+    with app.app_context():
+        time_started = datetime.now()
+        print(
+            f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Generating data from {starting_date.strftime('%Y-%m-%d')}"
+        )
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Dropping db")
+        db.drop_all()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Creating db")
+        db.create_all()
 
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Resetting settings")
-    util_reset_settings()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding categories")
-    add_categories()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding user")
-    add_user()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding registration code")
-    add_reg_code()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding goods")
-    add_goods()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding suppliers")
-    add_suppliers()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding customers")
-    add_customers()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding expenses")
-    add_expenses()
-    add_expenses_elms()
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding orders")
-    add_orders()
-    add_orders_elements()
-    print(
-        f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Done in {datetime.now() - time_started}"
-    )
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Resetting settings")
+        util_reset_settings()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding categories")
+        add_categories()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding user")
+        add_user()
+        print(
+            f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding registration code"
+        )
+        add_reg_code()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding goods")
+        add_goods()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding suppliers")
+        add_suppliers()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding customers")
+        add_customers()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding expenses")
+        add_expenses()
+        add_expenses_elms()
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding orders")
+        add_orders()
+        add_orders_elements()
+        print(
+            f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Done in {datetime.now() - time_started}"
+        )
+
+
+if __name__ == "__main__":
+    populate_fake_data()

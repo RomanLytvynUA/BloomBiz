@@ -6,6 +6,7 @@ from src.models.suppliers import *
 from src.models.expenses import *
 from src.models.orders import *
 from src.models.customers import *
+from src.models.auth import *
 
 
 def clear_db():
@@ -14,6 +15,8 @@ def clear_db():
         db.session.query(Suppliers).delete()
         db.session.query(Expenses).delete()
         db.session.query(Orders).delete()
+        db.session.query(User).delete()
+        db.session.query(RegistrationCode).delete()
         db.session.commit()
 
 

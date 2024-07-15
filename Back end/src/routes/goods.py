@@ -170,12 +170,6 @@ def reset_goods_prices():
     return "Reset prices successfuly.", 200
 
 
-@goods.route("/get_instock", methods=["GET"])
-def get_instock():
-    data = util_calc_instock()
-    return jsonify(data)
-
-
 @goods.route("/get_decommissions", methods=["GET"])
 def get_decommissions():
     data = [decommission.generate_dict() for decommission in Decommissions.query.all()]

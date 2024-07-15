@@ -4,6 +4,7 @@ import os
 from src.models.auth import RegistrationCode, User
 import secrets
 import string
+from fake_data import populate_fake_data
 
 
 def invalidate_code(code):
@@ -49,6 +50,7 @@ action = input(
     "[5] View users\n"
     "[6] Delete an account\n"
     "[7] Create an account\n"
+    "[fd] Populate fake data\n"
     "\n[e] Exit\n"
     "[h] Show this help sheet\n\n"
 )
@@ -72,6 +74,7 @@ while True:
                     "[5] View users\n"
                     "[6] Delete an account\n"
                     "[7] Create an account\n"
+                    "[fd] Populate fake data\n"
                     "\n[e] Exit\n"
                     "[h] Show this help sheet\n\n"
                 )
@@ -140,3 +143,6 @@ while True:
                     db.session.add(new_user)
                     db.session.commit()
                     print(f"Created new user successfuly.")
+
+            case "fd":
+                populate_fake_data()

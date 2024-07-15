@@ -22,14 +22,13 @@
             </RouterLink>
         </div>
     </div>
-    <br>
 
-    <section id="about" class="">
+    <section id="about" class="py-5">
         <div class="container">
             <h2 class="text-center">Про нас</h2>
-            <p class="text-center">Ласкаво просимо до BloomBiz - найкращого рішення для управління квітковим бізнесом.
+            <p class="text-center">Ласкаво просимо до BloomBiz - комплексного рішення для управління квітковим бізнесом.
                 Ми допоможемо вам вирішити виклики у квітковому бізнесі, щоб ви могли досягти успіху на ринку.
-                Розраховуйте на нас для оптимізації квіткового бізнесу!</p>
+                Розраховуйте на нас для оптимізації квіткового магазину!</p>
             <p class="text-center">У BloomBiz ми бачимо можливість для росту кожного квіткового магазину. Наша мета -
                 спростити складні завдання, щоб ви могли зосередитися на справді важливому - створенні блискусих
                 композицій. Працюйте з нами для досягнення найкращого у квітковій справі!</p>
@@ -43,63 +42,13 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex align-items-center">
+                            <li v-for="feature in features" class="list-group-item d-flex align-items-center">
                                 <div>
-                                    <p><b>Всебічний функціонал</b></p>
-                                    <p class="mb-0 text-muted">BloomBiz - це одна платформа для оптимізації діяльності.
-                                        Ми віримо в ефективність та успіх, і саме це ми надаємо вашому бізнесу.</p>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex align-items-center">
-                                <div>
-                                    <p><b>Зручний інтерфейс</b></p>
-                                    <p class="mb-0 text-muted">Ми цінуємо ваш час. Наш інтуїтивний інтерфейс допоможе
-                                        вам легко працювати з платформою, навіть без технічних знань.</p>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex align-items-center">
-                                <div>
-                                    <p><b>Контроль витрат</b></p>
-                                    <p class="mb-0 text-muted">Наша функція контролю дозволить вам керувати
-                                        постачаннями, замовленнями та іншими витратами. Підвищуйте ефективність з
-                                        BloomBiz!</p>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex align-items-center">
-                                <div>
-                                    <p><b>Зручні замовлення</b></p>
-                                    <p class="mb-0 text-muted">Спростіть обробку замовлень з BloomBiz. Допоможемо вам
-                                        контролювати замовлення без зайвих зусиль.</p>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex align-items-center">
-                                <div>
-                                    <p><b>Творчість з BloomBiz</b></p>
-                                    <p class="mb-0 text-muted">Створюйте красиві букети з нашою платформою. Нехай ваші
-                                        ідеї реалізуються легко та швидко!</p>
+                                    <p style="margin-bottom: 5px;"><b>{{ feature.title }}</b></p>
+                                    <p class="mb-0 text-muted">{{ feature.description }}</p>
                                 </div>
                             </li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-5">
-        <div class="container">
-            <h2 class="text-center">Зв'яжіться з нами</h2>
-            <br>
-            <div class="card-body text-center">
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><i class="fas fa-phone"></i> Телефон: +1 (555) 123-4567</p>
-                    </div>
-                    <div class="col-md-4">
-                        <p><i class="fas fa-envelope"></i> Ел. пошта: contact@example.com</p>
-                    </div>
-                    <div class="col-md-4">
-                        <p><i class="fas fa-map-marker-alt"></i> Адреса: 123 Main St, City, Country</p>
                     </div>
                 </div>
             </div>
@@ -109,4 +58,33 @@
 
 <script setup>
 import { useAuthStore } from '../stores/auth'
+
+const features = [
+    {
+        title: 'Всебічний функціонал',
+        description: 'BloomBiz — це багатофункціональний інструмент, який забезпечує доступ до всіх необхідних функцій у одному місці.'
+    },
+    {
+        title: 'Зрозумілий інтерфейс',
+        description: 'Простий та інтуїтивно зрозумілий інтерфейс, що дозволяє легко використовувати необхідні функції без зайвих зусиль.'
+    },
+    {
+        title: 'Контроль фінансів',
+        description: 'Зручні інструменти для ведення обліку грошового потоку крамниці. Відстежуйте свої витрати та прибуток, \
+        аналізуйте фінансові потоки і плануйте свої витрати ефективно.'
+    },
+    {
+        title: 'Облік товарів',
+        description: 'Ефективний інструмент для контролю наявністі та цін товарів. Ведіть детальний облік товарного \
+        запасу, зручно аналізуйте й плануйте закупки, усі дані доступні в одному місці.'
+    },
+    {
+        title: 'Динамічні графіки',
+        description: 'Автоматично створені графіки, що відображають стан вашої крамниці. Легко аналізуйте дані про продажі, запаси та інші показники.'
+    },
+    {
+        title: 'Данні клієнтів',
+        description: 'Зручний спосіб зберігання інформації про клієнтів для повторного використання.'
+    },
+]
 </script>

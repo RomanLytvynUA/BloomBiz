@@ -28,22 +28,6 @@ function fetchAllData() {
 }
 
 const router = useRouter();
-// function redirectBasedOnAuth(authenticated, route) {
-//   if (authenticated && route.name === 'signin') {
-//     router.push('/dashboard')
-//     return true
-//   } else if (!authenticated && route.meta.requiresAuth) {
-//     router.push('/signin')
-//     return true
-//   }
-//   return false
-// }
-
-// router.beforeEach((to, from, next) => {
-//   if (!redirectBasedOnAuth(useAuthStore().isAuthenticated, to)) {
-//     next();
-//   }
-// });
 watch(() => useAuthStore().isAuthenticated, (newVal, oldVal) => {
   if (!newVal) {
     router.push('/signin')

@@ -20,6 +20,7 @@ services:
       - db
     environment:
       BB_DB_URI: postgresql://myuser:mypassword@db:5432/BloomBiz
+      JWT_SECRET_KEY: myjwtkey
 
   frontend:
     build: ./front end

@@ -3,16 +3,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ви впевненні?</h5>
+                    <h5 class="modal-title">{{ t('customers.deletionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Всі данні пов'язані з цим клієнтом будуть видалені, цю дію не можна відмінити.</p>
+                    <p>{{ t('customers.deletionModalConfirmationMessage') }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                        @click="deleteCustomer()">Видалити</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteCustomer()">{{
+                        t('general.delBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -22,6 +23,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useCustomersStore } from '@/stores/customers';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const selectedCustomerId = ref(null);
 

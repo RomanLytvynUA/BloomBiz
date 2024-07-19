@@ -3,10 +3,10 @@
         <thead>
             <tr>
                 <th scope="col" width="10%"></th>
-                <th scope="col" width="35%" class="small">Товар</th>
-                <th scope="col" width="15%" class="small">Кількість</th>
-                <th scope="col" width="15%" class="small">Ціна</th>
-                <th scope="col" width="25%" class="small">Всього</th>
+                <th scope="col" width="35%" class="small">{{ t('general.elementsTableHeaders.product') }}</th>
+                <th scope="col" width="15%" class="small">{{ t('general.elementsTableHeaders.quantity') }}</th>
+                <th scope="col" width="15%" class="small">{{ t('general.elementsTableHeaders.price') }}</th>
+                <th scope="col" width="25%" class="small">{{ t('general.elementsTableHeaders.total') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
                     <Autocomplete :small="false" :name="'expenseElement' + index"
                         @valueSelected="(newValue) => rows[index].product = newValue"
                         :preselectedValue="rows[index].product" :options="row.options"
-                        customOptionLabel="+ Додати новий" divClasses="" />
+                        :customOptionLabel="t('general.customOptions.customProductText')" divClasses="" />
                 </td>
                 <td>
                     <input v-model="rows[index].quantity" @input="calculateTotalPrice()" type="number"
@@ -54,6 +54,9 @@ import { useGoodsStore } from '@/stores/goods'
 import { useSettingsStore } from '@/stores/settings';
 
 import Autocomplete from '../form_elements/Autocomplete.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps(['category', 'rows']);
 const goodsData = computed(() => useGoodsStore().goodsData)

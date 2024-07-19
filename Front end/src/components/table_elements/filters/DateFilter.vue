@@ -2,14 +2,14 @@
     <div>
         <div v-if="type === 'year' || type === 'quarter'" class="input-group input-group-sm flex-nowrap"
             :class="{ 'mb-3': mb3 }">
-            <span class="input-group-text">Від </span>
+            <span class="input-group-text">{{ $t('general.dateFilterFrom') }} </span>
             <select ref="fromYearFilter" class="form-select" @input="$emit('filterChanged')">
                 <option v-for="i in 10" :selected="type === 'quarter' ? i === 1 : i === 10"
                     :value="new Date().getFullYear() - i + 1">{{ new
             Date().getFullYear() - i + 1 }}
                 </option>
             </select>
-            <span class="input-group-text"> до </span>
+            <span class="input-group-text"> {{ $t('general.dateFilterto') }} </span>
             <select ref="toYearFilter" class="form-select" @input="$emit('filterChanged')">
                 <option v-for="i in 11" :selected="i === 0" :value="new Date().getFullYear() - i + 1">{{ new
             Date().getFullYear() - i + 1 }}
@@ -17,10 +17,10 @@
             </select>
         </div>
         <div v-else class="input-group input-group-sm flex-nowrap" :class="{ 'mb-3': mb3 }">
-            <span class="input-group-text">Від </span>
+            <span class="input-group-text">{{ $t('general.dateFilterFrom') }} </span>
             <input ref="fromDateFilter" :type="type === 'day' ? 'date' : type" class="form-control"
                 :value="firstDefaultDate" @input="$emit('filterChanged')">
-            <span class="input-group-text"> до </span>
+            <span class="input-group-text"> {{ $t('general.dateFilterTo') }} </span>
             <input ref="toDateFilter" :type="type === 'day' ? 'date' : type" class="form-control"
                 :value="lastDefaultDate" @input="$emit('filterChanged')">
         </div>

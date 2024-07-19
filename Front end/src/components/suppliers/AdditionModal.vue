@@ -3,28 +3,34 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Додати нового постачальника</h5>
+                    <h5 class="modal-title">{{ t('suppliers.additionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="newSupplierForm">
-                <div class="modal-body">
-                    <InputField label="Ім'я:" type="text" name="name" />
-                    <InputField label="Контакти:" type="text" name="contactInfo" />
-                    <InputField label="Додатково:" type="text" name="additional" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateSupplier">Зберегти</button>
-                </div>
+                    <div class="modal-body">
+                        <InputField :label="t('suppliers.formFields.nameLabel')" type="text" name="name" />
+                        <InputField :label="t('suppliers.formFields.contactInfoLabel')" type="text"
+                            name="contactInfo" />
+                        <InputField :label="t('suppliers.formFields.additionalLabel')" type="text" name="additional" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                        <button type="submit" class="btn btn-primary" @click.prevent="validateSupplier">{{
+                        t('general.saveBtnText') }}</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </template>
-  
+
 <script setup>
 import InputField from '../form_elements/InputField.vue'
 import { useSuppliersStore } from '@/stores/suppliers';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 function validateSupplier() {
     let valid = true

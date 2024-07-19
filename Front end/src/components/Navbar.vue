@@ -12,11 +12,23 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li v-if="useAuthStore().isAuthenticated" v-for="route in routes" :key="route.name" class="nav-item">
-            <RouterLink :class="['nav-link', { 'active': $route.name === route.name }]" :to="route.path">{{ route.name
-              }}</RouterLink>
+            <RouterLink :class="['nav-link', { 'active': $route.name === route.name }]" :to="route.path">
+              {{ t(`navbar.${route.name}`) }}
+            </RouterLink>
           </li>
         </ul>
         <ul class="navbar-nav">
+          <li class="nav-item dropdown" style="padding-right: 16px;">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ t('localeShortName') }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <button v-for="availableLocale in availableLocales" class="dropdown-item"
+                @click.prevent="setLocale(availableLocale)">
+                {{ getLocaleMessage(availableLocale).localeName }}
+              </button>
+            </ul>
+          </li>
           <li class="nav-item d-flex align-items-center" v-if="useAuthStore().isAuthenticated">
             <svg xmlns="http://www.w3.org/2000/svg" id="icon-logout" width="16" height="16" fill="currentColor"
               class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -26,7 +38,7 @@
                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
             </svg>
             <a class="nav-link" style="padding-left: 5px;" @click="useAuthStore().logout()">
-              Вийти
+              {{ t('navbar.signout') }}
             </a>
           </li>
           <li class="nav-item d-flex align-items-center" v-if="!useAuthStore().isAuthenticated">
@@ -38,7 +50,7 @@
                 d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
             </svg>
             <RouterLink style="padding-left: 5px;" :class="['nav-link', { 'active': $route.name === 'signin' }]"
-              to="/signin">Увійти
+              to="/signin">{{ t(`navbar.signin`) }}
             </RouterLink>
           </li>
         </ul>
@@ -50,14 +62,31 @@
 <script setup>
 import { useRouter, RouterLink } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import icons from '@/icons.svg'
+import { useI18n } from 'vue-i18n';
+const { t, locale, availableLocales, getLocaleMessage } = useI18n({ useScope: 'global' })
 
 const router = useRouter();
 const routes = router.options.routes.filter(route => !['home', 'signin'].includes(route.name));
+
+const setLocale = (localeName) => {
+  locale.value = localeName;
+  localStorage.setItem('lang', localeName);
+}
 </script>
 
 <style scoped>
 .nav-item:hover {
   cursor: pointer;
+}
+
+.dropdown-item:focus {
+  background-color: #ebeef0 !important;
+  color: #fff !important;
+}
+
+.dropdown-menu {
+  padding: 1px !important;
+  margin: 0 !important;
+  min-width: auto !important;
 }
 </style>

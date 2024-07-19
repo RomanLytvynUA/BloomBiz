@@ -1,12 +1,14 @@
 <template>
-  <h6>НАЛАШТУВАННЯ ВАШОГО МАГАЗИНУ</h6>
+  <h6>{{ t('dashboard.settings.title') }}</h6>
   <hr>
 
   <div class="container">
     <div class="btn-group btn-group-sm d-flex" role="group">
       <button type="button" class="btn btn-success" :disabled="Object.keys(changes).length === 0"
-        @click="useSettingsStore().editSettings(changes); changes = {}">Зберегти</button>
-      <button type="button" data-bs-toggle="modal" data-bs-target="#resetModal" class="btn btn-danger">Скинути</button>
+        @click="useSettingsStore().editSettings(changes); changes = {}">{{ t('general.saveBtnText')
+        }}</button>
+      <button type="button" data-bs-toggle="modal" data-bs-target="#resetModal" class="btn btn-danger">{{
+    t('general.resetBtnText') }}</button>
     </div>
     <!-- <h6>Загальне</h6>
     <div class="row g-2 align-items-center">
@@ -23,55 +25,56 @@
       </div>
     </div> -->
 
-    <h6>Замовлення</h6>
-    <SettingsOption ref="ordersSafetyMode" type="switch" title="Режим безпеки"
-      info='Функція "Розібрати Замовлення" не буде доступна поки це налаштування активне.'
+    <h6>{{ t('dashboard.settings.orders.title') }}</h6>
+    <SettingsOption ref="ordersSafetyMode" type="switch" :title="t('dashboard.settings.orders.safetyModeTitle')"
+      :info="t('dashboard.settings.orders.safetyModeDescription')"
       @optionChanged="(value) => changes.ordersSafetyMode = value" />
-    <SettingsOption ref="ordersHideOutOfStock" type="switch" title="Приховати товари не в наявності"
-      info='Не відображати товари яких немає в наявності при створенні замовлення.'
+    <SettingsOption ref="ordersHideOutOfStock" type="switch" :title="t('dashboard.settings.orders.hideOutOfStockTitle')"
+      :info="t('dashboard.settings.orders.hideOutOfStockDescription')"
       @optionChanged="(value) => changes.ordersHideOutOfStock = value" />
     <SettingsAccordion @option-deleted="changes.ordersGoodsToIgnore = ordersGoodsToIgnore;" name="ordersGoodsIngore"
-      title="Ігнорувати товари" info="Товари, що не будуть відображенні при створенні замовлення."
-      additionModalId="orderGoodsIgnoreModal" :values="ordersGoodsToIgnore" />
+      :title="t('dashboard.settings.orders.ignoreGoodsTitle')"
+      :info="t('dashboard.settings.orders.ignoreGoodsDescription')" additionModalId="orderGoodsIgnoreModal"
+      :values="ordersGoodsToIgnore" />
     <SettingsAccordion @option-deleted="changes.ordersCustomersToIgnore = ordersCustomersToIgnore;"
-      name="ordersCustomersToIgnore" title="Ігнорувати клієнтів"
-      info="Клієнти, що не будуть відображенні при створенні замовлення." additionModalId="ordersCustomersIgnoreModal"
+      name="ordersCustomersToIgnore" :title="t('dashboard.settings.orders.ignoreCustomersTitle')"
+      :info="t('dashboard.settings.orders.ignoreCustomersDescription')" additionModalId="ordersCustomersIgnoreModal"
       :values="ordersCustomersToIgnore" />
     <SettingsAccordion @option-deleted="changes.ordersStatuses = ordersStatuses;" name="orderStatuses"
-      title="Статуси замовлень" additionModalId="addStatusModal"
-      info="Статуси, що можуть бути пов'язані з замовленнями." :values="ordersStatuses" />
+      :title="t('dashboard.settings.orders.statusesTitle')" additionModalId="addStatusModal"
+      :info="t('dashboard.settings.orders.statusesDescription')" :values="ordersStatuses" />
 
-    <h6>Витрати</h6>
-    <SettingsOption ref="expensesSafetyMode" type="switch" title="Режим безпеки"
-      info='Функція видалення витрати не буде доступна поки це налаштування активне.'
+    <h6>{{ t('dashboard.settings.expenses.title') }}</h6>
+    <SettingsOption ref="expensesSafetyMode" type="switch" :title="t('dashboard.settings.expenses.safetyModeTitle')"
+      :info="t('dashboard.settings.expenses.safetyModeDescription')"
       @optionChanged="(value) => changes.expensesSafetyMode = value" />
     <SettingsAccordion @option-deleted="changes.expensesSuppliersToIgnore = expensesSuppliersToIgnore;"
-      name="expensesSuppliersIngore" title="Ігнорувати постачальників"
-      info="Постачальники, що не будуть відображенні при створенні витрати."
-      additionModalId="expensesSuppliersIgnoreModal" :values="expensesSuppliersToIgnore" />
+      name="expensesSuppliersIngore" :title="t('dashboard.settings.expenses.ignoreSuppliersTitle')"
+      :info="t('dashboard.settings.expenses.ignoreSuppliersDescription')" additionModalId="expensesSuppliersIgnoreModal"
+      :values="expensesSuppliersToIgnore" />
     <SettingsAccordion @option-deleted="changes.expensesGoodsToIgnore = expensesGoodsToIgnore;"
-      name="expensesGoodsIngore" title="Ігнорувати товари"
-      info="Товари, що не будуть відображенні при створенні витрати." additionModalId="expensesGoodsIgnoreModal"
+      name="expensesGoodsIngore" :title="t('dashboard.settings.expenses.ignoreGoodsTitle')"
+      :info="t('dashboard.settings.expenses.ignoreGoodsDescription')" additionModalId="expensesGoodsIgnoreModal"
       :values="expensesGoodsToIgnore" />
 
-    <h6>Товари</h6>
-    <SettingsOption ref="goodsSafetyMode" type="switch" title="Режим безпеки" info='Функція видалення категорії та товарів не буде доступна поки це налаштування
-      активне.' @optionChanged="(value) => changes.goodsSafetyMode = value" />
-    <SettingsOption ref="defaultMargin" type="input" title="Націнка за змовченням"
-      info='Націнка, що використовується для автоматичного розрахунку ціни товарів.'
+    <h6>{{ t('dashboard.settings.goods.title') }}</h6>
+    <SettingsOption ref="goodsSafetyMode" type="switch" :title="t('dashboard.settings.goods.safetyModeTitle')"
+      :info="t('dashboard.settings.goods.safetyModeDescription')"
+      @optionChanged="(value) => changes.goodsSafetyMode = value" />
+    <SettingsOption ref="defaultMargin" type="input" :title="t('dashboard.settings.goods.defaultMarginTitle')"
+      :info="t('dashboard.settings.goods.defaultMarginDescription')"
       @optionChanged="(value) => changes.defaultMargin = value" />
-    <SettingsOption type="btn" title="Скинути ціни"
-      info='Всі користувацькі ціни будуть скинуті і автоматично перераховані системою.' modal="#pricesResetModal"
-      value="Скинути" />
+    <SettingsOption type="resetBtn" :title="t('dashboard.settings.goods.resetPricesTitle')"
+      :info="t('dashboard.settings.goods.resetPricesDescription')" modal="#pricesResetModal" />
 
-    <h6>Постачальники</h6>
-    <SettingsOption ref="suppliersSafetyMode" type="switch" title="Режим безпеки"
-      info='Функція видалення постачальників не буде доступна поки це налаштування активне.'
+    <h6>{{ t('dashboard.settings.suppliers.title') }}</h6>
+    <SettingsOption ref="suppliersSafetyMode" type="switch" :title="t('dashboard.settings.suppliers.safetyModeTitle')"
+      :info="t('dashboard.settings.suppliers.safetyModeDescription')"
       @optionChanged="(value) => changes.suppliersSafetyMode = value" />
 
-    <h6>Клієнти</h6>
-    <SettingsOption ref="customersSafetyMode" type="switch" title="Режим безпеки"
-      info='Функція видалення клієнтів не буде доступна поки це налаштування активне.'
+    <h6>{{ t('dashboard.settings.customers.title') }}</h6>
+    <SettingsOption ref="customersSafetyMode" type="switch" :title="t('dashboard.settings.customers.safetyModeTitle')"
+      :info="t('dashboard.settings.customers.safetyModeDescription')"
       @optionChanged="(value) => changes.customersSafetyMode = value" />
   </div>
 
@@ -79,19 +82,23 @@
     @statusAdded="(statusName) => { ordersStatuses.push(statusName); changes.ordersStatuses = ordersStatuses; }" />
   <IgnoreModal
     @dataSelected="(productName) => { ordersGoodsToIgnore.push(productName); changes.ordersGoodsToIgnore = ordersGoodsToIgnore; }"
-    idPrefix="orderGoods" title="Оберіть товар" labelName="Назва"
+    idPrefix="orderGoods" :title="t('dashboard.settings.orders.goodsToIgnoreModalTitle')"
+    :labelName="t('dashboard.settings.orders.goodsToIgnoreModalLabelName')"
     :options="useGoodsStore().goodsNames.filter((product) => !ordersGoodsToIgnore.includes(product))" />
   <IgnoreModal
     @dataSelected="(productName) => { expensesGoodsToIgnore.push(productName); changes.expensesGoodsToIgnore = expensesGoodsToIgnore }"
-    idPrefix="expensesGoods" title="Оберіть товар" labelName="Назва"
+    idPrefix="expensesGoods" :title="t('dashboard.settings.expenses.goodsToIgnoreModalTitle')"
+    :labelName="t('dashboard.settings.expenses.goodsToIgnoreModalLabelName')"
     :options="useGoodsStore().goodsNames.filter((product) => !expensesGoodsToIgnore.includes(product))" />
   <IgnoreModal
     @dataSelected="(customerName) => { ordersCustomersToIgnore.push(customerName); changes.ordersCustomersToIgnore = ordersCustomersToIgnore }"
-    idPrefix="ordersCustomers" title="Оберіть контакти клієнта" labelName="Контакти"
+    idPrefix="ordersCustomers" :title="t('dashboard.settings.orders.customersToIgnoreModalTitle')"
+    :labelName="t('dashboard.settings.orders.customersToIgnoreModalLabelName')"
     :options="useCustomersStore().customersContacts.filter((contactInfo) => !ordersCustomersToIgnore.includes(contactInfo))" />
   <IgnoreModal
     @dataSelected="(name) => { expensesSuppliersToIgnore.push(name); changes.expensesSuppliersToIgnore = expensesSuppliersToIgnore }"
-    idPrefix="expensesSuppliers" title="Оберіть постачальника" labelName="Ім'я"
+    idPrefix="expensesSuppliers" :title="t('dashboard.settings.expenses.suppliersToIgnoreModalTitle')"
+    :labelName="t('dashboard.settings.expenses.suppliersToIgnoreModalLabelName')"
     :options="useSuppliersStore().suppliersNames.filter((name) => !expensesSuppliersToIgnore.includes(name))" />
   <ResetModal @reset="useSettingsStore().resetSettings(); changes = {};" />
   <PricesResetModal />
@@ -111,6 +118,8 @@ import IgnoreModal from './settingsComponents/IgnoreModal.vue';
 import PricesResetModal from './settingsComponents/PricesResetModal.vue';
 import ResetModal from './settingsComponents/ResetModal.vue';
 
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const changes = ref({})
 const settingsData = computed(() => useSettingsStore().settingsData)
@@ -150,22 +159,23 @@ watch(() => settingsData.value, (data) => {
 onMounted(() => populateSettings(settingsData.value))
 
 function populateSettings(data) {
-  ordersSafetyMode.value.switchInput = data.ordersSafetyMode;
-  ordersHideOutOfStock.value.switchInput = data.ordersHideOutOfStock;
-  ordersGoodsToIgnore.value = [...data.ordersGoodsToIgnore];
-  ordersCustomersToIgnore.value = [...data.ordersCustomersToIgnore];
-  ordersStatuses.value = [...data.ordersStatuses];
+  ordersSafetyMode.value.switchInput = data.ordersSafetyMode || false;
+  ordersHideOutOfStock.value.switchInput = data.ordersHideOutOfStock || false;
+  ordersGoodsToIgnore.value = [...(data.ordersGoodsToIgnore || [])];
+  ordersCustomersToIgnore.value = [...(data.ordersCustomersToIgnore || [])];
+  ordersStatuses.value = [...(data.ordersStatuses || [])];
 
-  expensesSafetyMode.value.switchInput = data.expensesSafetyMode;
-  expensesGoodsToIgnore.value = [...data.expensesGoodsToIgnore];
-  expensesSuppliersToIgnore.value = [...data.expensesSuppliersToIgnore];
+  expensesSafetyMode.value.switchInput = data.expensesSafetyMode || false;
+  expensesGoodsToIgnore.value = [...(data.expensesGoodsToIgnore || [])];
+  expensesSuppliersToIgnore.value = [...(data.expensesSuppliersToIgnore || [])];
 
-  goodsSafetyMode.value.switchInput = data.goodsSafetyMode;
-  defaultMargin.value.intInput = data.defaultMargin;
+  goodsSafetyMode.value.switchInput = data.goodsSafetyMode || false;
+  defaultMargin.value.intInput = data.defaultMargin || 0;
 
-  suppliersSafetyMode.value.switchInput = data.suppliersSafetyMode;
+  suppliersSafetyMode.value.switchInput = data.suppliersSafetyMode || false;
 
-  customersSafetyMode.value.switchInput = data.customersSafetyMode;
+  customersSafetyMode.value.switchInput = data.customersSafetyMode || false;
+
 }
 </script>
 

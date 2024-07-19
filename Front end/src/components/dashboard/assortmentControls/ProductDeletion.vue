@@ -3,16 +3,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ви впевненні?</h5>
+                    <h5 class="modal-title">{{ t('dashboard.assortment.products.deletionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Цю дію не можна відмінити.</p>
+                    <p>{{ t('dashboard.assortment.products.deletionModalMessage') }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                        @click="deleteProduct()">Видалити</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteProduct()">{{
+                        t('general.delBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -22,7 +23,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useGoodsStore } from '../../../stores/goods';
-// import { useSuppliersStore } from '@/stores/suppliers';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const selectedProductId = ref(null);
 

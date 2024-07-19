@@ -20,37 +20,37 @@ const router = createRouter({
     },
     {
       path: '/dashboard',
-      name: 'Кабінет',
+      name: 'dashboard',
       component: () => import('../views/DashboardView.vue'),
       meta: { requiresAuth: true },
     },
     {
       path: '/crm',
-      name: 'Клієнти',
+      name: 'crm',
       component: () => import('../views/CustomersView.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/suppliers',
-      name: 'Постачальники',
+      name: 'suppliers',
       component: () => import('../views/SuppliersView.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/expenses',
-      name: 'Витрати',
+      name: 'expenses',
       component: () => import('../views/ExpensesView.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/stock',
-      name: 'Склад',
+      name: 'stock',
       component: () => import('../views/StockView.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/orders',
-      name: 'Замовлення',
+      name: 'orders',
       component: () => import('../views/OrdersView.vue'),
       meta: { requiresAuth: true }
     },

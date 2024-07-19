@@ -59,6 +59,5 @@ export default {
 .table td,
 .table th {
     white-space: nowrap;
-    text-overflow: ellipsis;
 }
 </style>

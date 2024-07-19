@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "BlomBiz BE 1.0",
-    "version": "1.0.0",
+    "version": "NO LONGER MANTAINED",
     "description": "\nThis is an overview of the BloomBiz BE functionality. It prodives different endpoints for managing flower shop db.\n\nCurrent features:\n- Create\\edit\\delete\\get goods.\n- Get in stock goods.\n- Create\\edit\\delete\\get orders.\n- Create\\edit\\delete\\get suppliers.\n- Create\\edit\\delete\\get expenses.\n- Create\\delete\\get decommissions."
   },
   "servers": [

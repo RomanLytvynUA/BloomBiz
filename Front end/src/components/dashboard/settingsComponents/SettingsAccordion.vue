@@ -19,7 +19,7 @@
                 </div>
                 <div class="accordion-body">
                     <div class="row align-items-center justify-content-center">
-                        <div class="col-auto" v-for="value in options">
+                        <div class="col-auto d-flex justify-content-center" v-for="value in options">
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text">{{ value }}</span>
                                 <button class="btn btn-danger" type="button"

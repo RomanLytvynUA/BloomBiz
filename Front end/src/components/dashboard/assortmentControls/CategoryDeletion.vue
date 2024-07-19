@@ -3,26 +3,28 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Видалення категорію</h5>
+                    <h5 class="modal-title">{{ t('dashboard.assortment.categories.deletionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="delCategoryForm">
-                        <CategoriesInput :customOption="false" />
+                        <CategoriesInput :label="t('dashboard.assortment.categories.categoryLabel')"
+                            :customOption="false" />
                         <div class="input-group mb-3">
                             <div class="input-group-text">
                                 <input class="form-check-input mt-0" type="checkbox">
                             </div>
                             <textarea class="form-control" ref="warningTextArea"
-                                value="Я розумію що категорія і всі пов'язані з нею товари будуть видалені."
-                                readonly></textarea>
+                                :value="t('dashboard.assortment.categories.deletionModalConsent')" readonly></textarea>
                         </div>
 
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-danger" @click.prevent="validateCategory()">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="submit" class="btn btn-danger" @click.prevent="validateCategory()">{{
+                        t('general.delBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -33,6 +35,9 @@
 import CategoriesInput from '../../form_elements/CategoriesInput.vue'
 import { ref } from 'vue';
 import { useGoodsStore } from '../../../stores/goods';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const warningTextArea = ref(null)
 

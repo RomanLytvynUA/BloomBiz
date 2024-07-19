@@ -1,8 +1,9 @@
 <template>
-  <Headline title="Постачальники"
-    description="Тут ви можете продивлятись, редагувати та додавати нових постачальників." />
+  <Headline :title="t('suppliers.title')" :description="t('suppliers.description')" />
   <div class="text-center">
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSupplierModal">Додати</button>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSupplierModal">{{
+    t('general.addBtnText')
+  }}</button>
   </div>
   <br>
 
@@ -27,6 +28,9 @@ import EditingModal from '../components/suppliers/EditingModal.vue';
 import DeletionModal from '../components/suppliers/DeletionModal.vue';
 import InputFilter from '../components/table_elements/filters/InputFilter.vue';
 
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 const tableComponent = ref(null)
 const loading = computed(() => useSuppliersStore().inLoadingState);
 
@@ -45,15 +49,23 @@ const filteredSuppliers = computed(() => {
 })
 
 const tableFilters = ref([
-  { component: markRaw(InputFilter), reference: 'nameFilterComponent', props: { placeholder: 'Введіть ім\'я...' } },
-  { component: markRaw(InputFilter), reference: 'contactsFilterComponent', props: { placeholder: 'Введіть контакти...' } },
-])
+  {
+    component: markRaw(InputFilter),
+    reference: 'nameFilterComponent',
+    props: { placeholder: computed(() => t('suppliers.filtersPlaceholders.enterName')) }
+  },
+  {
+    component: markRaw(InputFilter),
+    reference: 'contactsFilterComponent',
+    props: { placeholder: computed(() => t('suppliers.filtersPlaceholders.enterContactInfo')) }
+  },
+]);
 
 const tableHeaders = ref([
-  { 'name': 'Ім\'я', 'size': '150px' },
-  { 'name': 'Контакти', 'size': '290px' },
-  { 'name': 'Додатково', 'size': '260px' },
-  { 'name': 'Дія', 'size': '250px' },
+  { 'name': computed(() => t('suppliers.tableHeaders.name')), 'size': '20%' },
+  { 'name': computed(() => t('suppliers.tableHeaders.contactInfo')), 'size': '30%' },
+  { 'name': computed(() => t('suppliers.tableHeaders.additional')), 'size': '30%' },
+  { 'name': computed(() => t('suppliers.tableHeaders.action')), 'size': '20%' },
 ]);
 
 const tableRows = computed(() => filteredSuppliers.value.map(supplier => [

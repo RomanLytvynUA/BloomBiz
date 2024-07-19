@@ -3,17 +3,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Скинути ціни</h5>
+                    <h5 class="modal-title">{{ t('dashboard.settings.goods.resetPricesTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Всі ціни, що ви змінили будуть перераховані спираючись на націнку за змовченням. Цю дію не можна
-                    відмінити.
+                    {{ t('dashboard.settings.goods.resetPricesConfirmationMessage') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t("general.cancelBtnText") }}</button>
                     <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
-                        @click.prevent="useGoodsStore().resetProductPrices()">Скинути</button>
+                        @click.prevent="useGoodsStore().resetProductPrices()">{{
+                        t("general.resetBtnText") }}</button>
                 </div>
             </div>
         </div>
@@ -22,4 +23,7 @@
 
 <script setup>
 import { useGoodsStore } from '../../../stores/goods';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 </script>

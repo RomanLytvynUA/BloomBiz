@@ -1,7 +1,8 @@
 <template>
-  <Headline title="Замовлення" description="Тут ви можете додавати замовлення своїх клієнтів та редагувати їх." />
+  <Headline :title="t('orders.title')" :description="t('orders.description')" />
   <div class="text-center">
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addOrderModal">Додати</button> <br>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addOrderModal">{{ t('general.addBtnText')
+      }}</button> <br>
   </div>
   <br>
   <TableComponent ref="tableComponent" :loading="loading" @filterChanged="filteringState = true; filterOrders()"
@@ -30,6 +31,9 @@ import Popover from '../components/table_elements/Popover.vue';
 import AdditionModal from '../components/orders/AdditionModal.vue';
 import EditingModal from '../components/orders/EditingModal.vue';
 import DeletionModal from '../components/orders/DeletionModal.vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const ordersStorage = useOrdersStore();
 const loading = computed(() => useOrdersStore().inLoadingState);
@@ -62,11 +66,11 @@ const tableFilters = ref([
 ])
 
 const tableHeaders = ref([
-  { 'name': 'Дата', 'size': '30%' },
-  { 'name': 'Статус', 'size': '10%' },
-  { 'name': 'Склад', 'size': '30%' },
-  { 'name': 'Ціна', 'size': '10%' },
-  { 'name': 'Дія', 'size': '20%' },
+  { 'name': computed(() => t("orders.tableHeaders.date")), 'size': '30%' },
+  { 'name': computed(() => t("orders.tableHeaders.status")), 'size': '10%' },
+  { 'name': computed(() => t("orders.tableHeaders.composition")), 'size': '30%' },
+  { 'name': computed(() => t("orders.tableHeaders.price")), 'size': '10%' },
+  { 'name': computed(() => t("orders.tableHeaders.action")), 'size': '20%' },
 ]);
 
 const tableRows = computed(() => filteredOrders.value.map(order => {
@@ -81,7 +85,7 @@ const tableRows = computed(() => filteredOrders.value.map(order => {
           const productData = useGoodsStore().minGoodsData.find(product => product.id == element.product)
           return productData ? productData.name : ''
         }).join(', ')}.`,
-        title: 'Склад замовлення:',
+        title: t("orders.compositionPopupTitle"),
         id: order.id,
       },
     },
@@ -90,7 +94,7 @@ const tableRows = computed(() => filteredOrders.value.map(order => {
       component: ActionButtons,
       props: {
         delModalId: "#delOrderModal",
-        delText: "Розібрати",
+        delText: t("orders.delBtnText"),
         editModalId: "#editOrderModal",
         'data-order-id': order.id,
         delDisabled: safetyMode.value,

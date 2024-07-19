@@ -3,17 +3,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Зміниити товар</h5>
+                    <h5 class="modal-title">{{ t('dashboard.assortment.products.editionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="editProductForm">
                     <div class="modal-body">
-                        <InputField label="Назва:" type="text" :value="productName" name="name" />
+                        <InputField :label="t('dashboard.assortment.products.nameLabel')" type="text"
+                            :value="productName" name="name" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                        <button type="submit" class="btn btn-primary"
-                            @click.prevent="validateProduct()">Зберегти</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                        <button type="submit" class="btn btn-primary" @click.prevent="validateProduct()">{{
+                        t('general.saveBtnText') }}</button>
                     </div>
                 </form>
             </div>
@@ -25,7 +27,9 @@
 import { ref, onMounted } from 'vue';
 import InputField from '../../form_elements/InputField.vue'
 import { useGoodsStore } from '../../../stores/goods';
-// import { useSuppliersStore } from '@/stores/suppliers';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const product = ref(null);
 const productName = ref(null);

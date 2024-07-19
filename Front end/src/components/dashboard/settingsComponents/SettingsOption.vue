@@ -6,18 +6,16 @@
                     <p class="mb-0">{{ title }}</p>
                     <p class="text-muted mb-0">{{ info }}</p>
                 </div>
-                <div class="col-auto" style="padding: 0px;">
-                    <div class="input-group">
-                        <div v-if="type === 'switch'" class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" v-model="switchInput">
-                        </div>
-                        <div v-if="type === 'input'" class="input-group">
-                            <input type="number" class="form-control" style="width: 70px;" v-model="intInput" />
-                        </div>
-                        <div v-if="type === 'btn'" class="input-group">
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                                :data-bs-target="modal">{{ value }}</button>
-                        </div>
+                <div class="col-auto" style="padding: 5px;">
+                    <div v-if="type === 'switch'" class="form-check form-switch d-flex justify-content-center">
+                        <input class="form-check-input" type="checkbox" role="switch" v-model="switchInput">
+                    </div>
+                    <div v-if="type === 'input'">
+                        <input type="number" class="form-control" style="width: 70px;" v-model="intInput" />
+                    </div>
+                    <div v-if="type === 'resetBtn'">
+                        <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" :data-bs-target="modal">{{
+                        t('general.resetBtnText') }}</button>
                     </div>
                 </div>
             </div>
@@ -27,6 +25,9 @@
 
 <script setup>
 import { computed, watch, ref } from 'vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps({
     title: String,
@@ -52,6 +53,6 @@ defineExpose({ switchInput, intInput })
 </script>
 <style scoped>
 .form-check-input {
-    cursor:pointer;
+    cursor: pointer;
 }
 </style>

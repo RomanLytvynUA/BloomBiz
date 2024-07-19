@@ -3,18 +3,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Додати новий статус замовлення</h5>
+                    <h5 class="modal-title">{{ t("dashboard.settings.orders.statusModalTitle") }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="statusInput" class="form-label">Назва статусу</label>
+                        <label for="statusInput" class="form-label">{{
+                        t("dashboard.settings.orders.statusModalInputLabel") }}</label>
                         <input ref="statusInput" type="text" class="form-control" id="statusInput">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateStatus()">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t("general.cancelBtnText") }}</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="validateStatus()">{{
+                        t("general.saveBtnText") }}</button>
                 </div>
             </div>
         </div>
@@ -23,6 +26,9 @@
 
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const statusInput = ref(null)
 const emit = defineEmits(['statusAdded'])

@@ -1,8 +1,9 @@
 <template>
-    <Headline title="Клієнти" description="Тут ви можете переглянути, видалити та додати клієнтів." />
-
+    <Headline :title="t('customers.title')" :description="t('customers.description')" />
     <div class="text-center">
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomerModal">Додати</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomerModal">{{
+        t('general.addBtnText')
+    }}</button>
     </div>
     <br>
 
@@ -15,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, computed, markRaw, watchEffect } from 'vue';
+import { ref, computed, markRaw } from 'vue';
 
 import { useCustomersStore } from '../stores/customers';
 import { useSettingsStore } from '../stores/settings';
@@ -31,6 +32,9 @@ import TableComponent from '../components/table_elements/TableComponent.vue';
 import ActionButtons from '../components/table_elements/ActionButtons.vue';
 import Popover from '../components/table_elements/Popover.vue';
 
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 const loading = computed(() => useCustomersStore().inLoadingState);
 
 const safetyMode = computed(() => useSettingsStore().settingsData.customersSafetyMode === "true" ? true : false);
@@ -45,18 +49,29 @@ const customersData = computed(() => tableComponent.value && !loading.value ? us
 
 const tableComponent = ref(null)
 const tableHeaders = ref([
-    { 'name': 'Ім\'я', 'size': '15%' },
-    { 'name': 'Контакти', 'size': '20%' },
-    { 'name': 'Адреса', 'size': '25%' },
-    // { 'name': 'Додатково', 'size': '25%' },
-    { 'name': 'Дія', 'size': '20%' },
+    { 'name': computed(() => t('customers.tableHeaders.name')), 'size': '20%' },
+    { 'name': computed(() => t('customers.tableHeaders.contactInfo')), 'size': '30%' },
+    { 'name': computed(() => t('customers.tableHeaders.address')), 'size': '30%' },
+    { 'name': computed(() => t('customers.tableHeaders.action')), 'size': '20%' },
 ]);
 
 const tableFilters = ref([
-    { component: markRaw(InputFilter), reference: 'nameFilterComponent', props: { placeholder: 'Введіть ім\'я...' } },
-    { component: markRaw(InputFilter), reference: 'contactsFilterComponent', props: { placeholder: 'Введіть контакти...' } },
-    { component: markRaw(InputFilter), reference: 'addressFilterComponent', props: { placeholder: 'Введіть адресу...' } },
-])
+    {
+        component: markRaw(InputFilter),
+        reference: 'nameFilterComponent',
+        props: { placeholder: computed(() => t('customers.filtersPlaceholders.enterName')) }
+    },
+    {
+        component: markRaw(InputFilter),
+        reference: 'contactsFilterComponent',
+        props: { placeholder: computed(() => t('customers.filtersPlaceholders.enterContactInfo')) }
+    },
+    {
+        component: markRaw(InputFilter),
+        reference: 'addressFilterComponent',
+        props: { placeholder: computed(() => t('customers.filtersPlaceholders.enterAddress')) }
+    },
+]);
 
 const tableRows = computed(() => customersData.value.map(customer => [
     customer.name,
@@ -68,7 +83,7 @@ const tableRows = computed(() => customersData.value.map(customer => [
                 props: {
                     maxSize: 30,
                     text: `${customer.addresses.join('/')}.`,
-                    title: 'Адреси клієнта:',
+                    title: t('customers.addressesPopoverTitle'),
                     id: `customerAddressesPopover${customer.id}`,
                 }
             } : ''),

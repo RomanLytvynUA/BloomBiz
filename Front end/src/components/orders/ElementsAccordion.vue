@@ -5,7 +5,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     :data-bs-target="`#orderElementsAccordionBody${accordionId}`"
                     :aria-controls="`orderElementsAccordionBody${accordionId}`">
-                    Елементи замовлення
+                    {{ t("orders.elementsTitle") }}
                 </button>
             </h2>
             <div :id="`orderElementsAccordionBody${accordionId}`" class="accordion-collapse collapse"
@@ -53,6 +53,9 @@ import { computed, ref } from 'vue';
 import ElementsTable from './ElementsTable.vue';
 
 import { useGoodsStore } from '@/stores/goods';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const emit = defineEmits(['totalPriceChanged', 'elementsChanged'])
 const props = defineProps(['accordionId'])

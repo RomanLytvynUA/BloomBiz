@@ -10,8 +10,10 @@
                     <Autocomplete ref="select" :label="labelName" customOptionLabel="" :options="options" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateStatus()">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+        t("general.cancelBtnText") }}</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="validateStatus()">{{
+                        t("general.saveBtnText") }}</button>
                 </div>
             </div>
         </div>
@@ -21,6 +23,9 @@
 <script setup>
 import { ref } from 'vue';
 import Autocomplete from '../../form_elements/Autocomplete.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const select = ref(null)
 const emit = defineEmits(['statusAdded'])

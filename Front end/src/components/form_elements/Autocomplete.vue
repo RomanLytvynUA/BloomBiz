@@ -24,14 +24,16 @@
                         {{ option }}
                     </button>
                 </li>
-                <li v-if="!filteredOptions.length" class="text-center">Нічого не знайдено.</li>
+                <li v-if="!filteredOptions.length" class="text-center">{{ t('general.nothingFound') }}</li>
             </ul>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, defineEmits } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps({
     label: String,

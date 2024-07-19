@@ -3,31 +3,30 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Змінити постачальника</h5>
+                    <h5 class="modal-title">{{ t("customers.editionModalTitle") }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="editCustomerForm">
                     <div class="modal-body">
-                        <InputField label="Ім'я:" type="text" name="name"
+                        <InputField :label="t('customers.formFields.nameLabel')" type="text" name="name"
                             :value="oldCustomerData ? oldCustomerData.name : ''" />
-                        <InputField label="Контакти:" type="text" name="contactInfo"
+                        <InputField :label="t('customers.formFields.contactInfoLabel')" type="text" name="contactInfo"
                             :value="oldCustomerData ? oldCustomerData.contactInfo : ''" />
                         <div class="mb-3">
-                            <label class="form-label">Адреси:</label>
+                            <label class="form-label">{{ t("customers.formFields.addressesLabel") }}</label>
                             <textarea class="form-control" rows="2" style="resize: none;"
                                 readonly>{{ oldCustomerData ? `${oldCustomerData.addresses.join(', ')}.` : '' }}</textarea>
-                            <div class="form-text">Адреси можуть бути додані до клієнта лише при створенні замовлення.
+                            <div class="form-text">{{ t("customers.formFields.addressesNote") }}
                             </div>
                         </div>
-                        <!-- <InputField label="Адреса:" type="text" name="address"
-                            :value="oldCustomerData ? oldCustomerData.addresses : ''" /> -->
-                        <InputField label="Додатково:" type="text" name="additional"
+                        <InputField :label="t('customers.formFields.additionalLabel')" type="text" name="additional"
                             :value="oldCustomerData ? oldCustomerData.additional : ''" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                        <button type="submit" class="btn btn-primary"
-                            @click.prevent="validateCustomer()">Зберегти</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t("general.cancelBtnText") }}</button>
+                        <button type="submit" class="btn btn-primary" @click.prevent="validateCustomer()">{{
+                        t("general.saveBtnText") }}</button>
                     </div>
                 </form>
             </div>
@@ -39,6 +38,9 @@
 import { ref, computed, onMounted } from 'vue'
 import { useCustomersStore } from '@/stores/customers';
 import InputField from '../form_elements/InputField.vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const selectedCustomerId = ref(null);
 const oldCustomerData = computed(() => useCustomersStore().customersData.find(customer => customer.id === Number(selectedCustomerId.value)))

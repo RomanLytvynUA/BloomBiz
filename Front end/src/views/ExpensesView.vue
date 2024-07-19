@@ -1,8 +1,9 @@
 <template>
-  <Headline title="Витрати"
-    description="Тут ви можете зареєструвати та переглянути свої витрати. При додаванні постачання, нові товари будуть додані до вашого складу." />
+  <Headline :title="t('expenses.title')" :description="t('expenses.description')" />
   <div class="text-center">
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">Додати</button> <br>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">{{
+    t('general.addBtnText')
+  }}</button> <br>
   </div>
   <br>
 
@@ -31,6 +32,9 @@ import SelectFilter from '../components/table_elements/filters/SelectFilter.vue'
 import AdditionModal from '../components/expenses/AdditionModal.vue';
 import EditingModal from '../components/expenses/EditingModal.vue';
 import DeletionModal from '../components/expenses/DeletionModal.vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const expensesStorage = useExpensesStore();
 const suppliersStorage = useSuppliersStore();
@@ -70,11 +74,11 @@ const tableFilters = ref([
 ])
 
 const tableHeaders = ref([
-  { 'name': 'Дата', 'size': '300px' },
-  { 'name': 'Постачальник', 'size': '170px' },
-  { 'name': 'Категорія', 'size': '170px' },
-  { 'name': 'Ціна', 'size': '120px' },
-  { 'name': 'Дія', 'size': '190px' },
+  { 'name': computed(() => t('expenses.tableHeaders.date')), 'size': '30%' },
+  { 'name': computed(() => t('expenses.tableHeaders.supplier')), 'size': '20%' },
+  { 'name': computed(() => t('expenses.tableHeaders.category')), 'size': '15%' },
+  { 'name': computed(() => t('expenses.tableHeaders.price')), 'size': '15%' },
+  { 'name': computed(() => t('expenses.tableHeaders.action')), 'size': '20%' },
 ]);
 
 const tableRows = computed(() => filteredExpenses.value.map(expense => [

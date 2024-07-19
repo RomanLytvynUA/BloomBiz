@@ -1,0 +1,356 @@
+{
+    "localeName": "English",
+    "localeShortName": "ENG",
+    "navbar": {
+        "dashboard": "Dashboard",
+        "crm": "Customers",
+        "suppliers": "Suppliers",
+        "expenses": "Expenses",
+        "stock": "Stock",
+        "orders": "Orders",
+        "signin": "Sign in",
+        "signout": "Sign out"
+    },
+    "home": {
+        "welcome": "Welcome to the BloomBiz.",
+        "tagline": "Bloom your flower business with ease!",
+        "start": "Let's go",
+        "aboutTitle": "About us",
+        "aboutContent1": "Welcome to BloomBiz - your comprehensive solution for managing the flower business. We'll help you tackle the challenges in the floral industry so you can succeed in the market. Count on us to optimize your flower shop!",
+        "aboutContent2": "At BloomBiz, we see potential for growth in every flower shop. Our goal is to simplify complex tasks so you can focus on what truly matters - creating stunning arrangements. Work with us to achieve excellence in the floral business!",
+        "featuresTitle": "Features",
+        "featuresList": [
+            {
+                "title": "All-in-one solution",
+                "description": "BloomBiz is a multifunctional tool that provides access to all necessary features in one place."
+            },
+            {
+                "title": "Intuitive Interface",
+                "description": "A simple and intuitive interface that allows easy access to essential functions without extra effort."
+            },
+            {
+                "title": "Financial Control",
+                "description": "Convenient tools for managing the store's cash flow. Track your expenses and profits, analyze financial flows, and plan your expenditures effectively."
+            },
+            {
+                "title": "Stock Management",
+                "description": "An efficient tool for controlling inventory levels and prices. Maintain detailed inventory records, conveniently analyze and plan purchases, all data available in one place."
+            },
+            {
+                "title": "Dynamic Charts",
+                "description": "Automatically generated charts that reflect the status of your store. Easily analyze sales data, inventory levels, and other metrics."
+            },
+            {
+                "title": "Customer Data",
+                "description": "Convenient storage of customer information for reuse and ensuring an entirely new level of customer service."
+            }
+        ]
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "statistics": {
+            "name": "Statistics",
+            "title": "YOUR STORE'S STATISTICS",
+            "filters": {
+                "filtersText": "Filters",
+                "timeSpan": {
+                    "day": "Day",
+                    "week": "Week",
+                    "month": "Month",
+                    "quarter": "Quarter",
+                    "year": "Year"
+                },
+                "orders": {
+                    "title": "Orders",
+                    "statuses": "Statuses"
+                },
+                "expenses": {
+                    "title": "Expenses",
+                    "suppliers": "Suppliers",
+                    "categories": "Categories"
+                }
+            },
+            "profitChart": {
+                "message": "Profit statistics for",
+                "profit": "Profit",
+                "income": "Income",
+                "expenses": "Expenses"
+            }
+        },
+        "assortment": {
+            "name": "Assortment",
+            "title": "YOUR ASSORTMENT",
+            "categories": {
+                "additionModalTitle": "Add New Category",
+                "editionModalTitle": "Edit Category",
+                "deletionModalTitle": "Delete Category",
+                "deletionModalConsent": "I understand that the category and all related products will be deleted.",
+                "categoryLabel": "Category:",
+                "changedCategoryLabel": "Changed Category:"
+            },
+            "products": {
+                "additionModalTitle": "Add New Product",
+                "editionModalTitle": "Edit Product",
+                "deletionModalTitle": "Are You Sure?",
+                "deletionModalMessage": "This action cannot be undone.",
+                "nameLabel": "Name:"
+            }
+        },
+        "settings": {
+            "name": "Settings",
+            "title": "YOUR STORE'S SETTINGS",
+            "resetModalTitle": "Reset Settings",
+            "resetModalConfirmationMessage": "All settings will be reset to default, are you sure?",
+            "orders": {
+                "title": "Orders",
+                "goodsToIgnoreModalTitle": "Select Product",
+                "goodsToIgnoreModalLabelName": "Name:",
+                "customersToIgnoreModalTitle": "Select Customer",
+                "customersToIgnoreModalLabelName": "Contact Info:",
+                "safetyModeTitle": "Safety Mode",
+                "safetyModeDescription": "The 'Disassemble Order' function will not be available while this setting is active.",
+                "hideOutOfStockTitle": "Hide Out of Stock Products",
+                "hideOutOfStockDescription": "Do not display out-of-stock products when creating an order.",
+                "ignoreGoodsTitle": "Products to Ignore",
+                "ignoreGoodsDescription": "Products that will not be displayed when creating an order.",
+                "ignoreCustomersTitle": "Customers to Ignore",
+                "ignoreCustomersDescription": "Customers that will not be displayed when creating an order.",
+                "statusesTitle": "Order Statuses",
+                "statusesDescription": "Statuses that can be associated with orders.",
+                "statusModalTitle": "Add New Order Status",
+                "statusModalInputLabel": "Status Name:"
+            },
+            "expenses": {
+                "title": "Expenses",
+                "goodsToIgnoreModalTitle": "Select Product",
+                "goodsToIgnoreModalLabelName": "Name:",
+                "suppliersToIgnoreModalTitle": "Select Supplier",
+                "suppliersToIgnoreModalLabelName": "Name:",
+                "safetyModeTitle": "Safety Mode",
+                "safetyModeDescription": "The expense deletion function will not be available while this setting is active.",
+                "ignoreSuppliersTitle": "Suppliers to Ignore",
+                "ignoreSuppliersDescription": "Suppliers that will not be displayed when creating an expense.",
+                "ignoreGoodsTitle": "Products to Ignore",
+                "ignoreGoodsDescription": "Products that will not be displayed when creating an expense."
+            },
+            "goods": {
+                "title": "Products",
+                "safetyModeTitle": "Safety Mode",
+                "safetyModeDescription": "The category and product deletion function will not be available while this setting is active.",
+                "defaultMarginTitle": "Default Margin",
+                "defaultMarginDescription": "The margin used for automatic price calculation.",
+                "resetPricesTitle": "Reset Prices",
+                "resetPricesConfirmationMessage": "All prices you have changed will be recalculated based on the default margin. This action cannot be undone.",
+                "resetPricesDescription": "All user-set prices will be reset and automatically recalculated by the system."
+            },
+            "suppliers": {
+                "title": "Suppliers",
+                "safetyModeTitle": "Safety Mode",
+                "safetyModeDescription": "The supplier deletion function will not be available while this setting is active."
+            },
+            "customers": {
+                "title": "Customers",
+                "safetyModeTitle": "Safety Mode",
+                "safetyModeDescription": "The customer deletion function will not be available while this setting is active."
+            }
+        }
+    },
+    "customers": {
+        "title": "Customers",
+        "description": "Here you can delete and add customers, as well as view various information about them.",
+        "addressesPopoverTitle": "Customer Addresses:",
+        "tableHeaders": {
+            "name": "Name",
+            "contactInfo": "Contact Info",
+            "address": "Address",
+            "action": "Action"
+        },
+        "formFields": {
+            "nameLabel": "Name:",
+            "contactInfoLabel": "Contact Info:",
+            "addressesLabel": "Addresses:",
+            "addressesNote": "Addresses can only be added to a customer when creating an order.",
+            "additionalLabel": "Additional:"
+        },
+        "additionModalTitle": "Add New Customer",
+        "editionModalTitle": "Edit Customer",
+        "deletionModalTitle": "Are You Sure?",
+        "deletionModalConfirmationMessage": "All data related to this customer will be deleted, this action cannot be undone.",
+        "filtersPlaceholders": {
+            "enterName": "Enter name...",
+            "enterContactInfo": "Enter contact info...",
+            "enterAddress": "Enter address..."
+        }
+    },
+    "suppliers": {
+        "title": "Suppliers",
+        "description": "Here you can view, edit, and add new suppliers.",
+        "tableHeaders": {
+            "name": "Name",
+            "contactInfo": "Contact Info",
+            "additional": "Additional",
+            "action": "Action"
+        },
+        "formFields": {
+            "nameLabel": "Name:",
+            "contactInfoLabel": "Contact Info:",
+            "additionalLabel": "Additional:"
+        },
+        "additionModalTitle": "Add New Supplier",
+        "editionModalTitle": "Edit Supplier",
+        "deletionModalTitle": "Are You Sure?",
+        "deletionModalConfirmationMessage": "All data related to this supplier will be deleted, this action cannot be undone.",
+        "filtersPlaceholders": {
+            "enterName": "Enter name...",
+            "enterContactInfo": "Enter contact info..."
+        }
+    },
+    "expenses": {
+        "title": "Expenses",
+        "description": "Here you can register and view your expenses. When adding a supply, new items will be added to your inventory.",
+        "tableHeaders": {
+            "date": "Date",
+            "supplier": "Supplier",
+            "category": "Category",
+            "price": "Price",
+            "action": "Action"
+        },
+        "formFields": {
+            "dateLabel": "Date:",
+            "categoryLabel": "Category:",
+            "supplierLabel": "Supplier:"
+        },
+        "additionModalTitle": "Add New Expense",
+        "editionModalTitle": "Edit Expense",
+        "deletionModalTitle": "Are You Sure?",
+        "deletionModalConfirmationMessage": "All items related to this expense will also be removed from the inventory. This action cannot be undone."
+    },
+    "stock": {
+        "title": "In-Stock Items",
+        "description": "Here you can view the items you have in stock and write them off. New items will be added to the stock immediately after registering a new expense.",
+        "changePriceBtn": "Change",
+        "resetPriceBtn": "Reset",
+        "tableHeaders": {
+            "category": "Category",
+            "product": "Product",
+            "quantity": "Quantity",
+            "price": "Price",
+            "action": "Action"
+        },
+        "decommission": {
+            "btnText": "Write Off",
+            "inputPlaceholder": "Quantity"
+        },
+        "filters": {
+            "enterProduct": "Enter product name...",
+            "quantity": {
+                "in-stock": "In Stock",
+                "in-assortment": "In Assortment",
+                "out-of-stock": "Out of Stock",
+                "invalid": "Invalid"
+            }
+        }
+    },
+    "orders": {
+        "title": "Orders",
+        "description": "Here you can add, edit, and view your clients' orders.",
+        "delBtnText": "Disassemble",
+        "compositionPopupTitle": "Order composition:",
+        "tableHeaders": {
+            "date": "Date",
+            "status": "Status",
+            "composition": "Composition",
+            "price": "Price",
+            "action": "Action"
+        },
+        "elementsTitle": "Order Elements",
+        "customerInfoTitle": "Customer Information",
+        "formFields": {
+            "dateLabel": "Date:",
+            "statusLabel": "Status:",
+            "additionalLabel": "Comment:",
+            "discountLabel": "Discount:",
+            "priceLabel": "Price:"
+        },
+        "customerFields": {
+            "noCustomerText": "Create order without customer",
+            "nameLabel": "Customer Name:",
+            "contactInfoLabel": "Customer Contact:",
+            "pickupText": "Pickup",
+            "addressLabel": "Customer Address:",
+            "additionalLabel": "Additional:",
+            "ordrerIsReceiverText": "Orderer is the receiver"
+        },
+        "additionModalTitle": "Add New Order",
+        "editionModalTitle": "Edit Order",
+        "deletionModalTitle": "Are you sure?",
+        "deletionModalConfirmationMessage": "All used goods will be returned to your stock. This action cannot be undone."
+    },
+    "auth": {
+        "login": {
+            "title": "Login",
+            "description": "Log in to your account to continue",
+            "suggestion": "Register",
+            "fields": {
+                "nameLabel": "Name:",
+                "namePlaceholder": "Enter username",
+                "passwordLabel": "Password:",
+                "passwordPlaceholder": "Enter password",
+                "btnText": "Log in"
+            }
+        },
+        "registration": {
+            "title": "Registration",
+            "description": "Create an account to continue",
+            "suggestion": "Log in",
+            "fields": {
+                "nameLabel": "Name:",
+                "namePlaceholder": "Create a username",
+                "passwordLabel": "Password:",
+                "passwordPlaceholder": "Create a password",
+                "confirmPasswordLabel": "Confirm Password:",
+                "confirmPasswordPlaceholder": "Confirm entered password",
+                "matchesTag": "matches",
+                "differsTag": "doesn't match",
+                "codeLabel": "Registration Code:",
+                "codePlaceholder": "Enter registration code",
+                "btnText": "Register"
+            },
+            "passwordRules": {
+                "length": "Password must be at least 8 characters long.",
+                "capitalLetter": "Password must contain at least one uppercase letter.",
+                "smallLetter": "Password must contain at least one lowercase letter.",
+                "digit": "Password must contain at least one digit."
+            }
+        },
+        "errors": {
+            "registrationFailed": "Registration failed, please try again.",
+            "authFailed": "Authentication failed, please try again."
+        }
+    },
+    "general": {
+        "dateFilterFrom": "From",
+        "dateFilterTo": "to",
+        "allSelectOption": "All",
+        "addBtnText": "Add",
+        "editBtnText": "Edit",
+        "delBtnText": "Delete",
+        "saveBtnText": "Save",
+        "resetBtnText": "Reset",
+        "cancelBtnText": "Cancel",
+        "nothingFound": "Nothing was found.",
+        "customOptions": {
+            "customCategoryText": "+ Add a new one",
+            "customSupplierText": "+ Add a new one",
+            "customCustomerText": "+ Add a new one",
+            "customAddressText": "+ Add a new one",
+            "customProductText": "+ Add a new one"
+        },
+        "elementsTableHeaders": {
+            "product": "Product",
+            "quantity": "Quantity",
+            "price": "Price",
+            "total": "Total"
+        }
+    }
+}

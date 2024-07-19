@@ -1,17 +1,20 @@
 <template>
-    <h6>ВАШ АСОРТИМЕНТ</h6>
+    <h6>{{ t('dashboard.assortment.title') }}</h6>
     <hr>
     <div class="accordion" id="categoriesAccordion">
         <div class="d-flex">
             <div class="btn-group btn-group-sm flex-grow-1">
                 <button type=" button" class="btn btn btn-success" data-bs-toggle="modal"
                     data-bs-target="#addCategoryModal"
-                    :style="categories.length ? 'border-bottom-left-radius: 0;' : ''">Додати</button>
+                    :style="categories.length ? 'border-bottom-left-radius: 0;' : ''">{{
+        t('general.addBtnText') }}</button>
                 <button type="button" class="btn btn btn-warning" data-bs-toggle="modal"
-                    data-bs-target="#editCategoryModal">Змінити</button>
+                    data-bs-target="#editCategoryModal">{{
+        t('general.editBtnText') }}</button>
                 <button type="button" class="btn btn btn-danger"
                     :style="categories.length ? 'border-bottom-right-radius: 0;' : ''" data-bs-toggle="modal"
-                    data-bs-target="#deleteCategoryModal" :disabled="safetyMode">Видалити</button>
+                    data-bs-target="#deleteCategoryModal" :disabled="safetyMode">{{
+        t('general.delBtnText') }}</button>
             </div>
         </div>
         <div v-for="category in categories" class="accordion-item">
@@ -76,6 +79,9 @@ import ProductDeletion from './assortmentControls/ProductDeletion.vue'
 import CategoryAddition from './assortmentControls/CategoryAddition.vue'
 import CategoryEditing from './assortmentControls/CategoryEditing.vue'
 import CategoryDeletion from './assortmentControls/CategoryDeletion.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const categories = computed(() => useGoodsStore().categoriesNames)
 const goodsData = computed(() => useGoodsStore().goodsData)

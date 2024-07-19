@@ -1,11 +1,13 @@
 <template>
-    <div class="btn-group btn-group-sm justify-content-center" role="group">
-        <button ref="tooltipButton" type="button" class="btn btn-sm btn-outline-danger opacity-75"
+    <div class="btn-group btn-group-sm" style="min-width: 190px;" role="group">
+        <button style="width: 50%;" ref="tooltipButton" type="button" class="btn btn-sm btn-outline-danger opacity-75"
             :data-toggle="delDisabled ? 'tooltip' : ''"
             :title="delDisabled ? 'Функція не доступна, перевірте налаштування.' : ''"
-            :data-bs-toggle="!delDisabled ? 'modal' : ''" :data-bs-target="delModalId">{{ delText }}</button>
-        <button type="button" class="btn btn-sm btn-outline-success opacity-75" data-bs-toggle="modal"
-            :data-bs-target="editModalId">{{ editText }}</button>
+            :data-bs-toggle="!delDisabled ? 'modal' : ''" :data-bs-target="delModalId">{{ delText ||
+                $t('general.delBtnText') }}</button>
+        <button style="width: 50%;" type="button" class="btn btn-sm btn-outline-success opacity-75"
+            data-bs-toggle="modal" :data-bs-target="editModalId">{{
+                editText || $t('general.editBtnText') }}</button>
     </div>
 </template>
 
@@ -16,12 +18,10 @@ export default {
         editModalId: String,
         delDisabled: Boolean,
         delText: {
-            type: String,
-            default: 'Видалити'
+            type: String
         },
         editText: {
-            type: String,
-            default: 'Редагувати'
+            type: String
         },
     },
     mounted() {

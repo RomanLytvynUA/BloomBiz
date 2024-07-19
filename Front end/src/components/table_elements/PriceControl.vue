@@ -5,9 +5,10 @@
         <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" style="max-width: 26px;"
             data-bs-toggle="dropdown" aria-expanded="false"></button>
         <ul class="dropdown-menu">
-            <li><button class="dropdown-item" type="button" @click.prevent="mode = 'edit'">Змінити</button></li>
-            <li><button class="dropdown-item" type="button"
-                    @click.prevent="handlePriceChange(price = 'RESET')">Скинути</button></li>
+            <li><button class="dropdown-item" type="button" @click.prevent="mode = 'edit'">{{
+        t("stock.changePriceBtn") }}</button></li>
+            <li><button class="dropdown-item" type="button" @click.prevent="handlePriceChange(price = 'RESET')">{{
+        t("stock.resetPriceBtn") }}</button></li>
         </ul>
     </div>
     <div :style="{ display: mode === 'edit' ? '' : 'none' }" class="input-group input-group-sm justify-content-center">
@@ -20,6 +21,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useGoodsStore } from '../../stores/goods';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps({
     prefilledValue: String,

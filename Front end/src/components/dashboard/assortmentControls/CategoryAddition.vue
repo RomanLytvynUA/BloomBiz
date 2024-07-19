@@ -3,17 +3,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Додати нову категорію</h5>
+                    <h5 class="modal-title">{{ t('dashboard.assortment.categories.additionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="newCategoryForm">
                     <div class="modal-body">
-                        <CategoriesInput ref="categoryInput" :custom="true" />
+                        <CategoriesInput ref="categoryInput" :label="t('dashboard.assortment.categories.categoryLabel')"
+                            :custom="true" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                        <button type="submit" class="btn btn-primary"
-                            @click.prevent="validateCategory()">Зберегти</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                        <button type="submit" class="btn btn-primary" @click.prevent="validateCategory()">{{
+                        t('general.saveBtnText') }}</button>
                     </div>
                 </form>
             </div>
@@ -24,6 +26,9 @@
 <script setup>
 import CategoriesInput from '../../form_elements/CategoriesInput.vue';
 import { useGoodsStore } from '../../../stores/goods';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 function validateCategory() {
     let valid = true

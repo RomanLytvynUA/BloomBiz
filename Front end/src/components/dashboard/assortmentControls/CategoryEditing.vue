@@ -3,20 +3,24 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Змінити категорію</h5>
+                    <h5 class="modal-title">{{ t('dashboard.assortment.categories.editionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editCategoryForm">
                         <CategoriesInput ref="targetCategoryInput" :customOption="false"
+                            :label="t('dashboard.assortment.categories.categoryLabel')"
                             @category-changed="(category) => editCategoryInput.customCategoryInput = category"
                             @units-changed="(units) => editCategoryInput.categoryUnits = units" />
-                        <CategoriesInput ref="editCategoryInput" label="Змінена категорія: " :custom="true" />
+                        <CategoriesInput ref="editCategoryInput"
+                            :label="t('dashboard.assortment.categories.changedCategoryLabel')" :custom="true" />
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateCategory()">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="validateCategory()">{{
+                        t('general.saveBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -27,6 +31,9 @@
 import CategoriesInput from '../../form_elements/CategoriesInput.vue';
 import { useGoodsStore } from '../../../stores/goods';
 import { ref } from 'vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const editCategoryInput = ref(null)
 const targetCategoryInput = ref(null)

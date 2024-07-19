@@ -3,19 +3,19 @@
         <div class="modal-dialog" style="max-width: 600px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Змінити замовлення</h5>
+                    <h5 class="modal-title">{{ t("orders.editionModalTitle") }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editOrderForm">
                         <div class="row">
                             <div class="col-sm-6">
-                                <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
-                                    :value="orderDate" />
+                                <InputField ref="dateInput" :label="t('orders.formFields.dateLabel')"
+                                    type="datetime-local" name="date" :value="orderDate" />
                             </div>
                             <div class="col-sm-6">
-                                <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
-                                    :preselectedValue="orderData ? orderData.status : null" />
+                                <SelectField ref="statusInput" :label="t('orders.formFields.statusLabel')" name="status"
+                                    :options="statuses" :preselectedValue="orderData ? orderData.status : null" />
                             </div>
                         </div>
                     </form>
@@ -25,27 +25,29 @@
                     <form id="editOrderElementsForm" class="mb-3">
                         <ElementsAccordion ref="elementsList" @elements-changed="(data) => { elements = data; }"
                             :accordionId="orderData ? orderData.id : ''" @total-price-changed="(total) => {
-                                        orderTotal = total;
-                                        orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
-                                    }" />
+                        orderTotal = total;
+                        orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
+                    }" />
                     </form>
                     <form id="editOrderGeneralForm">
                         <div class="mb-3">
-                            <label for="floatingTextarea">Коментар: </label>
+                            <label for="floatingTextarea">{{ t('orders.formFields.additionalLabel') }}</label>
                             <textarea :value="orderAdditional" class="form-control" name="additional"></textarea>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Знижка:</span>
+                            <span class="input-group-text">{{ t('orders.formFields.discountLabel') }}</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount"
                                 @input="orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)">
-                            <span class="input-group-text">Всього:</span>
+                            <span class="input-group-text">{{ t('orders.formFields.priceLabel') }}</span>
                             <input ref="orderTotalField" name="price" type="number" class="form-control">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">{{
+                        t('general.saveBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -53,14 +55,16 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch, watchEffect } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
-import { formatISO } from 'date-fns';
 
 import ElementsAccordion from './ElementsAccordion.vue'
 import CustomerSelect from './customers/CustomerSelect.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps(['statuses'])
 const orderId = ref(null)

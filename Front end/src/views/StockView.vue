@@ -1,6 +1,5 @@
 <template>
-  <Headline title="Товари на складі"
-    description="Тут ви можете переглянути товари, які у вас є та списати їх. Нові позиції будуть додані на склад одразу після реєстрації нової витрати." />
+  <Headline :title="t('stock.title')" :description="t('stock.description')" />
 
   <TableComponent ref="tableComponent" :loading="loading" @filterChanged="filterGoods" :filters="tableFilters"
     :headers="tableHeaders" :rows="tableRows" />
@@ -17,6 +16,9 @@ import DecommissionBtnGroup from '../components/table_elements/DecommissionBtnGr
 import PriceControl from '../components/table_elements/PriceControl.vue';
 import SelectFilter from '../components/table_elements/filters/SelectFilter.vue';
 import InputFilter from '../components/table_elements/filters/InputFilter.vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 // get and filter data
 const loading = computed(() => useGoodsStore().inLoadingState);
@@ -44,13 +46,13 @@ async function filterGoods() {
         const quantityFilter = quantityFilterComponent.getChoice();
         const passesQuantityFilter = (() => {
           switch (quantityFilter) {
-            case "В наявності":
+            case t('stock.filters.quantity.in-stock'):
               return Number(product.quantity) > 0;
-            case "Не в наявності":
+            case t('stock.filters.quantity.out-of-stock'):
               return Number(product.quantity) === 0;
-            case "Погрішність":
+            case t('stock.filters.quantity.invalid'):
               return Number(product.quantity) < 0;
-            case "В асортименті":
+            case t('stock.filters.quantity.in-assortment'):
               return true;
             default:
               return false;
@@ -70,16 +72,22 @@ const tableComponent = ref(null);
 
 const tableFilters = ref([
   { component: markRaw(SelectFilter), reference: 'categoryFilterComponent', props: { options: categoriesData } },
-  { component: markRaw(InputFilter), reference: 'productFilterComponent', props: { placeholder: 'Введіть назву товару...' } },
-  { component: markRaw(SelectFilter), reference: 'quantityFilterComponent', props: { options: ["В асортименті", "Не в наявності", "Погрішність"], defaultText: "В наявності" } },
+  { component: markRaw(InputFilter), reference: 'productFilterComponent', props: { placeholder: computed(() => t('stock.filters.enterProduct')) } },
+  {
+    component: markRaw(SelectFilter), reference: 'quantityFilterComponent',
+    props: {
+      options: computed(() => [t('stock.filters.quantity.in-assortment'),
+      t('stock.filters.quantity.out-of-stock'), t('stock.filters.quantity.invalid')]), defaultText: computed(() => t('stock.filters.quantity.in-stock'))
+    }
+  },
 ])
 
 const tableHeaders = ref([
-  { 'name': 'Категорія', 'size': '25%' },
-  { 'name': 'Товар', 'size': '30%' },
-  { 'name': 'Кількість', 'size': '15%' },
-  { 'name': 'Ціна', 'size': '12%' },
-  { 'name': 'Дія', 'size': '18%' },
+  { 'name': computed(() => t('stock.tableHeaders.category')), 'size': '25%' },
+  { 'name': computed(() => t('stock.tableHeaders.product')), 'size': '30%' },
+  { 'name': computed(() => t('stock.tableHeaders.quantity')), 'size': '15%' },
+  { 'name': computed(() => t('stock.tableHeaders.price')), 'size': '10%' },
+  { 'name': computed(() => t('stock.tableHeaders.action')), 'size': '20%' },
 ]);
 
 const tableRows = computed(() => filteredGoods.value.map(product => [

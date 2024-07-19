@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, watch } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
-import Navbar from './components/Navbar.vue'
 import { useSuppliersStore } from '@/stores/suppliers'
 import { useExpensesStore } from '@/stores/expenses'
 import { useGoodsStore } from '@/stores/goods'
@@ -10,8 +9,14 @@ import { useSettingsStore } from '@/stores/settings'
 import { useCustomersStore } from './stores/customers'
 import { useAuthStore } from './stores/auth'
 
+import Navbar from './components/Navbar.vue'
+
+import { useI18n } from 'vue-i18n';
+const { locale } = useI18n({ useScope: 'global' })
+
 
 onMounted(() => {
+  locale.value = localStorage.getItem('lang') || locale.value;
   if (useAuthStore().isAuthenticated) {
     fetchAllData();
   }

@@ -2,15 +2,15 @@
     <div>
         <div class="row g-2 align-items-center justify-content-center">
             <div class="col-auto">
-                <p style="margin-bottom: 0;">Статистика прибутку за </p>
+                <p style="margin-bottom: 0;">{{ t("dashboard.statistics.profitChart.message") }}</p>
             </div>
             <div class="col-auto">
                 <select v-model="incomeChartTypeSelect" class="form-select form-select-sm">
-                    <option value="day">День</option>
-                    <option value="week">Тиждень</option>
-                    <option value="month">Місяць</option>
-                    <option value="quarter">Квартал</option>
-                    <option value="year">Рік</option>
+                    <option value="day">{{ t("dashboard.statistics.filters.timeSpan.day") }}</option>
+                    <option value="week">{{ t("dashboard.statistics.filters.timeSpan.week") }}</option>
+                    <option value="month">{{ t("dashboard.statistics.filters.timeSpan.month") }}</option>
+                    <option value="quarter">{{ t("dashboard.statistics.filters.timeSpan.quarter") }}</option>
+                    <option value="year">{{ t("dashboard.statistics.filters.timeSpan.year") }}</option>
                 </select>
             </div>
             <div class="col-auto">
@@ -20,7 +20,7 @@
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasFilters">Фільтри</button>
+                    data-bs-target="#offcanvasFilters">{{ t("dashboard.statistics.filters.filtersText") }}</button>
             </div>
         </div>
     </div>
@@ -37,18 +37,18 @@
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
         id="offcanvasFilters">
         <div class="offcanvas-header">
-            <h4 class="offcanvas-title">Фільтри</h4>
+            <h4 class="offcanvas-title">{{ t("dashboard.statistics.filters.filtersText") }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <h5>Замовлення</h5>
+            <h5>{{ t("dashboard.statistics.filters.orders.title") }}</h5>
             <hr>
-            <h6>Статус</h6>
+            <h6>{{ t("dashboard.statistics.filters.orders.statuses") }}</h6>
             <ul class="filter-ul">
                 <li v-for="status in orderStatuses" :key="status">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" :value="status" :checked="status === 'Продано'"
-                            @change=" filteredOrderStatuses.includes(status) ? filteredOrderStatuses.splice(filteredOrderStatuses.indexOf(status), 1) :
+                        <input class="form-check-input" type="checkbox" :value="status"
+                            :checked="status === orderStatuses[0]" @change=" filteredOrderStatuses.includes(status) ? filteredOrderStatuses.splice(filteredOrderStatuses.indexOf(status), 1) :
                     filteredOrderStatuses.push(status); setIncomeChartData()">
                         <label class="form-check-label">
                             {{ status }}
@@ -57,9 +57,9 @@
                 </li>
             </ul>
             <br>
-            <h5>Витрити</h5>
+            <h5>{{ t("dashboard.statistics.filters.expenses.title") }}</h5>
             <hr>
-            <h6>Постачальники</h6>
+            <h6>{{ t("dashboard.statistics.filters.expenses.suppliers") }}</h6>
             <ul class="filter-ul">
                 <li v-for="supplier in suppliers" :key="supplier">
                     <div class="form-check">
@@ -71,7 +71,7 @@
                     </div>
                 </li>
             </ul>
-            <h6>Категорії</h6>
+            <h6>{{ t("dashboard.statistics.filters.expenses.categories") }}</h6>
             <ul class="filter-ul">
                 <li v-for="category in categories" :key="category">
                     <div class="form-check">
@@ -99,6 +99,19 @@ import { eachWeekOfInterval, format, eachDayOfInterval, getMonth, getYear, addMo
 
 import DateFilter from '../../table_elements/filters/DateFilter.vue';
 import Chart from 'chart.js/auto';
+
+import { useI18n } from 'vue-i18n';
+const { t, locale } = useI18n();
+
+// update chart labels when locale changed
+watch(locale, () => {
+    if (incomeChartObj) {
+        incomeChartObj.data.datasets[0].label = t("dashboard.statistics.profitChart.profit")
+        incomeChartObj.data.datasets[1].label = t("dashboard.statistics.profitChart.income")
+        incomeChartObj.data.datasets[2].label = t("dashboard.statistics.profitChart.expenses")
+        incomeChartObj.update();
+    }
+})
 
 let incomeChartObj = null
 const incomeChart = ref(null);
@@ -277,21 +290,21 @@ onMounted(() => {
         data: {
             labels: getIncomeChartLabels(),
             datasets: [{
-                label: 'Прибуток',
+                label: t("dashboard.statistics.profitChart.profit"),
                 data: [],
                 fill: false,
                 borderColor: '#36A2EB',
                 tension: 0.1,
             },
             {
-                label: 'Дохід',
+                label: t("dashboard.statistics.profitChart.income"),
                 data: [],
                 fill: false,
                 borderColor: '#4BC0C0',
                 tension: 0.1,
             },
             {
-                label: 'Витрати',
+                label: t("dashboard.statistics.profitChart.expenses"),
                 data: [],
                 fill: false,
                 borderColor: '#FF6384',

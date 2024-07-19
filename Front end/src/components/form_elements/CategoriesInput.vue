@@ -2,7 +2,9 @@
     <label class="form-label">{{ label }}</label>
     <div v-if="!constant" class="input-group mb-3">
         <select v-if="!customCategory" v-model="categorySelect" class="form-select" name="category" style="width: 75%">
-            <option v-if="customOption" style="background-color: green;">+ Додати нову</option>
+            <option v-if="customOption" style="background-color: green;">{{
+        t('general.customOptions.customCategoryText') }}
+            </option>
             <option v-else hidden></option>
             <option v-for="category in categories" :key="category.id" :value="category.name">{{ category.name }}
             </option>
@@ -20,13 +22,16 @@
 </template>
 
 <script setup>
-import { computed, watch, ref, defineExpose } from 'vue';
+import { computed, watch, ref } from 'vue';
 import { useGoodsStore } from '@/stores/goods';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const emit = defineEmits(['categoryChanged', 'unitsChanged'])
 const props = defineProps({
     constant: Object,
-    label: { type: String, default: 'Категорія: ' },
+    label: { type: String, default: '' },
     customOption: { type: Boolean, default: true },
     custom: { type: Boolean, default: false },
     prefilledName: { type: String, default: '' },
@@ -47,7 +52,7 @@ const reset = () => {
 
 
 watch(categorySelect, () => {
-    if (categorySelect.value === '+ Додати нову') {
+    if (categorySelect.value === t('general.customOptions.customCategoryText')) {
         customCategory.value = true
         categoryUnits.value = '';
 

@@ -1,0 +1,356 @@
+{
+    "localeName": "Українська",
+    "localeShortName": "УКР",
+    "navbar": {
+        "dashboard": "Кабінет",
+        "crm": "Клієнти",
+        "suppliers": "Постачальники",
+        "expenses": "Витрати",
+        "stock": "Склад",
+        "orders": "Замовлення",
+        "signin": "Увійти",
+        "signout": "Вийти"
+    },
+    "home": {
+        "welcome": "Ласкаво просимо до BloomBiz.",
+        "tagline": "Коли творчість важливіше за паперову роботу.",
+        "start": "Почати",
+        "aboutTitle": "Про нас",
+        "aboutContent1": "Ласкаво просимо до BloomBiz - комплексного рішення для управління квітковим бізнесом. Ми допоможемо вам вирішити виклики у квітковому бізнесі, щоб ви могли досягти успіху на ринку. Розраховуйте на нас для оптимізації квіткового магазину!",
+        "aboutContent2": "У BloomBiz ми бачимо можливість для росту кожного квіткового магазину. Наша мета - спростити складні завдання, щоб ви могли зосередитися на справді важливому - створенні блискусих композицій. Працюйте з нами для досягнення найкращого у квітковій справі!",
+        "featuresTitle": "Особливості",
+        "featuresList": [
+            {
+                "title": "Всебічний функціонал",
+                "description": "BloomBiz — це багатофункціональний інструмент, який забезпечує доступ до всіх необхідних функцій у одному місці."
+            },
+            {
+                "title": "Зрозумілий інтерфейс",
+                "description": "Простий та інтуїтивно зрозумілий інтерфейс, що дозволяє легко використовувати необхідні функції без зайвих зусиль."
+            },
+            {
+                "title": "Контроль фінансів",
+                "description": "Зручні інструменти для ведення обліку грошового потоку крамниці. Відстежуйте свої витрати та прибуток, аналізуйте фінансові потоки і плануйте свої витрати ефективно."
+            },
+            {
+                "title": "Облік товарів",
+                "description": "Ефективний інструмент для контролю наявністі та цін товарів. Ведіть детальний облік товарного запасу, зручно аналізуйте й плануйте закупки, усі дані доступні в одному місці."
+            },
+            {
+                "title": "Динамічні графіки",
+                "description": "Автоматично створені графіки, що відображають стан вашої крамниці. Легко аналізуйте дані про продажі, запаси та інші показники."
+            },
+            {
+                "title": "Данні клієнтів",
+                "description": "Зручний спосіб зберігання інформації про клієнтів для повторного використання."
+            }
+        ]
+    },
+    "dashboard": {
+        "title": "Кабінет",
+        "statistics": {
+            "name": "Статистика",
+            "title": "СТАТИСТИКА ВАШОЇ КРАМНИЦІ",
+            "filters": {
+                "filtersText": "Фільтри",
+                "timeSpan": {
+                    "day": "День",
+                    "week": "Тиждень",
+                    "month": "Місяць",
+                    "quarter": "Квартал",
+                    "year": "Рік"
+                },
+                "orders": {
+                    "title": "Замовлення",
+                    "statuses": "Статуси"
+                },
+                "expenses": {
+                    "title": "Витрати",
+                    "suppliers": "Постачальники",
+                    "categories": "Категорії"
+                }
+            },
+            "profitChart": {
+                "message": "Статистика прибутку за",
+                "profit": "Прибуток",
+                "income": "Дохід",
+                "expenses": "Витрати"
+            }
+        },
+        "assortment": {
+            "name": "Асортимент",
+            "title": "ВАШ АСОРТИМЕНТ",
+            "categories": {
+                "additionModalTitle": "Додати нову категорію",
+                "editionModalTitle": "Змінити категорію",
+                "deletionModalTitle": "Видалення категорії",
+                "deletionModalConsent": "Я розумію що категорія і всі пов'язані з нею товари будуть видалені.",
+                "categoryLabel": "Категорія:",
+                "changedCategoryLabel": "Змінена категорія:"
+            },
+            "products": {
+                "additionModalTitle": "Додати новий товар",
+                "editionModalTitle": "Змінити товар",
+                "deletionModalTitle": "Ви впевненні?",
+                "deletionModalMessage": "Цю дію не можна відмінити.",
+                "nameLabel": "Назва:"
+            }
+        },
+        "settings": {
+            "name": "Налаштування",
+            "title": "НАЛАШТУВАННЯ ВАШОЇ КРАМНИЦІ",
+            "resetModalTitle": "Скинути налаштування",
+            "resetModalConfirmationMessage": "Всі налаштування будуть встановленні за змовченням, ви впевнені?",
+            "orders": {
+                "title": "Замовлення",
+                "goodsToIgnoreModalTitle": "Оберіть товар",
+                "goodsToIgnoreModalLabelName": "Назва:",
+                "customersToIgnoreModalTitle": "Оберіть клієнта",
+                "customersToIgnoreModalLabelName": "Контакти:",
+                "safetyModeTitle": "Режим безпеки",
+                "safetyModeDescription": "Функція \"Розібрати Замовлення\" не буде доступна поки це налаштування активне.",
+                "hideOutOfStockTitle": "Приховати товари не в наявності",
+                "hideOutOfStockDescription": "Не відображати товари яких немає в наявності при створенні замовлення.",
+                "ignoreGoodsTitle": "Ігнорувати товари",
+                "ignoreGoodsDescription": "Товари, що не будуть відображенні при створенні замовлення.",
+                "ignoreCustomersTitle": "Ігнорувати клієнтів",
+                "ignoreCustomersDescription": "Клієнти, що не будуть відображенні при створенні замовлення.",
+                "statusesTitle": "Статуси замовлень",
+                "statusesDescription": "Статуси, що можуть бути пов'язані з замовленнями.",
+                "statusModalTitle": "Додати новий статус замовлення",
+                "statusModalInputLabel": "Назва статусу:"
+            },
+            "expenses": {
+                "title": "Витрати",
+                "goodsToIgnoreModalTitle": "Оберіть товар",
+                "goodsToIgnoreModalLabelName": "Назва:",
+                "suppliersToIgnoreModalTitle": "Оберіть постачальника",
+                "suppliersToIgnoreModalLabelName": "Ім'я:",
+                "safetyModeTitle": "Режим безпеки",
+                "safetyModeDescription": "Функція видалення витрат не буде доступна поки це налаштування активне.",
+                "ignoreSuppliersTitle": "Ігнорувати постачальників",
+                "ignoreSuppliersDescription": "Постачальники, що не будуть відображенні при створенні витрати.",
+                "ignoreGoodsTitle": "Ігнорувати товари",
+                "ignoreGoodsDescription": "Товари, що не будуть відображенні при створенні витрати."
+            },
+            "goods": {
+                "title": "Товари",
+                "safetyModeTitle": "Режим безпеки",
+                "safetyModeDescription": "Функція видалення категорії та товарів не буде доступна поки це налаштування активне.",
+                "defaultMarginTitle": "Націнка за змовченням",
+                "defaultMarginDescription": "Націнка, що використовується для автоматичного розрахунку ціни товарів.",
+                "resetPricesTitle": "Скинути ціни",
+                "resetPricesConfirmationMessage": "Всі ціни, що ви змінили будуть перераховані спираючись на націнку за змовченням. Цю дію не можна відмінити.",
+                "resetPricesDescription": "Всі користувацькі ціни будуть скинуті і автоматично перераховані системою."
+            },
+            "suppliers": {
+                "title": "Постачальники",
+                "safetyModeTitle": "Режим безпеки",
+                "safetyModeDescription": "Функція видалення постачальників не буде доступна поки це налаштування активне."
+            },
+            "customers": {
+                "title": "Клієнти",
+                "safetyModeTitle": "Режим безпеки",
+                "safetyModeDescription": "Функція видалення клієнтів не буде доступна поки це налаштування активне."
+            }
+        }
+    },
+    "customers": {
+        "title": "Клієнти",
+        "description": "Тут ви можете видалити та додати клієнтів, а також переглядати різну інформацію про них.",
+        "addressesPopoverTitle": "Адреси клієнта:",
+        "tableHeaders": {
+            "name": "Ім'я",
+            "contactInfo": "Контакти",
+            "address": "Адреса",
+            "action": "Дія"
+        },
+        "formFields": {
+            "nameLabel": "Ім'я:",
+            "contactInfoLabel": "Контакти:",
+            "addressesLabel": "Адреси:",
+            "addressesNote": "Адреси можуть бути додані до клієнта лише при створенні замовлення.",
+            "additionalLabel": "Додатково:"
+        },
+        "additionModalTitle": "Додати нового клієнта",
+        "editionModalTitle": "Змінити клієнта",
+        "deletionModalTitle": "Ви впевненні?",
+        "deletionModalConfirmationMessage": "Всі данні пов'язані з цим клієнтом будуть видалені, цю дію не можна відмінити.",
+        "filtersPlaceholders": {
+            "enterName": "Введіть ім'я...",
+            "enterContactInfo": "Введіть контакти...",
+            "enterAddress": "Введіть адресу..."
+        }
+    },
+    "suppliers": {
+        "title": "Постачальники",
+        "description": "Тут ви можете продивлятись, редагувати та додавати нових постачальників.",
+        "tableHeaders": {
+            "name": "Ім'я",
+            "contactInfo": "Контакти",
+            "additional": "Додатково",
+            "action": "Дія"
+        },
+        "formFields": {
+            "nameLabel": "Ім'я:",
+            "contactInfoLabel": "Контакти:",
+            "additionalLabel": "Додатково:"
+        },
+        "additionModalTitle": "Додати нового постачальника",
+        "editionModalTitle": "Змінити постачальника",
+        "deletionModalTitle": "Ви впевненні?",
+        "deletionModalConfirmationMessage": "Всі данні пов'язані з цим постачальником будуть видалені, цю дію не можна відмінити.",
+        "filtersPlaceholders": {
+            "enterName": "Введіть ім'я...",
+            "enterContactInfo": "Введіть контакти..."
+        }
+    },
+    "expenses": {
+        "title": "Витрати",
+        "description": "Тут ви можете зареєструвати та переглянути свої витрати. При додаванні постачання, нові товари будуть додані до вашого складу.",
+        "tableHeaders": {
+            "date": "Дата",
+            "supplier": "Постачальник",
+            "category": "Категорія",
+            "price": "Ціна",
+            "action": "Дія"
+        },
+        "formFields": {
+            "dateLabel": "Дата:",
+            "categoryLabel": "Категорія:",
+            "supplierLabel": "Постачальник:"
+        },
+        "additionModalTitle": "Додати нову витрату",
+        "editionModalTitle": "Змінити витрату",
+        "deletionModalTitle": "Ви впевненні?",
+        "deletionModalConfirmationMessage": "Також зі складу будуть видалені всі товари, що пов'язані з цією витратою. Цю дію не можна відмінити."
+    },
+    "stock": {
+        "title": "Товари на складі",
+        "description": "Тут ви можете переглянути товари, які у вас є та списати їх. Нові позиції будуть додані на склад одразу після реєстрації нової витрати.",
+        "changePriceBtn": "Змінити",
+        "resetPriceBtn": "Скинути",
+        "tableHeaders": {
+            "category": "Категорія",
+            "product": "Товар",
+            "quantity": "Кількість",
+            "price": "Ціна",
+            "action": "Дія"
+        },
+        "decommission": {
+            "btnText": "Списати",
+            "inputPlaceholder": "Кількість"
+        },
+        "filters": {
+            "enterProduct": "Введіть назву товару...",
+            "quantity": {
+                "in-stock": "В наявності",
+                "in-assortment": "В асортименті",
+                "out-of-stock": "Не в наявності",
+                "invalid": "Погрішність"
+            }
+        }
+    },
+    "orders": {
+        "title": "Замовлення",
+        "description": "Тут ви можете додавати, редагувати та переглядати замовлення ваших клієнтів.",
+        "delBtnText": "Розібрати",
+        "compositionPopupTitle": "Склад замовлення:",
+        "tableHeaders": {
+            "date": "Дата",
+            "status": "Статус",
+            "composition": "Склад",
+            "price": "Ціна",
+            "action": "Дія"
+        },
+        "elementsTitle": "Елементи замовлення",
+        "customerInfoTitle": "Інформація про клієнта",
+        "formFields": {
+            "dateLabel": "Дата:",
+            "statusLabel": "Статус:",
+            "additionalLabel": "Коментар:",
+            "discountLabel": "Знижка:",
+            "priceLabel": "Ціна:"
+        },
+        "customerFields": {
+            "noCustomerText": "Створити замовлення без клієнта",
+            "nameLabel": "Ім'я клієнта:",
+            "contactInfoLabel": "Контакт клієнта:",
+            "pickupText": "Самовивіз",
+            "addressLabel": "Адреса клієнта:",
+            "additionalLabel": "Додатково:",
+            "ordrerIsReceiverText": "Замовник є отримувачем"
+        },
+        "additionModalTitle": "Додати нове замовлення",
+        "editionModalTitle": "Редагувати замовлення",
+        "deletionModalTitle": "Ви впевнені?",
+        "deletionModalConfirmationMessage": "Всі використані товари будуть повернуті на ваш склад. Цю дію не можна відмінити."
+    },
+    "auth": {
+        "login": {
+            "title": "Вхід",
+            "description": "Увійдіть в обліковий сапис щоб продовжити",
+            "suggestion": "Зареєструватись",
+            "fields": {
+                "nameLabel": "Ім'я:",
+                "namePlaceholder": "Введіть ім'я користувача",
+                "passwordLabel": "Пароль:",
+                "passwordPlaceholder": "Введіть пароль",
+                "btnText": "Увійти"
+            }
+        },
+        "registration": {
+            "title": "Реєстрація",
+            "description": "Створіть обліковий запис щоб продовжити",
+            "suggestion": "Увійти",
+            "fields": {
+                "nameLabel": "Ім'я:",
+                "namePlaceholder": "Придумайте ім'я користувача",
+                "passwordLabel": "Пароль:",
+                "passwordPlaceholder": "Придумайте пароль",
+                "confirmPasswordLabel": "Підтвердіть пароль:",
+                "confirmPasswordPlaceholder": "Підтвердіть введений пароль",
+                "matchesTag": "співпадає",
+                "differsTag": "не співпадає",
+                "codeLabel": "Реєстраційний код:",
+                "codePlaceholder": "Введіть реєстраційний код",
+                "btnText": "Зареєструватись"
+            },
+            "passwordRules": {
+                "length": "Пароль повинен містити щонайменше 8 символів.",
+                "capitalLetter": "Пароль повинен містити хоча б одну велику літеру.",
+                "smallLetter": "Пароль повинен містити хоча б одну малу літеру.",
+                "digit": "Пароль повинен містити хоча б одну цифру."
+            }
+        },
+        "errors": {
+            "registrationFailed": "Помилка при реєстрації, спробуйте ще.",
+            "authFailed": "Помилка автентифікації, спробуйте ще."
+        }
+    },
+    "general": {
+        "dateFilterFrom": "Від",
+        "dateFilterTo": "до",
+        "allSelectOption": "Всі",
+        "addBtnText": "Додати",
+        "editBtnText": "Редагувати",
+        "delBtnText": "Видалити",
+        "saveBtnText": "Зберегти",
+        "resetBtnText": "Скинути",
+        "cancelBtnText": "Скасувати",
+        "nothingFound": "Нічого не знайдено.",
+        "customOptions": {
+            "customCategoryText": "+ Додати нову",
+            "customSupplierText": "+ Додати нового",
+            "customCustomerText": "+ Додати нового",
+            "customAddressText": "+ Додати нову",
+            "customProductText": "+ Додати новий"
+        },
+        "elementsTableHeaders": {
+            "product": "Товар",
+            "quantity": "Кількість",
+            "price": "Ціна",
+            "total": "Всього"
+        }
+    }
+}

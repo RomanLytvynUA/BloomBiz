@@ -6,7 +6,7 @@
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         :data-bs-target="'#customerSelectAccordionBody' + accordionIdPrefix"
                         :data-bs-parent="'#customerSelectAccordion' + accordionIdPrefix">
-                        Інформація про клієнта
+                        {{ t('orders.customerInfoTitle') }}
                     </button>
                 </h2>
                 <div :id="'customerSelectAccordionBody' + accordionIdPrefix" class="accordion-collapse collapse"
@@ -16,7 +16,7 @@
                             <div class="form-check">
                                 <input v-model="guest" class="form-check-input" type="checkbox">
                                 <label class="form-check-label">
-                                    Створити замовлення без клієнта
+                                    {{ t('orders.customerFields.noCustomerText') }}
                                 </label>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                                 <div class="form-check">
                                     <input v-model="receiverIsOrderer" class="form-check-input" type="checkbox">
                                     <label class="form-check-label">
-                                        Замовник є отримувачем
+                                        {{ t('orders.customerFields.ordrerIsReceiverText') }}
                                     </label>
                                 </div>
                             </div>
@@ -49,6 +49,9 @@
 import { ref, watch, watchEffect } from 'vue';
 
 import CustomerForm from './CustomerForm.vue';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps(['accordionIdPrefix', 'preselectedAddress'])
 const guest = ref(true)

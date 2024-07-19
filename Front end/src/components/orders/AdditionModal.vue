@@ -3,22 +3,23 @@
         <div class="modal-dialog" style="max-width: 600px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Додати нове замовлення</h5>
+                    <h5 class="modal-title">{{ t("orders.additionModalTitle") }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="newOrderForm">
                         <div class="row">
                             <div class="col-sm-6">
-                                <InputField ref="dateInput" label="Дата:" type="datetime-local" name="date"
-                                    :value="formatISO(new Date()).slice(0, 16)" />
+                                <InputField ref="dateInput" :label="t('orders.formFields.dateLabel')"
+                                    type="datetime-local" name="date" :value="formatISO(new Date()).slice(0, 16)" />
                             </div>
                             <div class="col-sm-6">
-                                <SelectField ref="statusInput" label="Статус:" name="status" :options="statuses"
-                                    preselectedValue="" />
+                                <SelectField ref="statusInput" :label="t('orders.formFields.statusLabel')" name="status"
+                                    :options="statuses" preselectedValue="" />
                             </div>
                         </div>
                     </form>
+
                     <CustomerSelect ref="customerSelect" accordionIdPrefix="CreateOrder" />
 
                     <form id="orderElementsForm" class="mb-3">
@@ -27,21 +28,24 @@
                     </form>
                     <form id="orderGeneralForm">
                         <div class="mb-3">
-                            <label for="floatingTextarea">Коментар: </label>
+                            <label for="floatingTextarea" class="form-label">{{ t('orders.formFields.additionalLabel')
+                                }}</label>
                             <textarea class="form-control" name="additional"></textarea>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Знижка:</span>
+                            <span class="input-group-text">{{ t('orders.formFields.discountLabel') }}</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount">
-                            <span class="input-group-text">Всього:</span>
+                            <span class="input-group-text">{{ t('orders.formFields.priceLabel') }}</span>
                             <input ref="orderTotalField" name="price" type="number" class="form-control"
                                 :value="orderTotal - orderTotal * (orderDiscount / 100)">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">{{
+                        t('general.saveBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -49,7 +53,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { formatISO } from 'date-fns';
 
 import { useOrdersStore } from '@/stores/orders';
@@ -58,6 +62,9 @@ import ElementsAccordion from './ElementsAccordion.vue'
 import CustomerSelect from './customers/CustomerSelect.vue'
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps(['statuses'])
 

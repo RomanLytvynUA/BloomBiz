@@ -3,22 +3,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Змінити постачальника</h5>
+                    <h5 class="modal-title">{{ t('suppliers.editionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="editSupplierForm">
                     <div class="modal-body">
-                        <InputField label="Ім'я:" type="text" name="name"
+                        <InputField :label="t('suppliers.formFields.nameLabel')" type="text" name="name"
                             :value="oldSupplierData ? oldSupplierData.name : ''" />
-                        <InputField label="Контакти:" type="text" name="contactInfo"
+                        <InputField :label="t('suppliers.formFields.contactInfoLabel')" type="text" name="contactInfo"
                             :value="oldSupplierData ? oldSupplierData.contactInfo : ''" />
-                        <InputField label="Додатково:" type="text" name="additional"
+                        <InputField :label="t('suppliers.formFields.additionalLabel')" type="text" name="additional"
                             :value="oldSupplierData ? oldSupplierData.additional : ''" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                        <button type="submit" class="btn btn-primary"
-                            @click.prevent="validateSupplier">Зберегти</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                        <button type="submit" class="btn btn-primary" @click.prevent="validateSupplier">{{
+                        t('general.saveBtnText') }}</button>
                     </div>
                 </form>
             </div>
@@ -30,6 +31,9 @@
 import { ref, computed, onMounted } from 'vue'
 import InputField from '../form_elements/InputField.vue';
 import { useSuppliersStore } from '@/stores/suppliers';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const suppliersStore = useSuppliersStore();
 const supplierId = ref(null)

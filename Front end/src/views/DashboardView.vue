@@ -1,5 +1,5 @@
 <template>
-  <Headline title="Кабінет" description="" />
+  <Headline :title="t('dashboard.title')" description="" />
   <br>
   <div class="container">
     <div class="row gutters-sm">
@@ -12,14 +12,14 @@
                 <svg class="bi me-2" width="24" height="24" fill="currentColor">
                   <use :xlink:href="`${icons}#icon-chart`"></use>
                 </svg>
-                Статистика
+                {{ t("dashboard.statistics.name") }}
               </a>
               <a href="#assortment" class="nav-item nav-link has-icon nav-link-faded"
                 :class="{ 'active': isActiveLink('assortment') }">
                 <svg class="bi me-2" width="24" height="24" fill="currentColor">
                   <use :xlink:href="`${icons}#icon-shop`"></use>
                 </svg>
-                Асортимент
+                {{ t("dashboard.assortment.name") }}
               </a>
               <!-- <a href="#calendar" class="nav-item nav-link has-icon nav-link-faded active"
                   :class="{ 'active': isActiveLink('calendar') }">
@@ -33,7 +33,7 @@
                 <svg class="bi me-2" width="24" height="24" fill="currentColor">
                   <use :xlink:href="`${icons}#icon-gear`"></use>
                 </svg>
-                Налаштування
+                {{ t("dashboard.settings.name") }}
               </a>
             </nav>
           </div>
@@ -99,6 +99,9 @@ import Headline from '../components/Headline.vue'
 import Statistics from '../components/dashboard/Statistics.vue'
 import Assortment from '../components/dashboard/Assortment.vue'
 import Settings from '../components/dashboard/Settings.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const router = useRouter();
 

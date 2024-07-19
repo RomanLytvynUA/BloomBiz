@@ -3,21 +3,23 @@
         <div class="modal-dialog" style="max-width: 600px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Додати нову витрату</h5>
+                    <h5 class="modal-title">{{ t('expenses.additionModalTitle') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="newExpenseForm">
-                        <InputField ref=dateInput label="Дата:" type="date" name="date" :value="todaysDate" />
+                        <InputField ref=dateInput :label="t('expenses.formFields.dateLabel')" type="date" name="date"
+                            :value="todaysDate" />
                         <div class="row">
                             <div class="col-sm-6">
-                                <CategoriesInput ref="categoryInput"
+                                <CategoriesInput ref="categoryInput" :label="t('expenses.formFields.categoryLabel')"
                                     @categoryChanged="(newValue) => selectedCategoryField = newValue" />
                             </div>
                             <div class="col-sm-6">
-                                <SelectField ref="supplierInput" label="Постачальник: " name="supplier"
+                                <SelectField ref="supplierInput" :label="t('expenses.formFields.supplierLabel')"
+                                    name="supplier"
                                     :options="suppliersNames.filter((supplier) => suppliersToIgnore ? !suppliersToIgnore.includes(supplier) : true)"
-                                    customOptionValue="+ Додати нового" />
+                                    :customOptionValue="t('general.customOptions.customSupplierText')" />
                             </div>
                         </div>
 
@@ -27,8 +29,10 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        t('general.cancelBtnText') }}</button>
+                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">{{
+                        t('general.saveBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -36,7 +40,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useExpensesStore } from '@/stores/expenses';
 import { useSuppliersStore } from '@/stores/suppliers';
@@ -46,6 +50,9 @@ import InputField from '../form_elements/InputField.vue'
 import CategoriesInput from '../form_elements/CategoriesInput.vue'
 import SelectField from '../form_elements/SelectField.vue'
 import ElementsTable from './ElementsTable.vue'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const todaysDate = new Date().toISOString().split('T')[0];
 const suppliersNames = computed(() => useSuppliersStore().suppliersNames)

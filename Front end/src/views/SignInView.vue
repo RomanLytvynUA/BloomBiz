@@ -7,81 +7,88 @@
 						<div class="card-body">
 							<div class="m-sm-4" style="margin-top: 0 !important; margin-bottom: 0 !important">
 								<div class="text-center mt-4" style="margin-top: 1% !important">
-									<h2>{{ !registration ? 'Вхід' : 'Реєстрація' }}</h2>
+									<h2>{{ !registration ? t('auth.login.title') : t('auth.registration.title') }}</h2>
 									<p class="lead" style="margin-bottom: 1%">
-										{{ !registration ? 'Увійдіть в обліковий сапис щоб продовжити' : 'Створіть\
-										обліковий запис щоб продовжити' }}
+										{{ !registration ? t('auth.login.description') :
+										t('auth.registration.description') }}
 									</p>
 									<small @click.prevent="registration = !registration; alert = ''; reset()">
-										<a href="">{{ !registration ? 'Зареєструватись' : 'Увійти' }}</a>
+										<a href="">{{ !registration ? t('auth.login.suggestion') :
+										t('auth.registration.suggestion') }}</a>
 									</small>
 								</div>
 								<br>
-								<div v-if="alert.length" class="alert alert-danger" role="alert">{{ alert }}</div>
+								<div v-if="alert.length" class="alert alert-danger" role="alert">{{ alert[0].value }}
+								</div>
 								<form id="login-form" v-if="!registration" @keyup.enter="login()">
 									<div class="form-group mb-3">
-										<label>Ім'я</label>
+										<label>{{ t('auth.login.fields.nameLabel') }}</label>
 										<input class="form-control" type="text" name="username"
-											placeholder="Введіть ім'я користувача">
+											:placeholder="t('auth.login.fields.namePlaceholder')">
 									</div>
 									<div class="form-group mb-3">
-										<label>Пароль</label>
+										<label>{{ t('auth.login.fields.passwordLabel') }}</label>
 										<input class="form-control" type="password" name="password"
-											placeholder="Введіть пароль">
+											:placeholder="t('auth.login.fields.passwordPlaceholder')">
 									</div>
 								</form>
 								<form id="registration-form" v-if="registration" @keyup.enter="register()">
 									<div class="form-group mb-3">
-										<label>Ім'я</label>
+										<label>{{ t('auth.registration.fields.nameLabel') }}</label>
 										<input class="form-control" autocomplete="off" type="text" name="username"
-											placeholder="Придумайте ім'я користувача">
+											:placeholder="t('auth.registration.fields.namePlaceholder')">
 									</div>
 									<div class="form-group mb-3">
-										<label>Пароль</label>
+										<label>{{ t('auth.registration.fields.passwordLabel') }}</label>
 										<input style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;"
 											v-model="registrationPassword" class="form-control" autocomplete="off"
-											type="password" name="password" placeholder="Придумайте пароль">
+											type="password" name="password"
+											:placeholder="t('auth.registration.fields.passwordPlaceholder')">
 										<div style="border-top-left-radius: 0px; border-top-right-radius: 0px; border-top: 0px"
 											class="card">
 											<ul style="margin-top: 1%; margin-bottom: 1%;">
 												<li
 													:style="registrationPassword.length ? (registrationPassword.length >= 8 ? 'color: green' : 'color: red') : 'color: black'">
-													Пароль повинен містити щонайменше 8 символів.</li>
+													{{ t('auth.registration.passwordRules.length') }}</li>
 												<li
 													:style="registrationPassword.length ? (/\p{Lu}/u.test(registrationPassword) ? 'color: green' : 'color: red') : 'color: black'">
-													Пароль повинен містити хоча б одну велику літеру.</li>
+													{{ t('auth.registration.passwordRules.capitalLetter') }}</li>
 												<li
 													:style="registrationPassword.length ? (/\p{Ll}/u.test(registrationPassword) ? 'color: green' : 'color: red') : 'color: black'">
-													Пароль повинен містити хоча б одну малу літеру.</li>
+													{{ t('auth.registration.passwordRules.smallLetter') }}</li>
 												<li
 													:style="registrationPassword.length ? (/\d/.test(registrationPassword) ? 'color: green' : 'color: red') : 'color: black'">
-													Пароль повинен містити хоча б одну цифру.</li>
+													{{ t('auth.registration.passwordRules.digit') }}</li>
 											</ul>
 										</div>
 									</div>
 									<div class="form-group mb-3">
-										<label>Підтвердіть пароль
+										<label>{{ t('auth.registration.fields.confirmPasswordLabel') }}
 											<span v-show="registrationPassword !== registrationPasswordVerification"
-												class="badge text-bg-danger">не співпадає</span>
+												class="badge text-bg-danger">{{
+										t('auth.registration.fields.differsTag')
+									}}</span>
 											<span
 												v-show="registrationPassword !== '' && (registrationPassword === registrationPasswordVerification)"
-												class="badge text-bg-success">співпадає</span>
+												class="badge text-bg-success">{{
+										t('auth.registration.fields.matchesTag')
+									}}</span>
 										</label>
 										<input v-model="registrationPasswordVerification" class="form-control"
 											autocomplete="off" type="password" name="verify-password"
-											placeholder="Підтвердіть пароль">
+											:placeholder="t('auth.registration.fields.confirmPasswordPlaceholder')">
 									</div>
 									<div class="form-group mb-3">
-										<label>Реєстраційний код</label>
+										<label>{{ t('auth.registration.fields.codeLabel') }}</label>
 										<input class="form-control" autocomplete="off" type="text" name="code"
-											placeholder="Введіть реєстраційний код">
+											:placeholder="t('auth.registration.fields.codePlaceholder')">
 									</div>
 								</form>
 								<div class="text-center">
-									<button v-if="!registration" class="btn btn-success"
-										@click.prevent="login()">Увійти</button>
-									<button v-if="registration" class="btn btn-success"
-										@click.prevent="register()">Зареєструватись</button>
+									<button v-if="!registration" class="btn btn-success" @click.prevent="login()">{{
+										t('auth.login.fields.btnText') }}</button>
+									<button v-if="registration" class="btn btn-success" @click.prevent="register()">{{
+										t('auth.registration.fields.btnText') }}</button>
 								</div>
 							</div>
 						</div>
@@ -93,10 +100,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '../stores/auth';
 
-const alert = ref('')
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
+const alert = ref([])
+const loginErrorText = computed(() => t('auth.errors.authFailed'))
+const registrationErrorText = computed(() => t('auth.errors.registrationFailed'))
+
 const registration = ref(false)
 
 const registrationPassword = ref('')
@@ -105,13 +118,13 @@ const registrationPasswordVerification = ref('')
 async function reset() {
 	$('#login-form')[0]?.reset()
 	$('#registration-form')[0]?.reset()
-	alert.value = '';
+	alert.value = [];
 	registrationPassword.value = '';
 	registrationPasswordVerification.value = '';
 }
 
 async function login() {
-	alert.value = '';
+	alert.value = [];
 	const form = $('#login-form')[0]
 	let valid = true
 
@@ -135,7 +148,7 @@ async function login() {
 				form.reset();
 				break;
 			case 1:
-				alert.value = 'Помилка автентифікації, спробуйте ще.'
+				alert.value.push(loginErrorText)
 				break;
 			default:
 				break;
@@ -144,7 +157,7 @@ async function login() {
 }
 
 async function register() {
-	alert.value = '';
+	alert.value = [];
 	const form = $('#registration-form')[0]
 	let valid = true
 
@@ -177,7 +190,7 @@ async function register() {
 				form.reset();
 				break;
 			case 1:
-				alert.value = 'Помилка при реєстрації, спробуйте ще.'
+				alert.value.push(registrationErrorText)
 				break;
 			default:
 				break;

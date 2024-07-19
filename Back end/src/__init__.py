@@ -21,7 +21,8 @@ from .routes.orders import orders
 from .routes.settings import settings
 from .routes.customers import customers
 from .routes.auth import auth
-from .routes.swagger import swaggerui_blueprint
+
+# from .routes.swagger import swaggerui_blueprint
 
 app.register_blueprint(goods, url_prefix="/goods")
 app.register_blueprint(expenses, url_prefix="/expenses")
@@ -30,4 +31,4 @@ app.register_blueprint(orders, url_prefix="/orders")
 app.register_blueprint(settings, url_prefix="/settings")
 app.register_blueprint(customers, url_prefix="/customers")
 app.register_blueprint(auth, url_prefix="/auth")
-app.register_blueprint(swaggerui_blueprint)
+# app.register_blueprint(swaggerui_blueprint)

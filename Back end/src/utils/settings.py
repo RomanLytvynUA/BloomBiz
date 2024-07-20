@@ -1,53 +1,28 @@
 from .. import db
 from ..models.settings import Settings
 
-
-default_settings = {
-    'ordersSafetyMode': True,
-    'ordersHideOutOfStock': True,
-    'ordersGoodsToIgnore': [],
-    'ordersCustomersToIgnore': [],
-    'ordersStatuses': ["Продано", "Списано", "Чорнетка", "Вітрина"],
-
-    'expensesSafetyMode': True,
-    'expensesSuppliersToIgnore': [],
-    'expensesGoodsToIgnore': [],
-
-    'goodsSafetyMode': True,
-    'defaultMargin': 120,
- 
-    'suppliersSafetyMode': True,
-
-    'customersSafetyMode': True,
-}
-
-
 available_settings = [
-    'ordersSafetyMode',
-    'ordersHideOutOfStock',
-    'ordersGoodsToIgnore',
-    'ordersCustomersToIgnore',
-    'ordersStatuses',
-
-    'expensesSafetyMode',
-    'expensesSuppliersToIgnore',
-    'expensesGoodsToIgnore',
-    
-    'goodsSafetyMode',
-    'defaultMargin',
-    
-    'suppliersSafetyMode',
-    
-    'customersSafetyMode',
+    "ordersSafetyMode",
+    "ordersHideOutOfStock",
+    "ordersGoodsToIgnore",
+    "ordersCustomersToIgnore",
+    "ordersStatuses",
+    "expensesSafetyMode",
+    "expensesSuppliersToIgnore",
+    "expensesGoodsToIgnore",
+    "goodsSafetyMode",
+    "defaultMargin",
+    "suppliersSafetyMode",
+    "customersSafetyMode",
 ]
 
 
 multiple_options_settings = [
-    'ordersGoodsToIgnore',
-    'ordersCustomersToIgnore',
-    'ordersStatuses',
-    'expensesSuppliersToIgnore',
-    'expensesGoodsToIgnore',
+    "ordersGoodsToIgnore",
+    "ordersCustomersToIgnore",
+    "ordersStatuses",
+    "expensesSuppliersToIgnore",
+    "expensesGoodsToIgnore",
 ]
 
 
@@ -66,17 +41,35 @@ def util_set_settings(name, value):
             if not len(option):
                 new_option = Settings(name=name, value=value)
                 db.session.add(new_option)
-            else:    
+            else:
                 option[0].value = value
                 db.session.add(option[0])
         db.session.commit()
 
-        return {'message': 'Added setting successfuly.'}
+        return {"message": "Added setting successfuly."}
     else:
-        return {'message': 'Invalid setting name.'}
+        return {"message": "Invalid setting name."}
 
 
-def util_reset_settings():
+def util_reset_settings(lang="eng"):
+    default_settings = {
+        "ordersSafetyMode": True,
+        "ordersHideOutOfStock": True,
+        "ordersGoodsToIgnore": [],
+        "ordersCustomersToIgnore": [],
+        "ordersStatuses": (
+            ["Sold", "Written off", "Draft", "Showcase"]
+            if lang == "eng"
+            else ["Продано", "Списано", "Чорнетка", "Вітрина"]
+        ),
+        "expensesSafetyMode": True,
+        "expensesSuppliersToIgnore": [],
+        "expensesGoodsToIgnore": [],
+        "goodsSafetyMode": True,
+        "defaultMargin": 120,
+        "suppliersSafetyMode": True,
+        "customersSafetyMode": True,
+    }
     for name, value in default_settings.items():
         util_set_settings(name, value)
 

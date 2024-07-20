@@ -41,7 +41,7 @@ def generate_reg_code():
         return new_code.code
 
 
-action = input(
+help = (
     "Select action to perform:\n"
     "[1] Generate a registration code\n"
     "[2] View registration codes\n"
@@ -50,10 +50,13 @@ action = input(
     "[5] View users\n"
     "[6] Delete an account\n"
     "[7] Create an account\n"
-    "[fd] Populate fake data\n"
+    "[fd] Populate fake data (run fd.ukr for ukrainian localization)\n"
     "\n[e] Exit\n"
     "[h] Show this help sheet\n\n"
 )
+
+
+action = input(help)
 
 prompted = True
 while True:
@@ -65,19 +68,7 @@ while True:
     with app.app_context():
         match action:
             case "h":
-                action = input(
-                    "Select action to perform:\n"
-                    "[1] Generate a registration code\n"
-                    "[2] View registration codes\n"
-                    "[3] Invalidate all registration codes\n"
-                    "[4] Invalidate a registration code\n"
-                    "[5] View users\n"
-                    "[6] Delete an account\n"
-                    "[7] Create an account\n"
-                    "[fd] Populate fake data\n"
-                    "\n[e] Exit\n"
-                    "[h] Show this help sheet\n\n"
-                )
+                action = input(help)
                 prompted = True
             case "e":
                 break
@@ -146,3 +137,5 @@ while True:
 
             case "fd":
                 populate_fake_data()
+            case "fd.ukr":
+                populate_fake_data(selected_lang="ukr")

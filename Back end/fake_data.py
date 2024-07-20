@@ -21,6 +21,13 @@ parser.add_argument(
     help="number of years to subtract from the current year",
 )
 parser.add_argument(
+    "--lang",
+    type=str,
+    choices=["ukr", "eng"],
+    default="eng",
+    help="language of fake data to be generated (ukr/eng)",
+)
+parser.add_argument(
     "--months",
     type=int,
     default=0,
@@ -39,6 +46,7 @@ today = datetime.today()
 year = args.years
 months = args.months
 days = args.days
+lang = args.lang
 
 
 if year == 0 and months == 0 and days == 0:
@@ -76,11 +84,19 @@ def add_reg_code():
 
 
 def add_categories():
-    categories_data = [
-        {"name": "Квіти", "units": "шт."},
-        {"name": "Упаковка", "units": "м."},
-        {"name": "Іграшки", "units": "шт."},
-    ]
+    categories_data = (
+        [
+            {"name": "Квіти", "units": "шт."},
+            {"name": "Упаковка", "units": "м."},
+            {"name": "Іграшки", "units": "шт."},
+        ]
+        if lang == "ukr"
+        else [
+            {"name": "Flowers", "units": "pcs."},
+            {"name": "Packing", "units": "m."},
+            {"name": "Toys", "units": "pcs."},
+        ]
+    )
 
     db.session.query(Categories).delete()
     db.session.execute(text(f"ALTER SEQUENCE categories_id_seq RESTART WITH 1"))
@@ -93,52 +109,109 @@ def add_categories():
 
 
 def add_goods():
-    flowers = Categories.query.filter_by(name="Квіти").first()
-    packing = Categories.query.filter_by(name="Упаковка").first()
-    toys = Categories.query.filter_by(name="Іграшки").first()
+    flowers = (
+        Categories.query.filter_by(name="Квіти").first()
+        if lang == "ukr"
+        else Categories.query.filter_by(name="Flowers").first()
+    )
+    packing = (
+        Categories.query.filter_by(name="Упаковка").first()
+        if lang == "ukr"
+        else Categories.query.filter_by(name="Packing").first()
+    )
+    toys = (
+        Categories.query.filter_by(name="Іграшки").first()
+        if lang == "ukr"
+        else Categories.query.filter_by(name="Toys").first()
+    )
 
-    goods_data = [
-        {"category": flowers, "name": "Білі троянди"},
-        {"category": flowers, "name": "Червоні троянди"},
-        {"category": flowers, "name": "Рожеві троянди"},
-        {"category": flowers, "name": "Фіолетові троянди"},
-        {"category": flowers, "name": "Кактус"},
-        {"category": flowers, "name": "Гіпсофіла"},
-        {"category": flowers, "name": "Бавовна"},
-        {"category": flowers, "name": "Лілії"},
-        {"category": flowers, "name": "Тюльпани"},
-        {"category": flowers, "name": "Фіалки"},
-        {"category": flowers, "name": "Лаванда"},
-        {"category": flowers, "name": "Орхідеї"},
-        {"category": flowers, "name": "Хризантеми"},
-        {"category": flowers, "name": "Іриси"},
-        {"category": flowers, "name": "Півонії"},
-        {"category": flowers, "name": "Маки"},
-        {"category": flowers, "name": "Ромашки"},
-        {"category": flowers, "name": "Амаріліси"},
-        {"category": flowers, "name": "Нарциси"},
-        {"category": flowers, "name": "Гвоздики"},
-        {"category": packing, "name": "Біла обгортка"},
-        {"category": packing, "name": "Прозора обгортка"},
-        {"category": packing, "name": "Зелена обгортка"},
-        {"category": packing, "name": "Срібна обгортка"},
-        {"category": packing, "name": "Чорна обгортка"},
-        {"category": packing, "name": "Рожева смужка"},
-        {"category": packing, "name": "Синя смужка"},
-        {"category": packing, "name": "Червона смужка"},
-        {"category": packing, "name": "Жовта смужка"},
-        {"category": packing, "name": "Помаранчева смужка"},
-        {"category": toys, "name": "Рожевий заєць"},
-        {"category": toys, "name": "Маленький медвідь"},
-        {"category": toys, "name": "Великий медвідь"},
-        {"category": toys, "name": "Плюшовий кролик"},
-        {"category": toys, "name": "Жираф-плюш"},
-        {"category": toys, "name": "Дерев'яна лялька"},
-        {"category": toys, "name": "Машинка"},
-        {"category": toys, "name": "М'яка лисичка"},
-        {"category": toys, "name": "Іграшковий вертоліт"},
-        {"category": toys, "name": "Кубики"},
-    ]
+    goods_data = (
+        [
+            {"category": flowers, "name": "Білі троянди"},
+            {"category": flowers, "name": "Червоні троянди"},
+            {"category": flowers, "name": "Рожеві троянди"},
+            {"category": flowers, "name": "Фіолетові троянди"},
+            {"category": flowers, "name": "Кактус"},
+            {"category": flowers, "name": "Гіпсофіла"},
+            {"category": flowers, "name": "Бавовна"},
+            {"category": flowers, "name": "Лілії"},
+            {"category": flowers, "name": "Тюльпани"},
+            {"category": flowers, "name": "Фіалки"},
+            {"category": flowers, "name": "Лаванда"},
+            {"category": flowers, "name": "Орхідеї"},
+            {"category": flowers, "name": "Хризантеми"},
+            {"category": flowers, "name": "Іриси"},
+            {"category": flowers, "name": "Півонії"},
+            {"category": flowers, "name": "Маки"},
+            {"category": flowers, "name": "Ромашки"},
+            {"category": flowers, "name": "Амаріліси"},
+            {"category": flowers, "name": "Нарциси"},
+            {"category": flowers, "name": "Гвоздики"},
+            {"category": packing, "name": "Біла обгортка"},
+            {"category": packing, "name": "Прозора обгортка"},
+            {"category": packing, "name": "Зелена обгортка"},
+            {"category": packing, "name": "Срібна обгортка"},
+            {"category": packing, "name": "Чорна обгортка"},
+            {"category": packing, "name": "Рожева смужка"},
+            {"category": packing, "name": "Синя смужка"},
+            {"category": packing, "name": "Червона смужка"},
+            {"category": packing, "name": "Жовта смужка"},
+            {"category": packing, "name": "Помаранчева смужка"},
+            {"category": toys, "name": "Рожевий заєць"},
+            {"category": toys, "name": "Маленький медвідь"},
+            {"category": toys, "name": "Великий медвідь"},
+            {"category": toys, "name": "Плюшовий кролик"},
+            {"category": toys, "name": "Жираф-плюш"},
+            {"category": toys, "name": "Дерев'яна лялька"},
+            {"category": toys, "name": "Машинка"},
+            {"category": toys, "name": "М'яка лисичка"},
+            {"category": toys, "name": "Іграшковий вертоліт"},
+            {"category": toys, "name": "Кубики"},
+        ]
+        if lang == "ukr"
+        else [
+            {"category": flowers, "name": "White Roses"},
+            {"category": flowers, "name": "Red Roses"},
+            {"category": flowers, "name": "Pink Roses"},
+            {"category": flowers, "name": "Purple Roses"},
+            {"category": flowers, "name": "Cactus"},
+            {"category": flowers, "name": "Gypsophila"},
+            {"category": flowers, "name": "Cotton"},
+            {"category": flowers, "name": "Lilies"},
+            {"category": flowers, "name": "Tulips"},
+            {"category": flowers, "name": "Violets"},
+            {"category": flowers, "name": "Lavender"},
+            {"category": flowers, "name": "Orchids"},
+            {"category": flowers, "name": "Chrysanthemums"},
+            {"category": flowers, "name": "Irises"},
+            {"category": flowers, "name": "Peonies"},
+            {"category": flowers, "name": "Poppies"},
+            {"category": flowers, "name": "Daisies"},
+            {"category": flowers, "name": "Amaryllis"},
+            {"category": flowers, "name": "Daffodils"},
+            {"category": flowers, "name": "Carnations"},
+            {"category": packing, "name": "White Wrap"},
+            {"category": packing, "name": "Transparent Wrap"},
+            {"category": packing, "name": "Green Wrap"},
+            {"category": packing, "name": "Silver Wrap"},
+            {"category": packing, "name": "Black Wrap"},
+            {"category": packing, "name": "Pink Ribbon"},
+            {"category": packing, "name": "Blue Ribbon"},
+            {"category": packing, "name": "Red Ribbon"},
+            {"category": packing, "name": "Yellow Ribbon"},
+            {"category": packing, "name": "Orange Ribbon"},
+            {"category": toys, "name": "Pink Bunny"},
+            {"category": toys, "name": "Small Bear"},
+            {"category": toys, "name": "Large Bear"},
+            {"category": toys, "name": "Plush Rabbit"},
+            {"category": toys, "name": "Plush Giraffe"},
+            {"category": toys, "name": "Wooden Doll"},
+            {"category": toys, "name": "Toy Car"},
+            {"category": toys, "name": "Soft Fox"},
+            {"category": toys, "name": "Toy Helicopter"},
+            {"category": toys, "name": "Blocks"},
+        ]
+    )
 
     db.session.query(Goods).delete()
     db.session.execute(text(f"ALTER SEQUENCE goods_id_seq RESTART WITH 1"))
@@ -151,34 +224,73 @@ def add_goods():
 
 
 def add_suppliers():
-    suppliers_data = [
-        {
-            "name": "Антон",
-            "contactInfo": "+380 22 222 2222",
-            "additional": "Не пунктуальний",
-        },
-        {
-            "name": "Іван",
-            "contactInfo": "ivan@example.com",
-            "additional": "Доставка по місту",
-        },
-        {
-            "name": "Марія",
-            "contactInfo": "+380 99 999 9999",
-            "additional": "Розташовується на площі",
-        },
-        {
-            "name": "Василь",
-            "contactInfo": "vasya@example.com",
-            "additional": "Білий спрінтер",
-        },
-        {"name": "Коля", "contactInfo": "kolya@example.com", "additional": "Грубіян"},
-        {
-            "name": "Олег",
-            "contactInfo": "shop@example.com",
-            "additional": "Велика, рожева фура",
-        },
-    ]
+    suppliers_data = (
+        [
+            {
+                "name": "Антон",
+                "contactInfo": "+380 22 222 2222",
+                "additional": "Не пунктуальний",
+            },
+            {
+                "name": "Іван",
+                "contactInfo": "ivan@example.com",
+                "additional": "Доставка по місту",
+            },
+            {
+                "name": "Марія",
+                "contactInfo": "+380 99 999 9999",
+                "additional": "Розташовується на площі",
+            },
+            {
+                "name": "Василь",
+                "contactInfo": "vasya@example.com",
+                "additional": "Білий спрінтер",
+            },
+            {
+                "name": "Коля",
+                "contactInfo": "kolya@example.com",
+                "additional": "Грубіян",
+            },
+            {
+                "name": "Олег",
+                "contactInfo": "shop@example.com",
+                "additional": "Велика, рожева фура",
+            },
+        ]
+        if lang == "ukr"
+        else [
+            {
+                "name": "Anton",
+                "contactInfo": "+1 555-555-5555",
+                "additional": "Not punctual",
+            },
+            {
+                "name": "John",
+                "contactInfo": "john@example.com",
+                "additional": "City-wide delivery",
+            },
+            {
+                "name": "Mary",
+                "contactInfo": "+1 555-555-9999",
+                "additional": "Located in the town square",
+            },
+            {
+                "name": "William",
+                "contactInfo": "will@example.com",
+                "additional": "White Sprinter van",
+            },
+            {
+                "name": "Nick",
+                "contactInfo": "nick@example.com",
+                "additional": "Rude",
+            },
+            {
+                "name": "Oliver",
+                "contactInfo": "shop@example.com",
+                "additional": "Large, pink truck",
+            },
+        ]
+    )
 
     db.session.query(Suppliers).delete()
     db.session.execute(text("ALTER SEQUENCE suppliers_id_seq RESTART WITH 1"))
@@ -191,126 +303,263 @@ def add_suppliers():
 
 
 def add_customers():
-    customers_data = [
-        {
-            "name": "Жабчак Ганна",
-            "contactInfo": "+380 66 278 8550",
-            "additional": "Бірюзова адвокат",
-        },
-        {
-            "name": "Антон",
-            "contactInfo": "+380 11 123 4567",
-            "additional": "Не пунктуальний",
-        },
-        {
-            "name": "Олександр Миколайович",
-            "contactInfo": "+380 12 234 5678",
-            "additional": "Ввічливий",
-        },
-        {
-            "name": "Марія Коваленко",
-            "contactInfo": "+380 13 345 6789",
-            "additional": "Любить каву",
-        },
-        {
-            "name": "Віктор",
-            "contactInfo": "+380 14 456 7890",
-            "additional": "Не любить чекати",
-        },
-        {
-            "name": "Катерина Олексіївна",
-            "contactInfo": "+380 15 567 8901",
-            "additional": "Завжди посміхається",
-        },
-        {
-            "name": "Іван Петров",
-            "contactInfo": "+380 16 678 9012",
-            "additional": "Вегетаріанець",
-        },
-        {
-            "name": "Наталія",
-            "contactInfo": "+380 17 789 0123",
-            "additional": "Любить подорожувати",
-        },
-        {
-            "name": "Андрій Мельник",
-            "contactInfo": "+380 18 890 1234",
-            "additional": "Завжди пунктуальний",
-        },
-        {"name": "Юлія", "contactInfo": "+380 19 901 2345", "additional": "Має кота"},
-        {
-            "name": "Дмитро",
-            "contactInfo": "+380 20 012 3456",
-            "additional": "Не любить дощ",
-        },
-        {
-            "name": "Олена Сердюк",
-            "contactInfo": "+380 21 123 4567",
-            "additional": "Любить читати",
-        },
-        {
-            "name": "Сергій",
-            "contactInfo": "+380 22 234 5678",
-            "additional": "Любить спорт",
-        },
-        {
-            "name": "Валентина Іванівна",
-            "contactInfo": "+380 23 345 6789",
-            "additional": "Колекціонує марки",
-        },
-        {
-            "name": "Богдан",
-            "contactInfo": "+380 24 456 7890",
-            "additional": "Гарний кухар",
-        },
-        {
-            "name": "Світлана",
-            "contactInfo": "+380 25 567 8901",
-            "additional": "Любить танцювати",
-        },
-        {
-            "name": "Михайло",
-            "contactInfo": "+380 26 678 9012",
-            "additional": "Любить риболовлю",
-        },
-        {
-            "name": "Ірина Павленко",
-            "contactInfo": "+380 27 789 0123",
-            "additional": "Не любить солодощів",
-        },
-        {"name": "Юрій", "contactInfo": "+380 28 890 1234", "additional": "Пише вірші"},
-        {
-            "name": "Тетяна Ростиславівна",
-            "contactInfo": "+380 29 901 2345",
-            "additional": "Має трьох дітей",
-        },
-        {
-            "name": "Ростислав",
-            "contactInfo": "+380 30 012 3456",
-            "additional": "Любить подорожі",
-        },
-        {
-            "name": "Галина",
-            "contactInfo": "+380 31 123 4567",
-            "additional": "Любить квіти",
-        },
-        {"name": "Олег", "contactInfo": "+380 32 234 5678", "additional": "Має собаку"},
-        {
-            "name": "Людмила",
-            "contactInfo": "+380 33 345 6789",
-            "additional": "Майстриня по вишивці",
-        },
-        {
-            "name": "Арсен Іванович",
-            "contactInfo": "+380 34 456 7890",
-            "additional": "Збирає гриби",
-        },
-        {
-            "name": "Віра",
-            "contactInfo": "+380 35 567 8901",
-            "additional": "Любить кататися на велосипеді",
-        },
-    ]
+    customers_data = (
+        [
+            {
+                "name": "Антон",
+                "contactInfo": "+380 11 123 4567",
+                "additional": "Не пунктуальний",
+            },
+            {
+                "name": "Олександр Миколайович",
+                "contactInfo": "+380 12 234 5678",
+                "additional": "Ввічливий",
+            },
+            {
+                "name": "Марія Коваленко",
+                "contactInfo": "+380 13 345 6789",
+                "additional": "Любить каву",
+            },
+            {
+                "name": "Віктор",
+                "contactInfo": "+380 14 456 7890",
+                "additional": "Не любить чекати",
+            },
+            {
+                "name": "Катерина Олексіївна",
+                "contactInfo": "+380 15 567 8901",
+                "additional": "Завжди посміхається",
+            },
+            {
+                "name": "Іван Петров",
+                "contactInfo": "+380 16 678 9012",
+                "additional": "Вегетаріанець",
+            },
+            {
+                "name": "Наталія",
+                "contactInfo": "+380 17 789 0123",
+                "additional": "Любить подорожувати",
+            },
+            {
+                "name": "Андрій Мельник",
+                "contactInfo": "+380 18 890 1234",
+                "additional": "Завжди пунктуальний",
+            },
+            {
+                "name": "Юлія",
+                "contactInfo": "+380 19 901 2345",
+                "additional": "Має кота",
+            },
+            {
+                "name": "Дмитро",
+                "contactInfo": "+380 20 012 3456",
+                "additional": "Не любить дощ",
+            },
+            {
+                "name": "Олена Сердюк",
+                "contactInfo": "+380 21 123 4567",
+                "additional": "Любить читати",
+            },
+            {
+                "name": "Сергій",
+                "contactInfo": "+380 22 234 5678",
+                "additional": "Любить спорт",
+            },
+            {
+                "name": "Валентина Іванівна",
+                "contactInfo": "+380 23 345 6789",
+                "additional": "Колекціонує марки",
+            },
+            {
+                "name": "Богдан",
+                "contactInfo": "+380 24 456 7890",
+                "additional": "Гарний кухар",
+            },
+            {
+                "name": "Світлана",
+                "contactInfo": "+380 25 567 8901",
+                "additional": "Любить танцювати",
+            },
+            {
+                "name": "Михайло",
+                "contactInfo": "+380 26 678 9012",
+                "additional": "Любить риболовлю",
+            },
+            {
+                "name": "Ірина Павленко",
+                "contactInfo": "+380 27 789 0123",
+                "additional": "Не любить солодощів",
+            },
+            {
+                "name": "Юрій",
+                "contactInfo": "+380 28 890 1234",
+                "additional": "Пише вірші",
+            },
+            {
+                "name": "Тетяна Ростиславівна",
+                "contactInfo": "+380 29 901 2345",
+                "additional": "Має трьох дітей",
+            },
+            {
+                "name": "Ростислав",
+                "contactInfo": "+380 30 012 3456",
+                "additional": "Любить подорожі",
+            },
+            {
+                "name": "Галина",
+                "contactInfo": "+380 31 123 4567",
+                "additional": "Любить квіти",
+            },
+            {
+                "name": "Олег",
+                "contactInfo": "+380 32 234 5678",
+                "additional": "Має собаку",
+            },
+            {
+                "name": "Людмила",
+                "contactInfo": "+380 33 345 6789",
+                "additional": "Майстриня по вишивці",
+            },
+            {
+                "name": "Арсен Іванович",
+                "contactInfo": "+380 34 456 7890",
+                "additional": "Збирає гриби",
+            },
+            {
+                "name": "Віра",
+                "contactInfo": "+380 35 567 8901",
+                "additional": "Любить кататися на велосипеді",
+            },
+        ]
+        if lang == "ukr"
+        else [
+            {
+                "name": "Anthony",
+                "contactInfo": "+1 212-555-4567",
+                "additional": "Not punctual",
+            },
+            {
+                "name": "Alexander",
+                "contactInfo": "+1 213-555-5678",
+                "additional": "Polite",
+            },
+            {
+                "name": "Maria Smith",
+                "contactInfo": "+1 214-555-6789",
+                "additional": "Loves coffee",
+            },
+            {
+                "name": "Victor",
+                "contactInfo": "+1 215-555-7890",
+                "additional": "Doesn't like waiting",
+            },
+            {
+                "name": "Katherine",
+                "contactInfo": "+1 216-555-8901",
+                "additional": "Always smiling",
+            },
+            {
+                "name": "John Peterson",
+                "contactInfo": "+1 217-555-9012",
+                "additional": "Vegetarian",
+            },
+            {
+                "name": "Natalie",
+                "contactInfo": "+1 218-555-0123",
+                "additional": "Loves traveling",
+            },
+            {
+                "name": "Andrew Miller",
+                "contactInfo": "+1 219-555-1234",
+                "additional": "Always punctual",
+            },
+            {
+                "name": "Julia",
+                "contactInfo": "+1 220-555-2345",
+                "additional": "Has a cat",
+            },
+            {
+                "name": "Dmitry",
+                "contactInfo": "+1 221-555-3456",
+                "additional": "Dislikes rain",
+            },
+            {
+                "name": "Helen Johnson",
+                "contactInfo": "+1 222-555-4567",
+                "additional": "Loves reading",
+            },
+            {
+                "name": "Sergey",
+                "contactInfo": "+1 223-555-5678",
+                "additional": "Loves sports",
+            },
+            {
+                "name": "Valentina",
+                "contactInfo": "+1 224-555-6789",
+                "additional": "Collects stamps",
+            },
+            {
+                "name": "Bogdan",
+                "contactInfo": "+1 225-555-7890",
+                "additional": "Great cook",
+            },
+            {
+                "name": "Svetlana",
+                "contactInfo": "+1 226-555-8901",
+                "additional": "Loves dancing",
+            },
+            {
+                "name": "Michael",
+                "contactInfo": "+1 227-555-9012",
+                "additional": "Loves fishing",
+            },
+            {
+                "name": "Irene Parker",
+                "contactInfo": "+1 228-555-0123",
+                "additional": "Dislikes sweets",
+            },
+            {
+                "name": "George",
+                "contactInfo": "+1 229-555-1234",
+                "additional": "Writes poetry",
+            },
+            {
+                "name": "Tanya",
+                "contactInfo": "+1 230-555-2345",
+                "additional": "Has three children",
+            },
+            {
+                "name": "Ross",
+                "contactInfo": "+1 231-555-3456",
+                "additional": "Loves traveling",
+            },
+            {
+                "name": "Gail",
+                "contactInfo": "+1 232-555-4567",
+                "additional": "Loves flowers",
+            },
+            {
+                "name": "Oliver",
+                "contactInfo": "+1 233-555-5678",
+                "additional": "Has a dog",
+            },
+            {
+                "name": "Lydia",
+                "contactInfo": "+1 234-555-6789",
+                "additional": "Embroidery master",
+            },
+            {
+                "name": "Aaron Smith",
+                "contactInfo": "+1 235-555-7890",
+                "additional": "Collects mushrooms",
+            },
+            {
+                "name": "Vera",
+                "contactInfo": "+1 236-555-8901",
+                "additional": "Loves biking",
+            },
+        ]
+    )
 
     db.session.query(Customers).delete()
     db.session.execute(text("ALTER SEQUENCE customers_id_seq RESTART WITH 1"))
@@ -403,35 +652,70 @@ def add_expenses_elms():
 
 def add_orders():
     orders_data = []
-    statuses = ["Продано", "Списано", "Вітрина"]
-    addresses = [
-        "вул. Рьостер-Штрассе 8, Вальтроп",
-        "вул. Хрещатик, 1",
-        "вул. Сумська, 2",
-        "вул. Дерибасівська, 3",
-        "вул. Шевченка, 4",
-        "вул. Велика Васильківська, 5",
-        "вул. Галицька, 6",
-        "вул. Рівна, 7",
-        "вул. Франка, 8",
-        "вул. Січових Стрільців, 9",
-        "вул. Зелена, 10",
-        "вул. Коцюбинського, 11",
-        "вул. Володимирська, 12",
-        "вул. Прорізна, 13",
-        "вул. Борщагівська, 14",
-        "вул. Антоновича, 15",
-        "вул. Грушевського, 16",
-        "вул. Дорошенка, 17",
-        "вул. Лесі Українки, 18",
-        "вул. Городоцька, 19",
-        "вул. Бандери, 20",
-        "вул. Личаківська, 21",
-        "вул. Теліги, 22",
-        "вул. Набережна, 23",
-        "вул. Соборна, 24",
-        "вул. Саксаганського, 25",
-    ]
+    statuses = (
+        ["Продано", "Списано", "Вітрина"]
+        if lang == "ukr"
+        else ["Sold", "Written off", "Showcase"]
+    )
+    addresses = (
+        [
+            "вул. Рьостер-Штрассе 8, Вальтроп",
+            "вул. Хрещатик, 1",
+            "вул. Сумська, 2",
+            "вул. Дерибасівська, 3",
+            "вул. Шевченка, 4",
+            "вул. Велика Васильківська, 5",
+            "вул. Галицька, 6",
+            "вул. Рівна, 7",
+            "вул. Франка, 8",
+            "вул. Січових Стрільців, 9",
+            "вул. Зелена, 10",
+            "вул. Коцюбинського, 11",
+            "вул. Володимирська, 12",
+            "вул. Прорізна, 13",
+            "вул. Борщагівська, 14",
+            "вул. Антоновича, 15",
+            "вул. Грушевського, 16",
+            "вул. Дорошенка, 17",
+            "вул. Лесі Українки, 18",
+            "вул. Городоцька, 19",
+            "вул. Бандери, 20",
+            "вул. Личаківська, 21",
+            "вул. Теліги, 22",
+            "вул. Набережна, 23",
+            "вул. Соборна, 24",
+            "вул. Саксаганського, 25",
+        ]
+        if lang == "ukr"
+        else [
+            "123 Maple Street",
+            "456 Oak Avenue",
+            "789 Pine Lane",
+            "101 Elm Street",
+            "202 Birch Road",
+            "303 Cedar Boulevard",
+            "404 Spruce Drive",
+            "505 Fir Circle",
+            "606 Aspen Way",
+            "707 Chestnut Court",
+            "808 Redwood Terrace",
+            "909 Poplar Street",
+            "111 Willow Avenue",
+            "222 Holly Lane",
+            "333 Maplewood Drive",
+            "444 Oakwood Street",
+            "555 Pinecrest Road",
+            "666 Elmwood Drive",
+            "777 Birch Lane",
+            "888 Cedar Street",
+            "999 Spruce Avenue",
+            "1010 Fir Street",
+            "1212 Aspen Court",
+            "1313 Chestnut Drive",
+            "1414 Redwood Road",
+            "1515 Poplar Lane",
+        ]
+    )
 
     current_day = starting_date
     order_probability = 60
@@ -446,10 +730,10 @@ def add_orders():
             address = ""
             customer_chance = random.randint(0, 100)
             if customer_chance <= customer_probability:
-                address = random.choice(addresses)
                 customer_id = random.randint(1, len(Customers.query.all()))
                 receiver_chance = random.randint(0, 100)
                 if receiver_chance <= receiver_probability:
+                    address = random.choice(addresses)
                     receiver_id = random.randint(1, len(Customers.query.all()))
                 else:
                     receiver_id = customer_id
@@ -552,11 +836,13 @@ def add_orders_elements():
     db.session.commit()
 
 
-def populate_fake_data():
+def populate_fake_data(selected_lang=lang):
+    global lang
+    lang = selected_lang
     with app.app_context():
         time_started = datetime.now()
         print(
-            f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Generating data from {starting_date.strftime('%Y-%m-%d')}"
+            f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Generating data from {starting_date.strftime('%Y-%m-%d')} with language set to {lang}"
         )
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Dropping db")
         db.drop_all()
@@ -564,7 +850,7 @@ def populate_fake_data():
         db.create_all()
 
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Resetting settings")
-        util_reset_settings()
+        util_reset_settings(lang=lang)
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding categories")
         add_categories()
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  Adding user")

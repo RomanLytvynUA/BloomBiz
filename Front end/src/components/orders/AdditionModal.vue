@@ -32,20 +32,20 @@
                                 }}</label>
                             <textarea class="form-control" name="additional"></textarea>
                         </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{ t('orders.formFields.discountLabel') }}</span>
+                        <div class="input-group">
+                            <span class="input-group-text">{{ t('orders.formFields.discountLabel')
+                                }}</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount">
-                            <span class="input-group-text">{{ t('orders.formFields.priceLabel') }}</span>
+                            <span class="input-group-text">{{ t('orders.formFields.priceLabel')
+                                }}</span>
                             <input ref="orderTotalField" name="price" type="number" class="form-control"
                                 :value="orderTotal - orderTotal * (orderDiscount / 100)">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
-                        t('general.cancelBtnText') }}</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">{{
-                        t('general.saveBtnText') }}</button>
+                    <button type="submit" class="btn btn-success" @click.prevent="validateExpense">{{
+                        t('general.addBtnText') }}</button>
                 </div>
             </div>
         </div>
@@ -130,3 +130,17 @@ function validateExpense() {
 }
 
 </script>
+
+<style scoped>
+.modal-footer {
+    padding: 0;
+}
+
+.modal-footer>button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+</style>

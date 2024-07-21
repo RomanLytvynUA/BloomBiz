@@ -10,8 +10,6 @@
                     <p>{{ t('orders.deletionModalConfirmationMessage') }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
-                        t('general.cancelBtnText') }}</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteOrder()">{{
                         t('orders.delBtnText') }}</button>
                 </div>
@@ -42,3 +40,21 @@ function deleteOrder() {
     ordersStore.delOrder(selectedOrderId.value);
 }
 </script>
+
+<style scoped>
+.modal-body :last-child {
+    margin-bottom: 0 !important;
+}
+
+.modal-footer {
+    padding: 0;
+}
+
+.modal-footer>button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+</style>

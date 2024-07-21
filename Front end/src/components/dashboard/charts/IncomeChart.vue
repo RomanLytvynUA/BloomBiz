@@ -48,7 +48,8 @@
                 <li v-for="status in orderStatuses" :key="status">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" :value="status"
-                            :checked="status === orderStatuses[0]" @change=" filteredOrderStatuses.includes(status) ? filteredOrderStatuses.splice(filteredOrderStatuses.indexOf(status), 1) :
+                            :checked="status === orderStatuses[0]" @change="filteredOrderStatuses.includes(status) ?
+                    filteredOrderStatuses.splice(filteredOrderStatuses.indexOf(status), 1) :
                     filteredOrderStatuses.push(status); setIncomeChartData()">
                         <label class="form-check-label">
                             {{ status }}
@@ -126,7 +127,7 @@ const suppliersData = computed(() => useSuppliersStore().suppliersData)
 const suppliers = computed(() => useSuppliersStore().suppliersNames)
 
 const orderStatuses = computed(() => useSettingsStore().settingsData.ordersStatuses);
-const filteredOrderStatuses = ['Продано']
+const filteredOrderStatuses = [orderStatuses.value[0]]
 let filteredExpenseCategories = [].concat(categories.value)
 let filteredExpenseSuppliers = [].concat(suppliers.value)
 

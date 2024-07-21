@@ -34,7 +34,7 @@
                             <label for="floatingTextarea">{{ t('orders.formFields.additionalLabel') }}</label>
                             <textarea :value="orderAdditional" class="form-control" name="additional"></textarea>
                         </div>
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <span class="input-group-text">{{ t('orders.formFields.discountLabel') }}</span>
                             <input type="number" name="discount" class="form-control" v-model="orderDiscount"
                                 @input="orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)">
@@ -44,9 +44,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
-                        t('general.cancelBtnText') }}</button>
-                    <button type="submit" class="btn btn-primary" @click.prevent="validateExpense">{{
+                    <button type="submit" class="btn btn-success" @click.prevent="validateExpense">{{
                         t('general.saveBtnText') }}</button>
                 </div>
             </div>
@@ -154,3 +152,17 @@ function validateExpense() {
     }
 }
 </script>
+
+<style scoped>
+.modal-footer {
+    padding: 0;
+}
+
+.modal-footer>button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+</style>

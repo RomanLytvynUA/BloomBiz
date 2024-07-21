@@ -20,7 +20,7 @@
                 <div class="accordion-body">
                     <div class="row align-items-center justify-content-center">
                         <div class="col-auto d-flex justify-content-center" v-for="value in options">
-                            <div class="input-group input-group-sm mb-3">
+                            <div class="input-group input-group-sm">
                                 <span class="input-group-text">{{ value }}</span>
                                 <button class="btn btn-danger" type="button"
                                     @click="options.splice(options.indexOf(value), 1); $emit('optionDeleted')">X</button>

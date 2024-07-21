@@ -12,10 +12,8 @@
                             :custom="true" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
-                        t('general.cancelBtnText') }}</button>
-                        <button type="submit" class="btn btn-primary" @click.prevent="validateCategory()">{{
-                        t('general.saveBtnText') }}</button>
+                        <button type="submit" class="btn btn-success" @click.prevent="validateCategory()">{{
+                        t('general.addBtnText') }}</button>
                     </div>
                 </form>
             </div>
@@ -59,3 +57,21 @@ function validateCategory() {
 }
 
 </script>
+
+<style scoped>
+.modal-body :last-child {
+    margin-bottom: 0 !important;
+}
+
+.modal-footer {
+    padding: 0;
+}
+
+.modal-footer>button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+</style>

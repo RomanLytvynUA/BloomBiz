@@ -73,7 +73,8 @@
       @optionChanged="(value) => changes.suppliersSafetyMode = value" />
 
     <h6>{{ t('dashboard.settings.customers.title') }}</h6>
-    <SettingsOption ref="customersSafetyMode" type="switch" :title="t('dashboard.settings.customers.safetyModeTitle')"
+    <SettingsOption ref="customersSafetyMode" style="margin-bottom: 0 !important;" type="switch"
+      :title="t('dashboard.settings.customers.safetyModeTitle')"
       :info="t('dashboard.settings.customers.safetyModeDescription')"
       @optionChanged="(value) => changes.customersSafetyMode = value" />
   </div>

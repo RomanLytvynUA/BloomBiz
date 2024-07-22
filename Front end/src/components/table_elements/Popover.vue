@@ -1,13 +1,8 @@
 <template>
-    <a tabindex="0" 
-    :class="'popover-dismiss'+id" 
-    data-bs-toggle="popover" 
-    data-bs-trigger="focus" 
-    :data-bs-title="title" 
-    :data-bs-content="text"
-    data-bs-placement="bottom"
-    style="cursor: pointer; text-decoration: underline;"
-    >{{ trancatedText }}</a>
+    <a tabindex="0" :class="'popover-dismiss' + id" data-bs-toggle="popover" data-bs-trigger="focus"
+        :data-bs-title="title" :data-bs-content="text" data-bs-placement="bottom"
+        style="cursor: pointer; text-decoration: underline; color: gray;">{{
+        trancatedText }}</a>
 </template>
 
 <script setup>
@@ -24,9 +19,18 @@ const trancatedText = computed(() => {
 })
 
 onMounted(() => {
-    const popover = new bootstrap.Popover(document.querySelector(`.popover-dismiss${props.id}`), {
-        trigger: 'focus'
-    });
+    const popover = new bootstrap.Popover(document.querySelector(`.popover-dismiss${props.id}`));
 });
 </script>
-  
+
+<style>
+.popover-header {
+    color: black;
+    background: #F8F9FA;
+    padding: 5px;
+}
+
+.popover-body {
+    padding: 5px;
+}
+</style>

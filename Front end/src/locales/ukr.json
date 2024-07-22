@@ -339,6 +339,8 @@
         "resetBtnText": "Скинути",
         "cancelBtnText": "Скасувати",
         "nothingFound": "Нічого не знайдено.",
+        "noResultsMatchingFilters": "Данних, що збігаються з вашим запитом не знайдено ¯\\_(ツ)_/¯",
+        "featureBlockedWarning": "Функція не доступна, перевірте налаштування.",
         "customOptions": {
             "customCategoryText": "+ Додати нову",
             "customSupplierText": "+ Додати нового",

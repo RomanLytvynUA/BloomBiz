@@ -26,7 +26,7 @@
         </table>
         <br>
         <h6 v-show="!rows.length && !loading">
-            Данних, що збігаються з вашим запитом не знайдено ¯\_(ツ)_/¯
+            {{ $t('general.noResultsMatchingFilters') }}
         </h6>
     </div>
     <div v-if="loading" class="d-flex justify-content-center">

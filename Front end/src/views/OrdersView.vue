@@ -66,8 +66,8 @@ const tableFilters = ref([
 ])
 
 const tableHeaders = ref([
-  { 'name': computed(() => t("orders.tableHeaders.date")), 'size': '30%' },
-  { 'name': computed(() => t("orders.tableHeaders.status")), 'size': '10%' },
+  { 'name': computed(() => t("orders.tableHeaders.date")), 'size': '25%' },
+  { 'name': computed(() => t("orders.tableHeaders.status")), 'size': '15%' },
   { 'name': computed(() => t("orders.tableHeaders.composition")), 'size': '30%' },
   { 'name': computed(() => t("orders.tableHeaders.price")), 'size': '10%' },
   { 'name': computed(() => t("orders.tableHeaders.action")), 'size': '20%' },

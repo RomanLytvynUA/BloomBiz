@@ -339,6 +339,8 @@
         "resetBtnText": "Reset",
         "cancelBtnText": "Cancel",
         "nothingFound": "Nothing was found.",
+        "noResultsMatchingFilters": "No results matching your query ¯\\_(ツ)_/¯",
+        "featureBlockedWarning": "The feature is not available, please check your settings.",
         "customOptions": {
             "customCategoryText": "+ Add a new one",
             "customSupplierText": "+ Add a new one",

@@ -1,8 +1,7 @@
 <template>
     <div class="btn-group btn-group-sm" style="min-width: 190px;" role="group">
         <button style="width: 50%;" ref="tooltipButton" type="button" class="btn btn-sm btn-outline-danger opacity-75"
-            :data-toggle="delDisabled ? 'tooltip' : ''"
-            :title="delDisabled ? 'Функція не доступна, перевірте налаштування.' : ''"
+            :data-toggle="delDisabled ? 'tooltip' : ''" :title="delDisabled ? $t('general.featureBlockedWarning') : ''"
             :data-bs-toggle="!delDisabled ? 'modal' : ''" :data-bs-target="delModalId">{{ delText ||
                 $t('general.delBtnText') }}</button>
         <button style="width: 50%;" type="button" class="btn btn-sm btn-outline-success opacity-75"

@@ -2,7 +2,8 @@
     <div :class="divClasses">
         <div class="dropdown">
             <label v-if="label" class="form-label">{{ label }}</label>
-            <input ref="inputElement" :disabled="disabled" v-model="input" autocomplete="off" :class="{
+            <input ref="inputElement" :disabled="disabled" data-bs-display="static" v-model="input" autocomplete="off"
+                :class="{
         'form-control': customOption, 'form-select': !customOption,
         'form-control-sm': customOption && small, 'form-select-sm': !customOption && small,
     }" data-bs-toggle="dropdown" :name="name" data-bs-offset="0,0" :style="dropdownOpened && !customOption ?
@@ -103,9 +104,11 @@ defineExpose({ input, inputElement, reset })
 
 <style scoped>
 .dropdown-menu {
-    max-height: 300px;
+    margin-top: 0;
+    border-top: 0;
+    border-color: var(--bs-border-color);
     overflow-y: auto;
-    overflow-x: auto;
+    max-height: 200px;
     width: 100%;
     padding: 0;
     border-top-left-radius: 0px;
@@ -115,6 +118,11 @@ defineExpose({ input, inputElement, reset })
 .dropdown-item:focus {
     background-color: #F8F9FA;
     color: black;
+}
+
+button.dropdown-item {
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .form-select:focus {

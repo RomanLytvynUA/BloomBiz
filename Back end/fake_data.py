@@ -50,8 +50,10 @@ lang = args.lang
 
 
 if year == 0 and months == 0 and days == 0:
+    # set starting_date to first day of current year by default
     starting_date = today.replace(month=1, day=1)
 else:
+    # set starting_date based on offset provided
     target_year = today.year - year
     target_month = today.month - months
     if target_month <= 0:
@@ -574,13 +576,18 @@ def add_customers():
 def add_expenses():
     suppliers = Suppliers.query.all()
     categories = Categories.query.all()
+
+    #  delete old expenses
+    db.session.query(Expenses).delete()
+    db.session.execute(text("ALTER SEQUENCE expenses_id_seq RESTART WITH 1"))
+
     expenses_data = []
 
+    # add new expenses
     current_day = starting_date
     expense_probability = 60
     while current_day <= today:
-        chance = random.randint(0, 100)
-        if chance <= expense_probability:
+        if random.randint(0, 100) <= expense_probability:
             expenses_data.append(
                 {
                     "date": current_day,
@@ -591,19 +598,17 @@ def add_expenses():
             )
         current_day += timedelta(days=1)
 
-    db.session.query(Expenses).delete()
-    db.session.execute(text("ALTER SEQUENCE expenses_id_seq RESTART WITH 1"))
-
+    # commit new expenses
     for data in expenses_data:
         expense = Expenses(**data)
         db.session.add(expense)
-
     db.session.commit()
 
 
 def add_expenses_elms():
     expenses_elms_data = []
 
+    # delete old elements
     db.session.query(ExpensesElements).delete()
     db.session.execute(text("ALTER SEQUENCE expenses_elements_id_seq RESTART WITH 1"))
 
@@ -613,41 +618,44 @@ def add_expenses_elms():
         suffix="%(index)d/%(max)d",
     )
     for category in Categories.query.all():
-        available_goods = Goods.query.filter_by(category=category).all()
         expenses = Expenses.query.filter_by(category=category).all()
         for expense in expenses:
             bar.next()
-            used_elements = []
+            used_goods = []
             expense_total = 0
-            elements_quantity = range(1, 6)
 
-            for element in elements_quantity:
-                element = random.randint(0, len(available_goods) - 1)
-                if element not in used_elements:
-                    used_elements.append(element)
+            # add from 1 to 5 elements
+            for _ in range(1, 6):
+                available_goods = [
+                    product for product in category.goods if product not in used_goods
+                ]
+                if available_goods:
+                    product = random.choice(available_goods)
+                    used_goods.append(product)
 
                     quantity = random.randint(1, 13)
-                    price = random.randint(10, 25)
+                    price = random.randint(10, 20)
                     expense_total += quantity * price
 
                     expenses_elms_data.append(
                         {
                             "expense": expense,
-                            "product": available_goods[element],
+                            "product": product,
                             "quantity": quantity,
                             "price": price,
                         },
                     )
+                else:
+                    break
             expense.total = expense_total
             db.session.add(expense)
-    bar.finish()
-    db.session.commit()
 
     for data in expenses_elms_data:
         element = ExpensesElements(**data)
         db.session.add(element)
-
     db.session.commit()
+
+    bar.finish()
 
 
 def add_orders():
@@ -717,22 +725,23 @@ def add_orders():
         ]
     )
 
+    # delete old orders
+    db.session.query(Orders).delete()
+    db.session.execute(text("ALTER SEQUENCE orders_id_seq RESTART WITH 1"))
+
+    # add new orders
     current_day = starting_date
-    order_probability = 60
+    order_probability = 70
     customer_probability = 70
     receiver_probability = 30
     while current_day <= today:
-        order_chance = random.randint(0, 100)
-        if order_chance <= order_probability:
-
+        if random.randint(0, 100) <= order_probability:
             customer_id = None
             receiver_id = None
             address = ""
-            customer_chance = random.randint(0, 100)
-            if customer_chance <= customer_probability:
+            if random.randint(0, 100) <= customer_probability:
                 customer_id = random.randint(1, len(Customers.query.all()))
-                receiver_chance = random.randint(0, 100)
-                if receiver_chance <= receiver_probability:
+                if random.randint(0, 100) <= receiver_probability:
                     address = random.choice(addresses)
                     receiver_id = random.randint(1, len(Customers.query.all()))
                 else:
@@ -751,21 +760,21 @@ def add_orders():
             )
         current_day += timedelta(days=1)
 
-    db.session.query(Orders).delete()
-    db.session.execute(text("ALTER SEQUENCE orders_id_seq RESTART WITH 1"))
-
+    # commit new orders
     for data in orders_data:
         order = Orders(**data)
         db.session.add(order)
-
     db.session.commit()
 
 
 def add_orders_elements():
     order_elements = []
 
+    # delete old elements
     db.session.query(OrdersElements).delete()
     db.session.execute(text("ALTER SEQUENCE orders_elements_id_seq RESTART WITH 1"))
+
+    # add new orders
     orders = Orders.query.all()
     bar = ChargingBar(
         f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]   Filling orders",
@@ -774,66 +783,76 @@ def add_orders_elements():
     )
     for order in orders:
         bar.next()
+        order_price = 0
         categories = Categories.query.all()
-        order_categories = random.sample(categories, random.randint(1, len(categories)))
-        used_elements = []
-        elements_limit = 5
-        price = 0
+        used_goods = []
+        elements_limit = 10
 
-        for category in order_categories:
-            available_goods = (
+        # add goods of random categories
+        for category in random.sample(categories, random.randint(1, len(categories))):
+            # only bought goods (i.e. expense elements) are used in order
+            bought_goods_data = (
                 ExpensesElements.query.join(ExpensesElements.product)
                 .filter(Goods.category == category)
                 .all()
             )
-            elements_quantity = range(3, 5)
 
-            if len(used_elements) >= elements_limit:
+            if len(used_goods) >= elements_limit:
                 break
-            if len(available_goods) == 0:
+            if not bought_goods_data:
                 continue
 
-            for element in elements_quantity:
-                element = available_goods[random.randint(0, len(available_goods) - 1)]
-                if element.product not in used_elements:
+            # add from 3 to 5 elements
+            for _ in range(3, 5):
+                available_goods_data = [
+                    product
+                    for product in bought_goods_data
+                    if product not in used_goods
+                ]
+                if available_goods_data:
+                    product_data = random.choice(available_goods_data)
+                    used_goods.append(product_data)
                     instock_quantity = sum(
                         elem.quantity
-                        for elem in available_goods
-                        if elem.product == element.product
+                        for elem in bought_goods_data
+                        if elem.product == product_data.product
                     ) - sum(
                         elem["quantity"]
                         for elem in order_elements
-                        if elem["product"] == element.product
+                        if elem["product"] == product_data.product
                     )
                     if instock_quantity == 0:
                         continue
-                    used_elements.append(element.product)
 
                     quantity = random.randint(1, min(instock_quantity, 10))
                     element_price = random.randint(10, 25) * 2.20
-                    price += quantity * element_price
+                    order_price += quantity * element_price
 
                     order_elements.append(
                         {
                             "order": order,
-                            "product": element.product,
+                            "product": product_data.product,
                             "quantity": quantity,
                             "price": element_price,
                         }
                     )
-        if len(used_elements) == 0:
+                else:
+                    break
+        # delete order if no elements were added
+        if len(used_goods) == 0:
             db.session.delete(order)
             db.session.commit()
         else:
-            order.price = round(price)
+            order.price = round(order_price)
             db.session.add(order)
-    bar.finish()
 
+    # commit new orders
     for data in order_elements:
         order_element = OrdersElements(**data)
         db.session.add(order_element)
-
     db.session.commit()
+
+    bar.finish()
 
 
 def populate_fake_data(selected_lang=lang):

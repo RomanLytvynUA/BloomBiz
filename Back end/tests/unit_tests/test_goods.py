@@ -1,7 +1,7 @@
 from src import db
 from src.models.goods import Categories, Goods
 from src.utils.goods import *
-from src.utils.settings import util_reset_settings, default_settings
+from src.utils.settings import util_reset_settings
 from tests.testing_data import (
     add_testing_orders,
     add_testing_orders_elements,
@@ -229,11 +229,7 @@ def test_util_calc_instock(app_client):
         - list(orders_data["elements"].values())[0][0]["quantity"]
         - decomissions_data[0]["quantity"]
     )
-    expected_product1_price = round(
-        expense_data["elements"][0]["price"]
-        * (default_settings["defaultMargin"] + 100)
-        / 100
-    )
+    expected_product1_price = round(expense_data["elements"][0]["price"] * 2.2)
 
     # Check the behavior with custom price
     expected_product2_price = 55555

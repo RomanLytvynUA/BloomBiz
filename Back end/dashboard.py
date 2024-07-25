@@ -41,7 +41,7 @@ def generate_reg_code():
         return new_code.code
 
 
-help = (
+help_msg = (
     "Select action to perform:\n"
     "[1] Generate a registration code\n"
     "[2] View registration codes\n"
@@ -56,7 +56,7 @@ help = (
 )
 
 
-action = input(help)
+action = input(help_msg)
 
 prompted = True
 while True:
@@ -68,7 +68,7 @@ while True:
     with app.app_context():
         match action:
             case "h":
-                action = input(help)
+                action = input(help_msg)
                 prompted = True
             case "e":
                 break

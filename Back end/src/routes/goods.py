@@ -36,11 +36,11 @@ def create_product():
     if not len(required_data - set(data.keys())):
         product = data["product"]
 
-        category = Categories.query.filter_by(name=data["category"]).all()
-        if not len(category):
+        category = Categories.query.filter_by(name=data["category"]).first()
+        if not category:
             return "Invalid category", 406
 
-        result = util_create_product(name=product, category=category[0])
+        result = util_create_product(name=product, category=category)
         changes = {
             "goods": (
                 [result["product"].generate_dict()] if result["changes_applied"] else []
@@ -56,10 +56,9 @@ def edit_product():
 
     required_data = {"product_id", "name"}
     if not len(required_data - set(data.keys())):
-        product = Goods.query.filter_by(id=data["product_id"]).all()
-        if not len(product):
+        product = Goods.query.filter_by(id=data["product_id"]).first()
+        if not product:
             return "Invalid product", 406
-        product = product[0]
 
         product.name = data["name"]
         db.session.add(product)
@@ -73,10 +72,10 @@ def edit_product():
 
 @goods.route("/delete_product/<product_id>", methods=["DELETE"])
 def delete_product(product_id):
-    product = Goods.query.filter_by(id=product_id).all()
+    product = Goods.query.filter_by(id=product_id).first()
 
-    if len(product):
-        db.session.delete(product[0])
+    if product:
+        db.session.delete(product)
         db.session.commit()
 
         return "Product deleted successfully.", 200
@@ -111,10 +110,9 @@ def edit_category():
 
     required_data = {"targetCategory", "category", "categoryUnits"}
     if not len(required_data - set(data.keys())):
-        category = Categories.query.filter_by(name=data["targetCategory"]).all()
-        if not len(category):
+        category = Categories.query.filter_by(name=data["targetCategory"]).first()
+        if not category:
             return "Invalid category.", 406
-        category = category[0]
 
         category.name = data["category"]
         category.units = data["categoryUnits"]
@@ -129,10 +127,10 @@ def edit_category():
 
 @goods.route("/delete_category/<category_id>", methods=["DELETE"])
 def delete_category(category_id):
-    category = Categories.query.filter_by(id=category_id).all()
+    category = Categories.query.filter_by(id=category_id).first()
 
-    if len(category):
-        db.session.delete(category[0])
+    if category:
+        db.session.delete(category)
         db.session.commit()
 
         return "Category deleted successfully.", 200

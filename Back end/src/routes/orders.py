@@ -28,51 +28,50 @@ def get_orders():
 
 @orders.route("/create", methods=["POST"])
 def create_order():
-    orders_data = request.get_json()
+    order_data = request.get_json()
 
     required_data = {"date", "price", "discount", "status", "elements", "additional"}
-    if not len(required_data - set(orders_data.keys())):
-
+    if not len(required_data - set(order_data.keys())):
         # get customers and address
         order_address = ""
         customer = None
         receiver = None
-        if "customer" in orders_data:
+        if "customer" in order_data:
             customer = util_create_customer(
-                orders_data["customer"].get("name", ""),
-                orders_data["customer"].get("contactInfo", ""),
-                orders_data["customer"].get("additional", ""),
+                order_data["customer"].get("name", ""),
+                order_data["customer"].get("contactInfo", ""),
+                order_data["customer"].get("additional", ""),
             )["customer"]
-            if "receiver" in orders_data:
-                order_address = orders_data["receiver"].get("address", "")
+            if "receiver" in order_data:
+                order_address = order_data["receiver"].get("address", "")
                 receiver = util_create_customer(
-                    orders_data["receiver"].get("name", ""),
-                    orders_data["receiver"].get("contactInfo", ""),
-                    orders_data["receiver"].get("additional", ""),
+                    order_data["receiver"].get("name", ""),
+                    order_data["receiver"].get("contactInfo", ""),
+                    order_data["receiver"].get("additional", ""),
                 )["customer"]
             else:
-                order_address = orders_data["customer"].get("address", "")
+                order_address = order_data["customer"].get("address", "")
                 receiver = customer
 
         # create order
         order = util_create_order(
-            date=orders_data["date"],
-            discount=orders_data["discount"],
-            status=orders_data["status"],
-            price=orders_data["price"],
+            date=order_data["date"],
+            discount=order_data["discount"],
+            status=order_data["status"],
+            price=order_data["price"],
             customer=customer,
             receiver=receiver,
             address=order_address,
-            additional=orders_data["additional"],
+            additional=order_data["additional"],
         )["order"]
 
         # add order elements
-        for category in orders_data["elements"].keys():
+        for category, elements in order_data["elements"].items():
             category_obj = Categories.query.filter_by(name=category).first()
             if not category_obj:
                 return f'Failed to fetch the given category "{category}".', 406
 
-            for element in orders_data["elements"][category]:
+            for element in elements:
                 new_element = OrdersElements(
                     quantity=element["quantity"],
                     price=element["price"],
@@ -97,7 +96,7 @@ def create_order():
 
 @orders.route("/edit", methods=["PUT"])
 def edit_order():
-    orders_data = request.get_json()
+    order_data = request.get_json()
 
     required_data = {
         "order_id",
@@ -108,39 +107,39 @@ def edit_order():
         "elements",
         "additional",
     }
-    if not len(required_data - set(orders_data.keys())):
+    if not len(required_data - set(order_data.keys())):
         changes = {}
 
         # find customers and address
         customer_id = None
         receiver_id = None
         order_address = ""
-        if "customer" in orders_data:
+        if "customer" in order_data:
             customer_id = util_create_customer(
-                orders_data["customer"].get("name", ""),
-                orders_data["customer"].get("contactInfo", ""),
-                orders_data["customer"].get("additional", ""),
+                order_data["customer"].get("name", ""),
+                order_data["customer"].get("contactInfo", ""),
+                order_data["customer"].get("additional", ""),
             )["customer"].id
-            if "receiver" in orders_data:
-                order_address = orders_data["receiver"].get("address", "")
+            if "receiver" in order_data:
+                order_address = order_data["receiver"].get("address", "")
                 receiver_id = util_create_customer(
-                    orders_data["receiver"].get("name", ""),
-                    orders_data["receiver"].get("contactInfo", ""),
-                    orders_data["receiver"].get("additional", ""),
+                    order_data["receiver"].get("name", ""),
+                    order_data["receiver"].get("contactInfo", ""),
+                    order_data["receiver"].get("additional", ""),
                 )["customer"].id
             else:
-                order_address = orders_data["customer"].get("address", "")
+                order_address = order_data["customer"].get("address", "")
                 receiver_id = customer_id
 
         # change order fields
-        order = Orders.query.filter_by(id=orders_data["order_id"]).first()
+        order = Orders.query.filter_by(id=order_data["order_id"]).first()
         if not order:
             return f"Failed to fetch the given order.", 406
-        order.date = orders_data["date"]
-        order.price = orders_data["price"]
-        order.status = orders_data["status"]
-        order.discount = orders_data["discount"]
-        order.additional = orders_data["additional"]
+        order.date = order_data["date"]
+        order.price = order_data["price"]
+        order.status = order_data["status"]
+        order.discount = order_data["discount"]
+        order.additional = order_data["additional"]
         # add old customers to changes
         changes["customers"] = [
             Customers.query.filter_by(id=id).first().generate_dict()
@@ -163,12 +162,12 @@ def edit_order():
         changes["goods"] = [product.generate_dict() for product in deleted_goods]
 
         # add order elements
-        for category in orders_data["elements"].keys():
+        for category, elements in order_data["elements"].items():
             category_obj = Categories.query.filter_by(name=category).first()
             if not category_obj:
                 return f'Failed to fetch the given category "{category}".', 406
 
-            for element in orders_data["elements"][category]:
+            for element in elements:
                 new_element = OrdersElements(
                     quantity=element["quantity"],
                     price=element["price"],

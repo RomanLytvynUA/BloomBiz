@@ -66,10 +66,10 @@ def edit_supplier():
 
 @suppliers.route("/delete/<supplier_id>", methods=["DELETE"])
 def delete_supplier(supplier_id):
-    supplier = Suppliers.query.filter_by(id=supplier_id).all()
+    supplier = Suppliers.query.filter_by(id=supplier_id).first()
 
-    if len(supplier):
-        db.session.delete(supplier[0])
+    if supplier:
+        db.session.delete(supplier)
         db.session.commit()
 
         return "Supplier deleted successfully.", 200

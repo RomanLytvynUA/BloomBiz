@@ -66,10 +66,10 @@ def edit_customer():
 
 @customers.route("/delete/<customer_id>", methods=["DELETE"])
 def delete_customer(customer_id):
-    customer = Customers.query.filter_by(id=customer_id).all()
+    customer = Customers.query.filter_by(id=customer_id).first()
 
-    if len(customer):
-        db.session.delete(customer[0])
+    if customer:
+        db.session.delete(customer)
         db.session.commit()
 
         return "Customer deleted successfully.", 200

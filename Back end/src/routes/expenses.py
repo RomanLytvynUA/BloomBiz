@@ -102,7 +102,7 @@ def edit_expense():
             db.session.delete(element)
         db.session.commit()
 
-        # add deleted elements to changes so that the prices are recalculated
+        # add deleted elements to changes so that the instock qty and prices are recalculated
         deleted_goods = Goods.query.filter(Goods.id.in_(deleted_products_id)).all()
         changes["goods"] = [product.generate_dict() for product in deleted_goods]
 
@@ -122,7 +122,7 @@ def edit_expense():
         # must add expense to changes only after adding expense elements
         changes["expenses"] = [expense.generate_dict()]
 
-        # add all products from expense elements to changes since new products might have been added, prices needs to be recalculated
+        # add all products from expense elements to changes since new products might have been added, instock qty and prices needs to be recalculated
         for element in expense.elements:
             # remove old product from changes if it is there
             for product_changed in changes["goods"]:

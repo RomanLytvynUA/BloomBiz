@@ -71,7 +71,7 @@ const goodsToIgnore = computed(() => useSettingsStore().settingsData.ordersGoods
 const goodsData = computed(() => useGoodsStore().goodsData.find((category) => category.name === props.category)?.goods);
 const totalPrice = ref(0);
 const rows = ref(props.prefilledElements.map(element => ({
-    options: goodsData.value.filter((product) => (product.quantity >= 1 || !hideOutOfStock.value) && (!goodsToIgnore.value.includes(product.product))).map(product => product.product),
+    options: goodsData.value.filter((product) => (product.quantity >= 1 || !hideOutOfStock.value) && (!goodsToIgnore.value.includes(product.product))).map(product => product.name),
     product: computed(() => {
         const product = useGoodsStore().minGoodsData.find(prod => prod.id === element.product);
         return product ? product.name : "-";

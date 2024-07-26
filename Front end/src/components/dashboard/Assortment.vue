@@ -66,19 +66,19 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { computed } from 'vue';
 import { useGoodsStore } from '../../stores/goods';
 import { useSettingsStore } from '@/stores/settings';
 
 import ActionButtons from '../table_elements/ActionButtons.vue';
 
-import ProductAddition from './assortmentControls/ProductAddition.vue'
-import ProductEditing from './assortmentControls/ProductEditing.vue'
-import ProductDeletion from './assortmentControls/ProductDeletion.vue'
+import ProductAddition from './assortmentComponents/ProductAddition.vue'
+import ProductEditing from './assortmentComponents/ProductEditing.vue'
+import ProductDeletion from './assortmentComponents/ProductDeletion.vue'
 
-import CategoryAddition from './assortmentControls/CategoryAddition.vue'
-import CategoryEditing from './assortmentControls/CategoryEditing.vue'
-import CategoryDeletion from './assortmentControls/CategoryDeletion.vue'
+import CategoryAddition from './assortmentComponents/CategoryAddition.vue'
+import CategoryEditing from './assortmentComponents/CategoryEditing.vue'
+import CategoryDeletion from './assortmentComponents/CategoryDeletion.vue'
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();

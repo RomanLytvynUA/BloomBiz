@@ -58,8 +58,9 @@ import { formatISO } from 'date-fns';
 
 import { useOrdersStore } from '@/stores/orders';
 
-import ElementsAccordion from './ElementsAccordion.vue'
-import CustomerSelect from './customers/CustomerSelect.vue'
+import ElementsAccordion from './elementsComponents/ElementsAccordion.vue'
+import CustomerSelect from './customersComponents/CustomersAccordion.vue'
+
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
 

@@ -1,8 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { urlList } from '../config'
 import { useOrdersStore } from './orders'
-import { updateData } from './general'
+import { updateData, urlList } from './general'
 import { useAuthStore } from './auth'
 
 export const useCustomersStore = defineStore('customers', () => {

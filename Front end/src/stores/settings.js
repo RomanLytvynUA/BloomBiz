@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { urlList } from '../config'
+import { urlList } from './general'
 import { useGoodsStore } from './goods'
 import { useAuthStore } from './auth'
 

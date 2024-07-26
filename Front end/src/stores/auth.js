@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { urlList } from '../config';
+import { urlList } from './general';
 
 export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated = ref(Boolean(localStorage.getItem('jwt')));

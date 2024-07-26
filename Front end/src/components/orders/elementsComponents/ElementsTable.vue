@@ -48,11 +48,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, watchEffect } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useGoodsStore } from '@/stores/goods';
 import { useSettingsStore } from '@/stores/settings';
 
-import Autocomplete from '../form_elements/Autocomplete.vue'
+import Autocomplete from '@/components/form_elements/Autocomplete.vue'
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();

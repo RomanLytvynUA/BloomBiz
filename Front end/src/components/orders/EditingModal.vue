@@ -56,8 +56,9 @@
 import { computed, ref, onMounted, watch } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
 
-import ElementsAccordion from './ElementsAccordion.vue'
-import CustomerSelect from './customers/CustomerSelect.vue'
+import ElementsAccordion from './elementsComponents/ElementsAccordion.vue'
+import CustomerSelect from './customersComponents/customersAccordion.vue'
+
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
 

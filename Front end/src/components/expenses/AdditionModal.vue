@@ -48,7 +48,8 @@ import { useSettingsStore } from '@/stores/settings';
 import InputField from '../form_elements/InputField.vue'
 import CategoriesInput from '../form_elements/CategoriesInput.vue'
 import SelectField from '../form_elements/SelectField.vue'
-import ElementsTable from './ElementsTable.vue'
+
+import ElementsTable from './elementsComponents/ElementsTable.vue'
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();

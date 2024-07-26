@@ -2,8 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useGoodsStore } from './goods'
 import { useAuthStore } from './auth'
-import { urlList } from '../config'
-import { updateData } from './general'
+import { updateData, urlList } from './general'
 
 export const useOrdersStore = defineStore('orders', () => {
     const inLoadingState = ref(false)

@@ -53,7 +53,7 @@ import { ref, computed, watch } from 'vue';
 import { useGoodsStore } from '@/stores/goods'
 import { useSettingsStore } from '@/stores/settings';
 
-import Autocomplete from '../form_elements/Autocomplete.vue'
+import Autocomplete from '@/components/form_elements/Autocomplete.vue'
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
@@ -61,7 +61,6 @@ const { t } = useI18n();
 const props = defineProps(['category', 'rows']);
 const goodsData = computed(() => useGoodsStore().goodsData)
 const goodsToIgnore = computed(() => useSettingsStore().settingsData.expensesGoodsToIgnore);
-const suppliersToIgnore = computed(() => useSettingsStore().settingsData.expensesSuppliersToIgnore);
 const totalPrice = ref(0)
 
 

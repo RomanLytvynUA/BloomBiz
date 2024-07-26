@@ -92,7 +92,7 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
-import icons from '@/icons.svg'
+import icons from '@/assets/icons.svg'
 
 import Headline from '../components/Headline.vue'
 

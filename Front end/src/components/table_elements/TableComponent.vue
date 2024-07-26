@@ -1,6 +1,6 @@
 <template>
     <div class="container table-responsive text-center">
-        <table class="table table-sm align-middle" :style="`width: ${width}; margin: auto;`">
+        <table class="table table-sm align-middle" :style="`width: ${width}; min-width: 950px; margin: auto;`">
             <thead>
                 <tr style="border: none;">
                     <th v-for="filter in filters" style="border: none;">
@@ -44,6 +44,10 @@ export default {
         filters: Array,
         width: {
             default: '85%',
+            type: String
+        },
+        'min-width': {
+            default: '950px',
             type: String
         },
         loading: {

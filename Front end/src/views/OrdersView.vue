@@ -77,18 +77,19 @@ const tableRows = computed(() => filteredOrders.value.map(order => {
   return [
     new Date(order.date).toLocaleDateString('en-GB').split('/').join('-'),
     order.status,
-    {
-      component: Popover,
-      props: {
-        maxSize: 20,
-        text: `${[].concat(...Object.values(order.elements)).map(element => {
-          const productData = useGoodsStore().minGoodsData.find(product => product.id == element.product)
-          return productData ? productData.name : ''
-        }).join(', ')}.`,
-        title: t("orders.compositionPopupTitle"),
-        id: order.id,
-      },
-    },
+    Object.entries(order.elements).length ?
+      {
+        component: Popover,
+        props: {
+          maxSize: 20,
+          text: `${[].concat(...Object.values(order.elements)).map(element => {
+            const productData = useGoodsStore().minGoodsData.find(product => product.id == element.product)
+            return productData ? productData.name : ''
+          }).join(', ')}.`,
+          title: t("orders.compositionPopupTitle"),
+          id: order.id,
+        },
+      } : '',
     order.price,
     {
       component: ActionButtons,

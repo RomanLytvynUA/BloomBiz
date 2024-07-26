@@ -40,7 +40,7 @@
                         :disabled="category === null">+</button>
                 </td>
                 <td colspan="1">
-                    <input v-model="totalPrice" type="number" class="form-control" name="total">
+                    <input v-model="totalPrice" type="number" class="form-control" name="total" disabled>
                 </td>
             </tr>
         </tbody>

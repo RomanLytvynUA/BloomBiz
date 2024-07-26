@@ -12,7 +12,7 @@
                 <div :id="'customerSelectAccordionBody' + accordionIdPrefix" class="accordion-collapse collapse"
                     :data-bs-parent="'#customerSelectAccordion' + accordionIdPrefix">
                     <div class="accordion-body">
-                        <div class="mb-3">
+                        <div :class="guest ? '' : 'mb-3'">
                             <div class="form-check">
                                 <input v-model="guest" class="form-check-input" type="checkbox">
                                 <label class="form-check-label">
@@ -25,8 +25,8 @@
                                 <CustomerForm ref="customerForm" :showAddressInput="receiverIsOrderer"
                                     :preselectedAddress="preselectedAddress" />
                             </form>
-                            <div class="mb-3">
-                                <div class="form-check">
+                            <div :class="receiverIsOrderer ? '' : 'mb-3'">
+                                <div class=" form-check">
                                     <input v-model="receiverIsOrderer" class="form-check-input" type="checkbox">
                                     <label class="form-check-label">
                                         {{ t('orders.customerFields.ordrerIsReceiverText') }}
@@ -153,5 +153,9 @@ form {
 .accordion-item .accordion-button:not(.collapsed) {
     background-color: #F8F8F8;
     color: #212529;
+}
+
+:deep() #receiverForm .row:last-child>div {
+    margin-bottom: 0 !important;
 }
 </style>

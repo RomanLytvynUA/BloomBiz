@@ -127,4 +127,8 @@ defineExpose({ totalPrice, reset, setNewData })
     background-color: #F8F8F8;
     color: #212529;
 }
+
+.accordion-body li:last-child>table {
+    margin: 0;
+}
 </style>

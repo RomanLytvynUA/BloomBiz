@@ -43,7 +43,7 @@ function validateCategory() {
     let valid = true
     const form = document.getElementById('delCategoryForm')
 
-    // add 'is-invalid' class to every element of <form> where there is no value
+    // add 'is-invalid' class to every element of <form> that has no value
     for (const element of form.elements) {
         if (!element.disabled && (!element.value || (element.type === 'checkbox' && !element.checked)) && element.tagName !== 'TEXTAREA') {
             element.classList.add('is-invalid');

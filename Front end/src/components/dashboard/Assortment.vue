@@ -2,6 +2,7 @@
     <h6>{{ t('dashboard.assortment.title') }}</h6>
     <hr>
     <div class="accordion" id="categoriesAccordion">
+        <!-- Categories btns -->
         <div class="d-flex">
             <div class="btn-group btn-group-sm flex-grow-1">
                 <button type=" button" class="btn btn btn-success" data-bs-toggle="modal"
@@ -17,6 +18,7 @@
         t('general.delBtnText') }}</button>
             </div>
         </div>
+        <!-- Categories -->
         <div v-for="category in categories" class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -27,12 +29,14 @@
             <div :id="'collapseCategory' + category" class="accordion-collapse collapse"
                 data-bs-parent="#categoriesAccordion">
                 <div class="d-flex">
+                    <!-- Product addition btn -->
                     <button class="btn btn-sm btn-outline-success flex-grow-1 opacity-75" data-bs-toggle="modal"
                         data-bs-target="#newProductModal" :data-category="category"
                         style="border-top-left-radius: 0; border-top-right-radius: 0;">+</button>
                 </div>
                 <div class="accordion-body">
                     <div class="row g-2 align-items-center justify-content-center">
+                        <!-- Products -->
                         <div class="col-auto"
                             v-for="product in goodsData.find(categoryObj => categoryObj.name === category).goods">
                             <div class="card">

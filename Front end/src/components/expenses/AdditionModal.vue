@@ -7,13 +7,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Expense fields -->
                     <form id="newExpenseForm">
                         <InputField ref=dateInput :label="t('expenses.formFields.dateLabel')" type="date" name="date"
                             :value="todaysDate" />
                         <div class="row">
                             <div class="col-sm-6">
                                 <CategoriesInput ref="categoryInput" :label="t('expenses.formFields.categoryLabel')"
-                                    @categoryChanged="(newValue) => selectedCategoryField = newValue" />
+                                    @categoryChanged="(newValue) => selectedCategory = newValue" />
                             </div>
                             <div class="col-sm-6">
                                 <SelectField ref="supplierInput" :label="t('expenses.formFields.supplierLabel')"
@@ -22,11 +23,11 @@
                                     :customOptionValue="t('general.customOptions.customSupplierText')" />
                             </div>
                         </div>
-
                     </form>
+                    <!-- Expense elements fields -->
                     <form id="expenseElementsForm">
                         <ElementsTable ref="elements" style="margin-bottom: 0;" :rows="[]"
-                            :category="selectedCategoryField" />
+                            :category="selectedCategory" />
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -58,7 +59,7 @@ const todaysDate = new Date().toISOString().split('T')[0];
 const suppliersNames = computed(() => useSuppliersStore().suppliersNames)
 const suppliersToIgnore = computed(() => useSettingsStore().settingsData.expensesSuppliersToIgnore)
 
-const selectedCategoryField = ref(null);
+const selectedCategory = ref(null);
 
 const dateInput = ref(null)
 const categoryInput = ref(null)
@@ -70,7 +71,7 @@ function validateExpense() {
     const form = document.getElementById('newExpenseForm')
     const elementsForm = document.getElementById('expenseElementsForm')
 
-    // add 'is-invalid' class to every element of <form> where there is no value
+    // add 'is-invalid' class to every element of <form> that has no value
     for (const element of [...form.elements, ...elementsForm.elements]) {
         if (element.tagName !== 'BUTTON' && !element.disabled && !element.value && element.name !== 'additional') {
             element.classList.add('is-invalid');
@@ -82,17 +83,17 @@ function validateExpense() {
 
     if (valid) {
         const modalElement = document.getElementById('addExpenseModal');
-        const supplierData = new FormData(form)
+        const expenseData = new FormData(form)
 
         let json = {}
         json.elements = elements.value.rows.map(({ options, ...rest }) => rest)
         json.total = elements.value.totalPrice
-        supplierData.forEach((value, key) => {
+        expenseData.forEach((value, key) => {
             json[key] = value;
         });
 
-        $(modalElement).modal('hide');
         useExpensesStore().addExpense(json);
+        $(modalElement).modal('hide');
 
         modalElement.addEventListener('hidden.bs.modal', (event) => {
             dateInput.value.reset();

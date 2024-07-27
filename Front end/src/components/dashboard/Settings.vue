@@ -156,7 +156,7 @@ watch(() => settingsData.value, (data) => {
   populateSettings(data)
 }, { deep: true });
 
-// Populate settings when first opened
+// Populate settings when tha page first opened
 onMounted(() => populateSettings(settingsData.value))
 
 function populateSettings(data) {
@@ -176,7 +176,6 @@ function populateSettings(data) {
   suppliersSafetyMode.value.switchInput = data.suppliersSafetyMode || false;
 
   customersSafetyMode.value.switchInput = data.customersSafetyMode || false;
-
 }
 </script>
 

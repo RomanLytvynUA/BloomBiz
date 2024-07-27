@@ -1,6 +1,7 @@
 <template>
     <div :class="divClasses">
         <label v-if="label" class="form-label">{{ label }}</label>
+        <!-- select -->
         <select ref="selectElement" v-if="!customOption" :name="name" v-model="select" :disabled="disabled"
             class="form-select">
             <option v-if="preselectedValue && !options.includes(preselectedValue)" :value="preselectedValue">{{
@@ -10,6 +11,7 @@
             <option v-for="option in options" :value="option.value ? option.value : option">{{ option.name ? option.name
         : option }}</option>
         </select>
+        <!-- custom input -->
         <input v-if="customOption" v-model="customInput" class="form-control" :name="name">
     </div>
 </template>

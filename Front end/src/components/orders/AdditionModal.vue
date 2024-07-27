@@ -7,6 +7,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- General fields -->
                     <form id="newOrderForm">
                         <div class="row">
                             <div class="col-sm-6">
@@ -20,17 +21,21 @@
                         </div>
                     </form>
 
+                    <!-- Customer fields -->
                     <CustomerSelect ref="customerSelect" accordionIdPrefix="CreateOrder" />
 
+                    <!-- Elements fields -->
                     <form id="orderElementsForm" class="mb-3">
                         <ElementsAccordion ref="elementsList" @elements-changed="(data) => elements = data"
                             @total-price-changed="(total) => orderTotal = total" />
                     </form>
+
+                    <!-- Footer general fields -->
                     <form id="orderGeneralForm">
                         <div class="mb-3">
                             <label for="floatingTextarea" class="form-label">{{ t('orders.formFields.additionalLabel')
                                 }}</label>
-                            <textarea class="form-control" name="additional"></textarea>
+                            <textarea class="form-control" v-model="orderAdditional" name="additional"></textarea>
                         </div>
                         <div class="input-group">
                             <span class="input-group-text">{{ t('orders.formFields.discountLabel')
@@ -71,18 +76,15 @@ const props = defineProps(['statuses'])
 
 const customerSelect = ref(null);
 const elementsList = ref(null);
-watch(elementsList, () => {
-    if (elementsList.value) {
-        elementsList.value.setNewData([], { 'null': true })
-    }
-})
 
+
+const orderAdditional = ref('')
 const orderDiscount = ref(0)
 const orderTotal = ref(0)
 const orderTotalField = ref(null)
 const dateInput = ref(null)
 const statusInput = ref(null)
-const elements = ref(null)
+const elements = ref({})
 
 function validateExpense() {
     let valid = true;
@@ -91,7 +93,7 @@ function validateExpense() {
     const elementsForm = document.getElementById('orderElementsForm');
     const customerData = customerSelect.value.collectData();
 
-    // add 'is-invalid' class to every element of <form> where there is no value
+    // add 'is-invalid' class to every element of forms that has no value
     for (const element of [...form.elements, ...elementsForm.elements, ...generalForm.elements]) {
         if (element.tagName !== 'BUTTON' && !element.disabled && !element.value && element.name !== 'additional') {
             element.classList.add('is-invalid');
@@ -121,7 +123,8 @@ function validateExpense() {
         modalElement.addEventListener('hidden.bs.modal', () => {
             orderDiscount.value = 0
             orderTotal.value = 0
-            elements.value = null
+            elements.value = {}
+            orderAdditional.value = '';
             dateInput.value.reset();
             statusInput.value.reset();
             customerSelect.value.reset()

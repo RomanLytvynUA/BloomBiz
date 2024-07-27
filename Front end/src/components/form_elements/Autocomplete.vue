@@ -6,7 +6,7 @@
                 :class="{
         'form-control': customOption, 'form-select': !customOption,
         'form-control-sm': customOption && small, 'form-select-sm': !customOption && small,
-    }" data-bs-toggle="dropdown" :name="name" data-bs-offset="0,0" :style="dropdownOpened && !customOption ?
+    }" data-bs-toggle="dropdown" :name="name" :style="dropdownOpened && !customOption ?
         'border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;' :
         'border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;'">
             <ul v-show="!customOption" class="dropdown-menu" ref="dropdownMenu">
@@ -72,10 +72,11 @@ const input = ref(props.preselectedValue);
 watch(() => input.value, () => customOption.value ? emit('valueSelected', input.value) : {})
 watch(() => props.preselectedValue, () => input.value = props.preselectedValue)
 
-const customOption = ref(props.forceCustomInput);
-watch(() => props.forceCustomInput, () => { customOption.value = props.forceCustomInput; dropdownOpened.value = false; })
 const dropdownMenu = ref(null);
 const dropdownOpened = ref(false);
+
+const customOption = ref(props.forceCustomInput);
+watch(() => props.forceCustomInput, () => { customOption.value = props.forceCustomInput; dropdownOpened.value = false; })
 
 const filteredOptions = computed(() => {
     return String(input.value).length ? props.options.filter(option => String(option).toLocaleLowerCase().includes(input.value.toLocaleLowerCase())) : props.options
@@ -91,12 +92,12 @@ onMounted(() => {
     const observer = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
             if (mutation.attributeName === 'class') {
+                // keep dropdownOpened corresponding to dropdownMenu
                 dropdownOpened.value = dropdownMenu.value.classList.contains('show');
                 props.options.includes(input.value) || customOption.value ? {} : input.value = ''
             }
         });
     });
-
     observer.observe(dropdownMenu.value, { attributes: true });
 });
 defineExpose({ input, inputElement, reset })

@@ -7,6 +7,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Expense fields -->
                     <form id="editExpenseForm">
                         <InputField ref="dateInput" :label="t('expenses.formFields.dateLabel')" type="date" name="date"
                             :value="expenseData ? new Date(expenseData.date.split('-').reverse().join('-')).toISOString().split('T')[0] : null" />
@@ -24,6 +25,7 @@
                             </div>
                         </div>
                     </form>
+                    <!-- Elements fields -->
                     <form id="editExpenseElementsForm">
                         <ElementsTable ref="elements" style="margin-bottom: 0;" :rows="[]"
                             :category="categoryData ? categoryData.name : null" />
@@ -93,7 +95,7 @@ function validateExpense() {
     const form = document.getElementById('editExpenseForm')
     const elementsForm = document.getElementById('editExpenseElementsForm')
 
-    // add 'is-invalid' class to every element of <form> where there is no value
+    // add 'is-invalid' class to every element of <form> that has no value
     for (const element of [...form.elements, ...elementsForm.elements]) {
         if (element.tagName !== 'BUTTON' && !element.disabled && !element.value && element.name !== 'additional') {
             element.classList.add('is-invalid');
@@ -105,13 +107,13 @@ function validateExpense() {
 
     if (valid) {
         const modalElement = document.getElementById('editExpenseModal');
-        const supplierData = new FormData(form)
+        const expenseData = new FormData(form)
 
         let json = {}
         json.elements = elements.value.rows.map(({ options, ...rest }) => rest)
         json.total = elements.value.totalPrice
         json.expense_id = selectedExpenseId.value
-        supplierData.forEach((value, key) => {
+        expenseData.forEach((value, key) => {
             json[key] = value;
         });
 

@@ -7,6 +7,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- General fields -->
                     <form id="editOrderForm">
                         <div class="row">
                             <div class="col-sm-6">
@@ -19,9 +20,13 @@
                             </div>
                         </div>
                     </form>
+
+                    <!-- Customer fields -->
                     <CustomerSelect ref="customerSelect"
                         :preselectedAddress="orderData ? orderData.customer_address : ''"
                         :accordionIdPrefix="'EditOrder' + (orderData ? orderData.id : 0)" />
+
+                    <!-- Elements fields -->
                     <form id="editOrderElementsForm" class="mb-3">
                         <ElementsAccordion ref="elementsList" @elements-changed="(data) => { elements = data; }"
                             :accordionId="orderData ? orderData.id : ''" @total-price-changed="(total) => {
@@ -29,6 +34,8 @@
                         orderTotalField.value = orderTotal - orderTotal * (orderDiscount / 100)
                     }" />
                     </form>
+
+                    <!-- Footer general fields -->
                     <form id="editOrderGeneralForm">
                         <div class="mb-3">
                             <label for="floatingTextarea">{{ t('orders.formFields.additionalLabel') }}</label>
@@ -57,7 +64,7 @@ import { computed, ref, onMounted, watch } from 'vue';
 import { useOrdersStore } from '@/stores/orders';
 
 import ElementsAccordion from './elementsComponents/ElementsAccordion.vue'
-import CustomerSelect from './customersComponents/customersAccordion.vue'
+import CustomerSelect from './customersComponents/CustomersAccordion.vue'
 
 import InputField from '../form_elements/InputField.vue'
 import SelectField from '../form_elements/SelectField.vue'
@@ -68,25 +75,25 @@ const { t } = useI18n();
 const props = defineProps(['statuses'])
 const orderId = ref(null)
 const orderData = computed(() => {
-    const data = orderId ? useOrdersStore().ordersData.find((order) => order.id == orderId.value) : {}
+    const data = orderId ? useOrdersStore().ordersData.find((order) => order.id == orderId.value) : null
     return data
 })
 
-const orderDate = ref(null);
 const customerSelect = ref(null);
 const elementsList = ref(null);
 
+const orderDate = ref(null);
 const orderDiscount = ref(0)
 const orderTotal = ref(0)
+
 const orderTotalField = ref(null)
 const dateInput = ref(null)
 const statusInput = ref(null)
-const elements = ref(null)
+const elements = ref({})
 const orderAdditional = ref(null)
 
 watch(orderData, () => {
     if (orderData.value) {
-        elementsList.value.reset()
         orderDate.value = new Date(orderData.value.date).toISOString().slice(0, 16)
         orderTotal.value = orderData.value.price + orderData.value.price * orderData.value.discount / 100 + 1
         orderDiscount.value = orderData.value.discount
@@ -94,7 +101,6 @@ watch(orderData, () => {
         const prefilledElementsData = { ...orderData.value.elements, null: false };
         elementsList.value.reset()
         elementsList.value.setNewData([].concat(...Object.keys(orderData.value.elements)), prefilledElementsData)
-
         orderTotalField.value.value = orderData.value.price
     }
 })
@@ -115,7 +121,7 @@ function validateExpense() {
     const generalForm = document.getElementById('editOrderGeneralForm')
     const customerData = customerSelect.value.collectData();
 
-    // add 'is-invalid' class to every element of <form> where there is no value
+    // add 'is-invalid' class to every element of the forms that has no value
     for (const element of [...form.elements, ...elementsForm.elements, ...generalForm.elements]) {
         if (element.tagName !== 'BUTTON' && !element.disabled && !element.value && element.name !== 'additional') {
             element.classList.add('is-invalid');
@@ -143,8 +149,9 @@ function validateExpense() {
         $(modalElement).modal('hide');
         useOrdersStore().editOrder(json);
         modalElement.addEventListener('hidden.bs.modal', () => {
-            orderDiscount.value = 0
-            orderTotal.value = 0
+            orderDiscount.value = 0;
+            orderTotal.value = 0;
+            orderAdditional.value = '';
             dateInput.value.reset();
             customerSelect.value.reset();
             statusInput.value.reset();

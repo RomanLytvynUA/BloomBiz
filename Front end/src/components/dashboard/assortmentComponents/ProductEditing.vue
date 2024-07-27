@@ -45,7 +45,7 @@ function validateProduct() {
     let valid = true
     const form = document.getElementById('editProductForm')
 
-    // add 'is-invalid' class to every element of <form> where there is no value
+    // add 'is-invalid' class to every element of <form> that has no value
     for (const element of form.elements) {
         if (element.tagName === 'INPUT' && !element.value && element.name !== 'additional') {
             element.classList.add('is-invalid');

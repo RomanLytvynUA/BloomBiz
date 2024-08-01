@@ -1,8 +1,9 @@
 <template>
     <br>
-    <div class="container-fluid text-center py-5" style="padding-top: 0 !important;">
+    <div class="container-fluid text-center py-5"
+        :style="useAuthStore().isAuthenticated ? 'padding-top: 0 !important; padding-bottom: 0 !important' : 'padding-top: 0 !important;'">
         <div id="logo">
-            <img src="../assets/logo.png" width="190" class="img-fluid mx-auto d-block" alt="логотип">
+            <img src="../assets/logo.png" width="250" class="img-fluid mx-auto d-block" alt="логотип">
             <figure style="margin-bottom: 0px;">
                 <blockquote class="blockquote">
                     <h1>{{ t('home.welcome') }}</h1>

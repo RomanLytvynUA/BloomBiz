@@ -54,39 +54,36 @@ Key features:
   2. Install back-end requirements.
        - ```cd "Back end"```
        - ```pip install -r requirements.txt```
-  3. Set up the db. *(first run only)*
-       - ```python db_setup.py```
-  4. Run the back end.
-       - ```python run.py```
-  5. Install front-end requirements.
-       - ```cd "Front end"```
-       - ```npm install```
-  6. Run the front end.
-       - ```npm run build```
-  7. Populate demonstration data, add user, add registration code, etc. *(optional)*
-       - ```cd "Back end"```
+  3. Reset the db with another language. *(optional)*
+       - ```python db_setup.py --lang eng\ukr```
+  4. Populate demonstration data, add user, add registration code, etc. *(optional)*
        - ```python dashboard.py```
        - Select an operation and follow instructions. 
+  5. Run the back end.
+       - ```python run.py```
+  6. Install front-end requirements.
+       - ```cd "../Front end"```
+       - ```npm install```
+  7. Run the front end.
+       - ```npm run build```
  ### Via Docker
  #### Pre-requisites:
    - Docker engine
  #### Installation:
-  1. Change environment configuration. *(optional)*
+  1. Change environment configuration in docker-compose.yml. *(optional)*
       - Change db credentials.
       - Change the BB_DB_URI variable of the back end accordingly to changed db credentials.
       - Change the JWT_SECRET_KEY variable of the back end.
   2. Run docker compose.
        - ```docker-compose up```
-  4. Run the back-end shell.
+  4. Reset the db with another language. *(optional)*
        - ```docker-compose exec backend /bin/bash```
-  5. Set up the db. *(first run only)*
-       - ```python db_setup.py```
-  6. Populate demonstration data. *(optional)*
-       - ```python fake_data.py```
-  7. Add a user. *(optional)*
-     - Run the dashboard.
-         - ```python dashboard.py```
-     - Select "Create an account" and follow instructions.
+       - ```python db_setup.py --lang eng\ukr```
+  5. Populate demonstration data, add user, add registration code, etc. *(optional)*
+       - ```docker-compose exec backend /bin/bash```
+       - ```python dashboard.py```
+       - Select an operation and follow instructions.
+
 ## Roadmap
 - [x] Suppliers management
 - [x] CRM

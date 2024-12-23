@@ -22,11 +22,11 @@
         <div v-for="category in categories" class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    :data-bs-target="'#collapseCategory' + category">
+                    :data-bs-target="'#collapseCategory' + category.replace(' ', '')">
                     {{ category }}
                 </button>
             </h2>
-            <div :id="'collapseCategory' + category" class="accordion-collapse collapse"
+            <div :id="'collapseCategory' + category.replace(' ', '')" class="accordion-collapse collapse"
                 data-bs-parent="#categoriesAccordion">
                 <div class="d-flex">
                     <!-- Product addition btn -->

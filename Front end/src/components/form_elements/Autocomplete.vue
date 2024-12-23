@@ -13,7 +13,7 @@
                 <li>
                     <button v-if="customOptionLabel"
                         :class="small ? 'dropdown-item small-btn' : 'dropdown-item normal-btn'"
-                        @click.prevent="customOption = true; dropdownOpened = false; $emit('customOptionSelected')"
+                        @click.prevent="customOption = true; dropdownOpened = false; $emit('customOptionSelected'); $emit('valueSelected', input)"
                         style="background-color: green;">
                         {{ customOptionLabel }}
                     </button>

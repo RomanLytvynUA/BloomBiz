@@ -65,7 +65,7 @@ Key features:
        - ```cd "../Front end"```
        - ```npm install```
   7. Run the front end.
-       - ```npm run build```
+       - ```npm run dev```
  ### Via Docker
  #### Pre-requisites:
    - Docker engine

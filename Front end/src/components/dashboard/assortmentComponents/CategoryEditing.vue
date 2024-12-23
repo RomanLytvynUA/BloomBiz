@@ -54,11 +54,11 @@ function validateCategory() {
         const categoryData = new FormData(form)
 
         let json = {}
-        json.targetCategory = targetCategoryInput.value.categorySelect
+        json.targetCategory = targetCategoryInput.value.selectedCategory
         categoryData.forEach((value, key) => {
             json[key] = value;
         });
-
+        
         $(document.getElementById('editCategoryModal')).modal('hide');
         useGoodsStore().editCategory(json);
         form.reset();

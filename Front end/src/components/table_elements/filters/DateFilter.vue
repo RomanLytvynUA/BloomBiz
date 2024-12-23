@@ -9,7 +9,7 @@
             Date().getFullYear() - i + 1 }}
                 </option>
             </select>
-            <span class="input-group-text"> {{ $t('general.dateFilterto') }} </span>
+            <span class="input-group-text"> {{ $t('general.dateFilterTo') }} </span>
             <select ref="toYearFilter" class="form-select" @input="$emit('filterChanged')">
                 <option v-for="i in 11" :selected="i === 0" :value="new Date().getFullYear() - i + 1">{{ new
             Date().getFullYear() - i + 1 }}

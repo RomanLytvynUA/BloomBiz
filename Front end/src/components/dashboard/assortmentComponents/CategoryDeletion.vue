@@ -8,7 +8,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="delCategoryForm">
-                        <CategoriesInput :label="t('dashboard.assortment.categories.categoryLabel')"
+                        <CategoriesInput ref="categoryInput" :label="t('dashboard.assortment.categories.categoryLabel')"
                             :customOption="false" />
                         <div class="input-group mb-3">
                             <div class="input-group-text">
@@ -37,6 +37,7 @@ import { useGoodsStore } from '../../../stores/goods';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
+const categoryInput = ref(null)
 const warningTextArea = ref(null)
 
 function validateCategory() {
@@ -61,6 +62,7 @@ function validateCategory() {
         useGoodsStore().delCategory(selectedId);
         form.reset();
         warningTextArea.value.value = t('dashboard.assortment.categories.deletionModalConsent')
+        categoryInput.value.reset();
     }
 }
 

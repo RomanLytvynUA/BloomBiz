@@ -127,7 +127,7 @@ const suppliersData = computed(() => useSuppliersStore().suppliersData)
 const suppliers = computed(() => useSuppliersStore().suppliersNames)
 
 const orderStatuses = computed(() => useSettingsStore().settingsData.ordersStatuses);
-const filteredOrderStatuses = [orderStatuses.value[0]]
+const filteredOrderStatuses = [orderStatuses.value ? orderStatuses.value[0] : '']
 let filteredExpenseCategories = [].concat(categories.value)
 let filteredExpenseSuppliers = [].concat(suppliers.value)
 

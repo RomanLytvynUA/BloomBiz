@@ -9,6 +9,8 @@
 *.sln
 *.sw?
 .idea/
+Lib/*
+Scripts/*
 
 # Compiled Python files
 *.pyc

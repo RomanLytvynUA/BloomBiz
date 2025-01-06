@@ -824,7 +824,7 @@ def add_orders_elements():
                     if instock_quantity == 0:
                         continue
 
-                    quantity = random.randint(1, min(instock_quantity, 10))
+                    quantity = random.randint(1, min(int(instock_quantity), 10))
                     element_price = random.randint(10, 25) * 2.20
                     order_price += quantity * element_price
 

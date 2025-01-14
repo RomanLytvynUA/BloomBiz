@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
     <div class="container-fluid">
       <RouterLink class="navbar-brand" to="/">
-        <img src="../assets/logo.png" alt="Логотип" width="30" height="30" class="d-inline-block align-text-top">
+        <img src="../assets/logo.svg" alt="Логотип" width="30" height="30" class="d-inline-block align-text-top">
         BloomBiz
       </RouterLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

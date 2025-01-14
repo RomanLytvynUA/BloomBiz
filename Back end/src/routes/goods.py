@@ -1,6 +1,7 @@
 from src import db
 from flask import jsonify, Blueprint, request
 from src.models.goods import Categories, Goods, Decommissions
+from src.models.orders import OrdersElements, Orders 
 from src.utils.goods import (
     util_calc_instock,
     util_create_product,
@@ -64,7 +65,7 @@ def edit_product():
         db.session.add(product)
         db.session.commit()
 
-        changes = {"goods": [product.generate_dict()]}
+        changes = {"goods": [product.generate_dict()], "orders": [order.generate_dict() for order in Orders.query.order_by(Orders.id.desc()).all()]}
 
         return jsonify(changes), 201
     return "Missing required data.", 406
@@ -119,7 +120,9 @@ def edit_category():
         db.session.add(category)
         db.session.commit()
 
-        changes = {"categories": [category.generate_dict()]}
+        changes = {"categories": [category.generate_dict()], 
+                   "orders": [order.generate_dict() for order in Orders.query.order_by(Orders.id.desc()).all()
+        ]}
 
         return jsonify(changes), 201
     return "Missing required data.", 406

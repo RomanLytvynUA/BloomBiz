@@ -138,7 +138,7 @@ export default {
                 case 'day':
                     return format(startOfWeek(currentDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
                 case 'week':
-                    return `${getYear(currentDate)}-W${getWeek(endOfMonth(currentDate), { weekStartsOn: 1 }).toString().padStart(2, '0')}`
+                    return `${getYear(currentDate)}-W${getWeek(startOfMonth(currentDate), { weekStartsOn: 1 }).toString().padStart(2, '0')}`
                 case 'month':
                     return getYear(new Date()) + '-01';
                 default:
@@ -153,7 +153,7 @@ export default {
                 case 'day':
                     return format(endOfWeek(currentDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
                 case 'week':
-                    return `${getYear(currentDate)}-W${getWeek(startOfMonth(currentDate), { weekStartsOn: 1 }).toString().padStart(2, '0')}`
+                    return `${getYear(currentDate)}-W${getWeek(endOfMonth(currentDate), { weekStartsOn: 1 }).toString().padStart(2, '0')}`
                 case 'month':
                     return getYear(new Date()) + '-12';
                 default:

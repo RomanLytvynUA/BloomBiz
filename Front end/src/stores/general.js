@@ -43,7 +43,7 @@ export function updateData(data) {
                 const goodsData = useGoodsStore().goodsData
                 data['goods'].forEach((changedProduct) => {
                     // Add category placeholder if category of product is missing
-                    const existing_category = goodsData.find(category => category.id === changedProduct.category)
+                    let existing_category = goodsData.find(category => category.id === changedProduct.category)
                     if (!existing_category) {
                         useGoodsStore().goodsData.push({ id: changedProduct.category })
                         existing_category = goodsData.find(category => category.id === changedProduct.category)
